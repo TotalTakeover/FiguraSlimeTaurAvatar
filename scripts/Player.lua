@@ -1,5 +1,5 @@
 -- Required script
-local slimeParts = require("lib.GroupIndex")(models.models.SlimeTaur)
+local slimeParts = require("lib.GroupIndex")(models.SlimeTaur)
 
 -- Config setup
 config:name("SlimeTaur")

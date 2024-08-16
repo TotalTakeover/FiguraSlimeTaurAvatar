@@ -1,13 +1,13 @@
 -- Required scripts
 require("lib.GSAnimBlend")
-local slimeParts = require("lib.GroupIndex")(models.models.SlimeTaur)
+local slimeParts = require("lib.GroupIndex")(models.SlimeTaur)
 local ground     = require("lib.GroundCheck")
 local itemCheck  = require("lib.ItemCheck")
 local pose       = require("scripts.Posing")
 local color      = require("scripts.ColorProperties")
 
 -- Animations setup
-local anims = animations["models.SlimeTaur"]
+local anims = animations.SlimeTaur
 
 function events.TICK()
 	

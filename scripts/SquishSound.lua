@@ -1,5 +1,5 @@
 -- Required scripts
-local slimeParts = require("lib.GroupIndex")(models.models.SlimeTaur)
+local slimeParts = require("lib.GroupIndex")(models.SlimeTaur)
 local itemCheck  = require("lib.ItemCheck")
 local effects    = require("scripts.SyncedVariables")
 local color      = require("scripts.ColorProperties")

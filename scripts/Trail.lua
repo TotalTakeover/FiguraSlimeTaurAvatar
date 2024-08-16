@@ -1,5 +1,5 @@
 -- Required scripts
-local slimeParts  = require("lib.GroupIndex")(models.models.SlimeTaur)
+local slimeParts  = require("lib.GroupIndex")(models.SlimeTaur)
 local pehkuiScale = require("lib.PehkuiScale")
 local pose        = require("scripts.Posing")
 

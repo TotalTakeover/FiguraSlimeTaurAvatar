@@ -1,10 +1,10 @@
 -- Required scripts
-local slimeParts = require("lib.GroupIndex")(models.models.SlimeTaur)
+local slimeParts = require("lib.GroupIndex")(models.SlimeTaur)
 local squapi     = require("lib.SquAPI")
 local pose       = require("scripts.Posing")
 
 -- Animation setup
-local anims = animations["models.SlimeTaur"]
+local anims = animations.SlimeTaur
 
 -- Calculate parent's rotations
 local function calculateParentRot(m)

@@ -1,5 +1,5 @@
 -- Required scripts
-local slimeParts = require("lib.GroupIndex")(models.models.SlimeTaur)
+local slimeParts = require("lib.GroupIndex")(models.SlimeTaur)
 local wobble     = require("lib.CMWobble")
 local origins    = require("lib.OriginsAPI")
 local pose       = require("scripts.Posing")
