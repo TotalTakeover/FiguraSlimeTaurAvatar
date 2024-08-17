@@ -21,9 +21,21 @@ local colorParts = {
 	
 }
 
--- Lerps
-local colorLerp   = lerp:new(0.2, vec(1, 1, 1))
-local opacityLerp = lerp:new(0.2, 1)
+-- Lerp color table
+local colorLerp = {
+	current    = vec(1, 1, 1),
+	nextTick   = vec(1, 1, 1),
+	target     = vec(1, 1, 1),
+	currentPos = vec(1, 1, 1)
+}
+
+-- Lerp opacity table
+local opacityLerp = {
+	current    = 1,
+	nextTick   = 1,
+	target     = 1,
+	currentPos = 1
+}
 
 function events.TICK()
 	
@@ -102,21 +114,31 @@ function events.TICK()
 		
 	end
 	
+	-- Tick lerp
+	colorLerp.current = colorLerp.nextTick
+	colorLerp.nextTick = math.lerp(colorLerp.nextTick, colorLerp.target, 0.2)
+	opacityLerp.current = opacityLerp.nextTick
+	opacityLerp.nextTick = math.lerp(opacityLerp.nextTick, opacityLerp.target, 0.2)
+	
 end
 
 function events.RENDER(delta, context)
 	
+	-- Render lerp
+	colorLerp.currentPos = math.lerp(colorLerp.current, colorLerp.nextTick, delta)
+	opacityLerp.currentPos = math.lerp(opacityLerp.current, opacityLerp.nextTick, delta)
+	
 	-- Slime textures
 	for _, part in ipairs(colorParts) do
-		part:color(colorLerp.currPos)
-		part:opacity(opacityLerp.currPos)
+		part:color(colorLerp.currentPos)
+		part:opacity(opacityLerp.currentPos)
 	end
 	
 	-- Glowing outline
-	renderer:outlineColor(colorLerp.currPos)
+	renderer:outlineColor(colorLerp.currentPos)
 	
 	-- Avatar color
-	avatar:color(colorLerp.currPos)
+	avatar:color(colorLerp.currentPos)
 	
 end
 
@@ -187,10 +209,10 @@ c.secondary = "#"..vectors.rgbToHex(vectors.vec3())
 function events.TICK()
 	
 	-- Set colors
-	c.hover     = colorLerp.currPos
-	c.active    = (colorLerp.currPos):applyFunc(function(a) return math.map(a, 0, 1, 0.1, 0.9) end)
-	c.primary   = "#"..vectors.rgbToHex(colorLerp.currPos)
-	c.secondary = "#"..vectors.rgbToHex((colorLerp.currPos):applyFunc(function(a) return math.map(a, 0, 1, 0.1, 0.9) end))
+	c.hover     = colorLerp.currentPos
+	c.active    = (colorLerp.currentPos):applyFunc(function(a) return math.map(a, 0, 1, 0.1, 0.9) end)
+	c.primary   = "#"..vectors.rgbToHex(colorLerp.currentPos)
+	c.secondary = "#"..vectors.rgbToHex((colorLerp.currentPos):applyFunc(function(a) return math.map(a, 0, 1, 0.1, 0.9) end))
 	
 end
 

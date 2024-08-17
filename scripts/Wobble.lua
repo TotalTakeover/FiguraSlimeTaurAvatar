@@ -1,6 +1,5 @@
 -- Required scripts
 local slimeParts = require("lib.GroupIndex")(models.SlimeTaur)
-local lerp       = require("lib.LerpAPI")
 local wobble     = require("lib.CMWobble")
 local origins    = require("lib.OriginsAPI")
 local pose       = require("scripts.Posing")
@@ -56,7 +55,12 @@ for i = 1, 27 do
 end
 
 -- Scale lerp
-local scaleLerp = lerp:new(0.2, 1)
+local scaleSize = {
+	current    = 1,
+	nextTick   = 1,
+	target     = 1,
+	currentPos = 1
+}
 
 function events.TICK()
 	
@@ -67,21 +71,30 @@ function events.TICK()
 	if powerActive then
 		
 		local moisture = origins.getPowerData(player, "slime_taur:moisture_bar") or 50
-		scaleLerp.target = ((player:getHealth() / player:getMaxHealth()) * 1.5) * (moisture / 100 + 0.5)
+		scaleSize.target = ((player:getHealth() / player:getMaxHealth()) * 1.5) * (moisture / 100 + 0.5)
 		
 	elseif healthSize then
 		
-		scaleLerp.target = (player:getHealth() / player:getMaxHealth()) * 1.5 + 0.5
+		scaleSize.target = (player:getHealth() / player:getMaxHealth()) * 1.5 + 0.5
 		
 	else
 		
-		scaleLerp.target = 1
+		scaleSize.target = 1
 		
 	end
+	
+	--log(scaleSize.target)
+	
+	-- Tick lerp
+	scaleSize.current = scaleSize.nextTick
+	scaleSize.nextTick = math.lerp(scaleSize.nextTick, scaleSize.target, 0.2)
 	
 end
 
 function events.RENDER(delta, context)
+	
+	-- Render lerp
+	scaleSize.currentPos = math.lerp(scaleSize.current, scaleSize.nextTick, delta)
 	
 	-- Variables
 	local vel     = player:getVelocity()
@@ -216,16 +229,16 @@ function events.WORLD_RENDER(delta, context)
 		
 		-- Calculates the Wobble and applies it
 		slimeWobble:update(scaleApply, true)
-		local calcWobble = slimeWobble.wobble * scaleLerp.currPos
+		local calcWobble = slimeWobble.wobble * scaleSize.currentPos
 		slimeParts.Slime:scale(
-			vec(scaleLerp.currPos - calcWobble,
-				scaleLerp.currPos + calcWobble,
-				scaleLerp.currPos - calcWobble)
+			vec(scaleSize.currentPos - calcWobble,
+				scaleSize.currentPos + calcWobble,
+				scaleSize.currentPos - calcWobble)
 				+ increase
 			)
 		
 		-- Scale shadow to size
-		renderer:shadowRadius(scaleLerp.currPos - 0.25 * scaleLerp.currPos)
+		renderer:shadowRadius(scaleSize.currentPos - 0.25 * scaleSize.currentPos)
 		
 	end
 end
