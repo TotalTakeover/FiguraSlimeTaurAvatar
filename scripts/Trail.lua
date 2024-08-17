@@ -94,7 +94,7 @@ function events.TICK()
 		local _, blockPos = raycast:block(pos, pos - vec(0, 1, 0), "COLLIDER")
 		
 		-- Create trail
-		new(blockPos + vec(0, 0.01, 0), scaleLerp.currPos)
+		new(blockPos, scaleLerp.currPos)
 		
 	end
 	
@@ -156,6 +156,12 @@ function events.RENDER(delta, context)
 	
 	-- Lerp scale
 	for _, part in ipairs(parts) do
+		
+		-- Set light level
+		local blockLight = world.getBlockLightLevel(part.pos + 0.4)
+		local skyLight = world.getSkyLightLevel(part.pos + 0.4)
+		
+		part.parts:light(blockLight, skyLight)
 		
 		-- If part is fused to player, control it
 		if trail and part.fused then
