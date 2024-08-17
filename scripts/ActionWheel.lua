@@ -31,8 +31,8 @@ if not s then items = {} end
 local s, _, anims = pcall(require, "scripts.Anims")
 if not s then anims = {} end
 
-local s, arms = pcall(require, "scripts.Arms")
-if not s then arms = {} end
+local s, squapi = pcall(require, "scripts.SquishyAnims")
+if not s then squapi = {} end
 
 -- Logs pages for navigation
 local navigation = {}
@@ -215,5 +215,5 @@ pages.color
 
 -- Animation actions
 pages.anims
-	:action( -1, arms.moveAct)
+	:action( -1, squapi.armsAct)
 	:action( -1, backAct)
