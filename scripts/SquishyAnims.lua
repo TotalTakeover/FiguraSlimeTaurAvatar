@@ -17,11 +17,20 @@ local function calculateParentRot(m)
 	
 end
 
+-- Head table
+local headParts = {
+	
+	slimeParts.UpperBody
+	
+}
+
 -- Squishy smooth torso
-squapi.smoothTorso(
-	slimeParts.UpperBody,
-	0.5, -- Strength Multiplier (0.5)
-	0.4  -- Tilt (0.4)
+local head = squapi.smoothHead:new(
+	headParts,
+	0.5,  -- Strength (0.5)
+	0.4,  -- Tilt (0.4)
+	1,    -- Speed (1)
+	false -- Keep Original Head Pos (false)
 )
 
 -- Squishy crounch
