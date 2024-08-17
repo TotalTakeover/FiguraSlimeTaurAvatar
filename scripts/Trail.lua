@@ -1,6 +1,5 @@
 -- Required scripts
 local slimeParts  = require("lib.GroupIndex")(models.SlimeTaur)
-local lerp        = require("lib.LerpAPI")
 local pehkuiScale = require("lib.PehkuiScale")
 local pose        = require("scripts.Posing")
 
@@ -13,9 +12,6 @@ if trail == nil then trail = true end
 -- Variables
 local worldPart = models:newPart("world", "WORLD")
 local trailPart = slimeParts.Trail
-
--- Scale lerp
-local scaleLerp = lerp:new(0.2, vec(1, 1, 1))
 
 -- Prevents visible culling
 trailPart:primaryRenderType("TRANSLUCENT_CULL")
@@ -52,7 +48,7 @@ local function new(pos, scale)
 	-- Add part to table
 	parts[#parts + 1] = {
 		pos   = pos,
-		scale = lerp:new(0.2, scale),
+		scale = {current = scale, nextTick = scale, target = scale, currentPos = scale},
 		fused = true,
 		parts = copy
 	}
@@ -64,7 +60,6 @@ function events.TICK()
 	-- Variables
 	local pos   = player:getPos()
 	local scale = slimeParts.Slime:getScale() * pehkuiScale()
-	scaleLerp.target = scale
 	
 	-- Ground check
 	-- Block variables
@@ -94,7 +89,7 @@ function events.TICK()
 		local _, blockPos = raycast:block(pos, pos - vec(0, 1, 0), "COLLIDER")
 		
 		-- Create trail
-		new(blockPos + vec(0, 0.01, 0), scaleLerp.currPos)
+		new(blockPos + vec(0, 0.01, 0), scale)
 		
 	end
 	
@@ -111,23 +106,27 @@ function events.TICK()
 			
 		end
 		
+		-- Store previous scale value
+		part.scale.prev = part.scale.next
+		
 		-- Tick lerp
 		if part.fused then
 			
-			part.scale.target = scaleLerp.target
-			part.scale.speed  = 0.2
+			part.scale.target = slimeParts.Slime:getScale() * pehkuiScale()
+			part.scale.current = part.scale.nextTick
+			part.scale.nextTick = math.lerp(part.scale.nextTick, part.scale.target, 0.2)
 			
 		else
 			
 			part.scale.target = 0
-			part.scale.speed  = melt
+			part.scale.current = part.scale.nextTick
+			part.scale.nextTick = math.lerp(part.scale.nextTick, part.scale.target, melt)
 			
 		end
 		
 		-- If trail is too small, or too close when not fused, delete
-		if not trail or part.scale.currPos:length() <= 0.05 or (not part.fused and dis < 0.25) then
+		if part.scale.current:length() <= 0.05 or (not part.fused and dis < 0.25) then
 			
-			lerp:remove(part.scale)
 			part.parts:remove()
 			table.remove(parts, _)
 			
@@ -139,23 +138,11 @@ end
 
 function events.RENDER(delta, context)
 	
-	-- Variable
-	local vel = player:getVelocity()
-	
-	if not trail and vel:length() ~= 0 then
-		scaleLerp.target   = 0
-		scaleLerp.prevTick = 0
-		scaleLerp.currTick = 0
-		scaleLerp.currPos  = 0
-	end
-	
 	-- Lerp scale
 	for _, part in ipairs(parts) do
 		
-		local blockLight = world.getBlockLightLevel(part.pos + 0.4)
-		local skyLight = world.getSkyLightLevel(part.pos + 0.4)
-		
-		part.parts:light(blockLight, skyLight)
+		-- Render lerp
+		part.scale.currentPos = math.lerp(part.scale.current, part.scale.nextTick, delta)
 		
 		-- If part is fused to player, control it
 		if trail and part.fused then
@@ -168,7 +155,7 @@ function events.RENDER(delta, context)
 			-- Apply
 			part.parts
 				:rot(0, rot, 0)
-				:scale(part.scale.currPos)
+				:scale(part.scale.currentPos)
 			
 			for _, part in ipairs(part.parts:getChildren()) do
 				if not part:getName():find("Overlay") then
@@ -181,7 +168,7 @@ function events.RENDER(delta, context)
 		else
 			
 			-- Apply
-			part.parts:scale(part.scale.currPos)
+			part.parts:scale(part.scale.currentPos)
 			
 		end
 		
