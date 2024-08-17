@@ -42,7 +42,6 @@ local head = squapi.smoothHead:new(
 	false -- Keep Original Head Pos (false)
 )
 
--- Squishy crounch
 -- Squishy vanilla arms
 local leftArm = squapi.arm:new(
 	slimeParts.LeftArm,
@@ -62,6 +61,7 @@ local rightArm = squapi.arm:new(
 local leftArmStrength  = leftArm.strength
 local rightArmStrength = rightArm.strength
 
+-- Squishy crouch
 squapi.crouch(anims.crouch)
 
 function events.TICK()
