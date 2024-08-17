@@ -1,39 +1,15 @@
 -- Required scripts
 local slimeParts = require("lib.GroupIndex")(models.SlimeTaur)
+local lerp       = require("lib.LerpAPI")
 local pose       = require("scripts.Posing")
 
 -- Config setup
 config:name("SlimeTaur")
 local armMove = config:load("AvatarArmMove") or false
 
--- Left arm lerp table
-local leftArm = {
-	current    = 0,
-	nextTick   = 0,
-	target     = 0,
-	currentPos = 0
-}
-
--- Right arm lerp table
-local rightArm = {
-	current    = 0,
-	nextTick   = 0,
-	target     = 0,
-	currentPos = 0
-}
-
--- Set lerp start on init
-function events.ENTITY_INIT()
-	
-	local apply = armMove and 1 or 0
-	for k, v in pairs(leftArm) do
-		leftArm[k] = apply
-	end
-	for k, v in pairs(rightArm) do
-		rightArm[k] = apply
-	end
-	
-end
+-- Lerp tables
+local leftArmLerp  = lerp:new(0.5, armsMove and 1 or 0)
+local rightArmLerp = lerp:new(0.5, armsMove and 1 or 0)
 
 function events.TICK()
 	
@@ -57,14 +33,8 @@ function events.TICK()
 	local shouldMove = pose.swim or pose.elytra or pose.crawl or pose.climb
 	
 	-- Targets
-	leftArm.target  = (armMove or shouldMove or leftSwing  or bow or ((crossL or crossR) or (using and usingL ~= "NONE"))) and 0 or 1
-	rightArm.target = (armMove or shouldMove or rightSwing or bow or ((crossL or crossR) or (using and usingR ~= "NONE"))) and 0 or 1
-	
-	-- Tick lerps
-	leftArm.current   = leftArm.nextTick
-	rightArm.current  = rightArm.nextTick
-	leftArm.nextTick  = math.lerp(leftArm.nextTick,  leftArm.target,  0.5)
-	rightArm.nextTick = math.lerp(rightArm.nextTick, rightArm.target, 0.5)
+	leftArmLerp.target  = (armMove or shouldMove or leftSwing  or bow or ((crossL or crossR) or (using and usingL ~= "NONE"))) and 0 or 1
+	rightArmLerp.target = (armMove or shouldMove or rightSwing or bow or ((crossL or crossR) or (using and usingR ~= "NONE"))) and 0 or 1
 	
 end
 
@@ -75,20 +45,16 @@ function events.RENDER(delta, context)
 	local idleRot    = vec(math.deg(math.sin(idleTimer * 0.067) * 0.05), 0, math.deg(math.cos(idleTimer * 0.09) * 0.05 + 0.05))
 	local bodyOffset = (vanilla_model.BODY:getOriginRot() * 0.75) + slimeParts.Body:getTrueRot()
 	
-	-- Render lerp
-	leftArm.currentPos  = math.lerp(leftArm.current,  leftArm.nextTick,  delta)
-	rightArm.currentPos = math.lerp(rightArm.current, rightArm.nextTick, delta)
-	
 	-- First person check
 	local firstPerson = context == "FIRST_PERSON"
 	
 	-- Apply
-	slimeParts.LeftArm:rot((-((vanilla_model.LEFT_ARM:getOriginRot() + 180) % 360 - 180) + -idleRot + bodyOffset) * leftArm.currentPos)
+	slimeParts.LeftArm:rot((-((vanilla_model.LEFT_ARM:getOriginRot() + 180) % 360 - 180) + -idleRot + bodyOffset) * leftArmLerp.currPos)
 		:visible(not firstPerson)
 	
 	slimeParts.LeftArmFP:visible(firstPerson)
 	
-	slimeParts.RightArm:rot((-((vanilla_model.RIGHT_ARM:getOriginRot() + 180) % 360 - 180) + idleRot + bodyOffset) * rightArm.currentPos)
+	slimeParts.RightArm:rot((-((vanilla_model.RIGHT_ARM:getOriginRot() + 180) % 360 - 180) + idleRot + bodyOffset) * rightArmLerp.currPos)
 		:visible(not firstPerson)
 	
 	slimeParts.RightArmFP:visible(firstPerson)
