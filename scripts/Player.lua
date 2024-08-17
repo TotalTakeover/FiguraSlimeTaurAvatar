@@ -176,12 +176,12 @@ end
 local t = {}
 
 -- Actions
-t.vanillaSkinPage = action_wheel:newAction()
+t.vanillaSkinAct = action_wheel:newAction()
 	:item(itemCheck("player_head{'SkullOwner':'"..avatar:getEntityName().."'}"))
 	:onToggle(pings.setAvatarVanillaSkin)
 	:toggled(vanillaSkin)
 
-t.modelPage = action_wheel:newAction()
+t.modelAct = action_wheel:newAction()
 	:item(itemCheck("player_head"))
 	:toggleItem(itemCheck("player_head{'SkullOwner':'MHF_Alex'}"))
 	:onToggle(pings.setAvatarModelType)
@@ -191,14 +191,14 @@ t.modelPage = action_wheel:newAction()
 function events.TICK()
 	
 	if action_wheel:isEnabled() then
-		t.vanillaSkinPage
+		t.vanillaSkinAct
 			:title(toJson
 				{"",
 				{text = "Toggle Vanilla Texture\n\n", bold = true, color = color.primary},
 				{text = "Toggles the usage of your vanilla skin.", color = color.secondary}}
 			)
 		
-		t.modelPage
+		t.modelAct
 			:title(toJson
 				{"",
 				{text = "Toggle Model Shape\n\n", bold = true, color = color.primary},

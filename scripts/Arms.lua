@@ -96,7 +96,7 @@ end
 local t = {}
 
 -- Action
-t.movePage = action_wheel:newAction()
+t.moveAct = action_wheel:newAction()
 	:item(itemCheck("red_dye"))
 	:toggleItem(itemCheck("rabbit_foot"))
 	:onToggle(pings.setAvatarArmMove)
@@ -106,7 +106,7 @@ t.movePage = action_wheel:newAction()
 function events.TICK()
 	
 	if action_wheel:isEnabled() then
-		t.movePage
+		t.moveAct
 			:title(toJson
 				{"",
 				{text = "Arm Movement Toggle\n\n", bold = true, color = color.primary},

@@ -199,17 +199,17 @@ end
 local t = {}
 
 -- Actions
-t.pickPage = action_wheel:newAction()
+t.pickAct = action_wheel:newAction()
 	:item(itemCheck("glass_bottle"))
 	:onToggle(function(apply) pings.setColorType(apply and 1) end)
 	:onRightClick(selectRGB)
 	:onScroll(pickColor)
 
-t.camoPage = action_wheel:newAction()
+t.camoAct = action_wheel:newAction()
 	:item(itemCheck("glass_bottle"))
 	:onToggle(function(apply) pings.setColorType(apply and 2) end)
 
-t.rainbowPage = action_wheel:newAction()
+t.rainbowAct = action_wheel:newAction()
 	:item(itemCheck("glass_bottle"))
 	:onToggle(function(apply) pings.setColorType(apply and 3) end)
 
@@ -217,7 +217,7 @@ t.rainbowPage = action_wheel:newAction()
 function events.TICK()
 	
 	if action_wheel:isEnabled() then
-		t.pickPage
+		t.pickAct
 			:title(toJson
 				{"",
 				{text = "Toggle Picked Color Mode\n\n", bold = true, color = c.primary},
@@ -233,7 +233,7 @@ function events.TICK()
 			:toggleItem(itemCheck("potion{\"CustomPotionColor\":" .. tostring(vectors.rgbToInt(colorLerp.currentPos)) .. "}"))
 			:toggled(pick)
 		
-		t.camoPage
+		t.camoAct
 			:title(toJson
 				{"",
 				{text = "Toggle Camo Mode\n\n", bold = true, color = c.primary},
@@ -242,7 +242,7 @@ function events.TICK()
 			:toggleItem(itemCheck("splash_potion{\"CustomPotionColor\":" .. tostring(vectors.rgbToInt(colorLerp.currentPos)) .. "}"))
 			:toggled(camo)
 		
-		t.rainbowPage
+		t.rainbowAct
 			:title(toJson
 				{"",
 				{text = "Toggle Rainbow Mode\n\n", bold = true, color = c.primary},

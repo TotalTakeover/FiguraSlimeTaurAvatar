@@ -149,27 +149,27 @@ end
 local t = {}
 
 -- Actions
-t.allPage = action_wheel:newAction()
+t.allAct = action_wheel:newAction()
 	:item(itemCheck("armor_stand"))
 	:toggleItem(itemCheck("netherite_chestplate"))
 	:onToggle(pings.setArmorAll)
 
-t.helmetPage = action_wheel:newAction()
+t.helmetAct = action_wheel:newAction()
 	:item(itemCheck("iron_helmet"))
 	:toggleItem(itemCheck("diamond_helmet"))
 	:onToggle(pings.setArmorHelmet)
 
-t.chestplatePage = action_wheel:newAction()
+t.chestplateAct = action_wheel:newAction()
 	:item(itemCheck("iron_chestplate"))
 	:toggleItem(itemCheck("diamond_chestplate"))
 	:onToggle(pings.setArmorChestplate)
 
-t.leggingsPage = action_wheel:newAction()
+t.leggingsAct = action_wheel:newAction()
 	:item(itemCheck("iron_leggings"))
 	:toggleItem(itemCheck("diamond_leggings"))
 	:onToggle(pings.setArmorLeggings)
 
-t.bootsPage = action_wheel:newAction()
+t.bootsAct = action_wheel:newAction()
 	:item(itemCheck("iron_boots"))
 	:toggleItem(itemCheck("diamond_boots"))
 	:onToggle(pings.setArmorBoots)
@@ -178,7 +178,7 @@ t.bootsPage = action_wheel:newAction()
 function events.TICK()
 	
 	if action_wheel:isEnabled() then
-		t.allPage
+		t.allAct
 			:title(toJson
 				{"",
 				{text = "Toggle All Armor\n\n", bold = true, color = color.primary},
@@ -186,7 +186,7 @@ function events.TICK()
 			)
 			:toggled(helmet and chestplate and leggings and boots)
 		
-		t.helmetPage
+		t.helmetAct
 			:title(toJson
 				{"",
 				{text = "Toggle Helmet\n\n", bold = true, color = color.primary},
@@ -194,7 +194,7 @@ function events.TICK()
 			)
 			:toggled(helmet)
 		
-		t.chestplatePage
+		t.chestplateAct
 			:title(toJson
 				{"",
 				{text = "Toggle Chestplate\n\n", bold = true, color = color.primary},
@@ -202,7 +202,7 @@ function events.TICK()
 			)
 			:toggled(chestplate)
 		
-		t.leggingsPage
+		t.leggingsAct
 			:title(toJson
 				{"",
 				{text = "Toggle Leggings\n\n", bold = true, color = color.primary},
@@ -210,7 +210,7 @@ function events.TICK()
 			)
 			:toggled(leggings)
 		
-		t.bootsPage
+		t.bootsAct
 			:title(toJson
 				{"",
 				{text = "Toggle Boots\n\n", bold = true, color = color.primary},

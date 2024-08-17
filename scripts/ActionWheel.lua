@@ -3,16 +3,36 @@ if not host:isHost() then return end
 
 -- Required scripts
 local itemCheck = require("lib.ItemCheck")
-local avatar    = require("scripts.Player")
-local armor     = require("scripts.Armor")
-local camera    = require("scripts.CameraControl")
-local wobble    = require("scripts.Wobble")
-local c, color  = require("scripts.ColorProperties")
-local trail     = require("scripts.Trail")
-local squish    = require("scripts.SquishSound")
-local items     = require("scripts.Items")
-local anims     = require("scripts.Anims")
-local arms      = require("scripts.Arms")
+
+local s, avatar = pcall(require, "scripts.Player")
+if not s then avatar = {} end
+
+local s, armor = pcall(require, "scripts.Armor")
+if not s then armor = {} end
+
+local s, camera = pcall(require, "scripts.CameraControl")
+if not s then camera = {} end
+
+local s, wobble = pcall(require, "scripts.Wobble")
+if not s then wobble = {} end
+
+local s, color, colorActs = pcall(require, "scripts.ColorProperties")
+if not s then color = {} colorActs = {} end
+
+local s, trail = pcall(require, "scripts.Trail")
+if not s then trail = {} end
+
+local s, squish = pcall(require, "scripts.SquishSound")
+if not s then squish = {} end
+
+local s, items = pcall(require, "scripts.Items")
+if not s then items = {} end
+
+local s, _, anims = pcall(require, "scripts.Anims")
+if not s then anims = {} end
+
+local s, arms = pcall(require, "scripts.Arms")
+if not s then arms = {} end
 
 -- Logs pages for navigation
 local navigation = {}
@@ -35,19 +55,19 @@ end
 -- Page setups
 local pages = {
 	
-	main   = action_wheel:newPage(),
-	avatar = action_wheel:newPage(),
-	armor  = action_wheel:newPage(),
-	camera = action_wheel:newPage(),
-	slime  = action_wheel:newPage(),
-	wobble = action_wheel:newPage(),
-	color  = action_wheel:newPage(),
-	anims  = action_wheel:newPage()
+	main   = action_wheel:newPage("Main"),
+	avatar = action_wheel:newPage("Avatar"),
+	armor  = action_wheel:newPage("Armor"),
+	camera = action_wheel:newPage("Camera"),
+	slime  = action_wheel:newPage("Slime"),
+	wobble = action_wheel:newPage("Wobble"),
+	color  = action_wheel:newPage("Color"),
+	anims  = action_wheel:newPage("Anims")
 	
 }
 
 -- Page actions
-local pageActions = {
+local pageActs = {
 	
 	avatar = action_wheel:newAction()
 		:item(itemCheck("armor_stand"))
@@ -79,47 +99,47 @@ local pageActions = {
 }
 
 -- Update actions
-function events.TICK()
+function events.RENDER(delta, context)
 	
 	if action_wheel:isEnabled() then
-		pageActions.avatar
+		pageActs.avatar
 			:title(toJson
-				{text = "Avatar Settings", bold = true, color = c.primary}
+				{text = "Avatar Settings", bold = true, color = color.primary}
 			)
 		
-		pageActions.slime
+		pageActs.slime
 			:title(toJson
-				{text = "Slime Settings", bold = true, color = c.primary}
+				{text = "Slime Settings", bold = true, color = color.primary}
 			)
 		
-		pageActions.color
+		pageActs.color
 			:title(toJson
-				{text = "Color Settings", bold = true, color = c.primary}
+				{text = "Color Settings", bold = true, color = color.primary}
 			)
 		
-		pageActions.anims
+		pageActs.anims
 			:title(toJson
-				{text = "Animations", bold = true, color = c.primary}
+				{text = "Animations", bold = true, color = color.primary}
 			)
 		
-		pageActions.armor
+		pageActs.armor
 			:title(toJson
-				{text = "Armor Settings", bold = true, color = c.primary}
+				{text = "Armor Settings", bold = true, color = color.primary}
 			)
 		
-		pageActions.camera
+		pageActs.camera
 			:title(toJson
-				{text = "Camera Settings", bold = true, color = c.primary}
+				{text = "Camera Settings", bold = true, color = color.primary}
 			)
 		
-		pageActions.wobble
+		pageActs.wobble
 			:title(toJson
-				{text = "Wobble Settings", bold = true, color = c.primary}
+				{text = "Wobble Settings", bold = true, color = color.primary}
 			)
-			:item(itemCheck("potion{\"CustomPotionColor\":" .. tostring(vectors.rgbToInt(c.hover)) .. "}"))
+			:item(itemCheck("potion{\"CustomPotionColor\":" .. tostring(vectors.rgbToInt(color.hover)) .. "}"))
 		
-		for _, page in pairs(pageActions) do
-			page:hoverColor(c.hover)
+		for _, page in pairs(pageActs) do
+			page:hoverColor(color.hover)
 		end
 		
 	end
@@ -127,7 +147,7 @@ function events.TICK()
 end
 
 -- Action back to previous page
-local backAction = action_wheel:newAction()
+local backAct = action_wheel:newAction()
 	:title(toJson
 		{text = "Go Back?", bold = true, color = "red"}
 	)
@@ -140,60 +160,60 @@ action_wheel:setPage(pages.main)
 
 -- Main actions
 pages.main
-	:action( -1, pageActions.avatar)
-	:action( -1, pageActions.slime)
-	:action( -1, pageActions.color)
-	:action( -1, pageActions.anims)
+	:action( -1, pageActs.avatar)
+	:action( -1, pageActs.slime)
+	:action( -1, pageActs.color)
+	:action( -1, pageActs.anims)
 
 -- Avatar actions
 pages.avatar
-	:action( -1, avatar.vanillaSkinPage)
-	:action( -1, avatar.modelPage)
-	:action( -1, pageActions.armor)
-	:action( -1, pageActions.camera)
-	:action( -1, backAction)
+	:action( -1, avatar.vanillaSkinAct)
+	:action( -1, avatar.modelAct)
+	:action( -1, pageActs.armor)
+	:action( -1, pageActs.camera)
+	:action( -1, backAct)
 
 -- Armor actions
 pages.armor
-	:action( -1, armor.allPage)
-	:action( -1, armor.bootsPage)
-	:action( -1, armor.leggingsPage)
-	:action( -1, armor.chestplatePage)
-	:action( -1, armor.helmetPage)
-	:action( -1, backAction)
+	:action( -1, armor.allAct)
+	:action( -1, armor.bootsAct)
+	:action( -1, armor.leggingsAct)
+	:action( -1, armor.chestplateAct)
+	:action( -1, armor.helmetAct)
+	:action( -1, backAct)
 
 -- Camera actions
 pages.camera
-	:action( -1, camera.posPage)
-	:action( -1, camera.eyePage)
-	:action( -1, backAction)
+	:action( -1, camera.posAct)
+	:action( -1, camera.eyeAct)
+	:action( -1, backAct)
 
 -- Slime actions
 pages.slime
-	:action( -1, pageActions.wobble)
-	:action( -1, items.embedPage)
-	:action( -1, wobble.healthSizePage)
-	:action( -1, trail.trailPage)
-	:action( -1, squish.soundPage)
-	:action( -1, backAction)
+	:action( -1, pageActs.wobble)
+	:action( -1, items.embedAct)
+	:action( -1, wobble.healthSizeAct)
+	:action( -1, trail.trailAct)
+	:action( -1, squish.soundAct)
+	:action( -1, backAct)
 
 -- Wobble actions
 pages.wobble
-	:action( -1, wobble.strengthPage)
-	:action( -1, wobble.damagePage)
-	:action( -1, wobble.healthModPage)
-	:action( -1, wobble.biomePage)
-	:action( -1, wobble.hazardPage)
-	:action( -1, backAction)
+	:action( -1, wobble.strengthAct)
+	:action( -1, wobble.damageAct)
+	:action( -1, wobble.healthModAct)
+	:action( -1, wobble.biomeAct)
+	:action( -1, wobble.hazardAct)
+	:action( -1, backAct)
 
 -- Color actions
 pages.color
-	:action( -1, color.pickPage)
-	:action( -1, color.camoPage)
-	:action( -1, color.rainbowPage)
-	:action( -1, backAction)
+	:action( -1, colorActs.pickAct)
+	:action( -1, colorActs.camoAct)
+	:action( -1, colorActs.rainbowAct)
+	:action( -1, backAct)
 
 -- Animation actions
 pages.anims
-	:action( -1, arms.movePage)
-	:action( -1, backAction)
+	:action( -1, arms.moveAct)
+	:action( -1, backAct)

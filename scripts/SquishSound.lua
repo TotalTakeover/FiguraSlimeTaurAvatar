@@ -107,7 +107,7 @@ end
 local t = {}
 
 -- Action
-t.soundPage = action_wheel:newAction()
+t.soundAct = action_wheel:newAction()
 	:item(itemCheck("snow_block"))
 	:toggleItem(itemCheck("slime_block"))
 	:onToggle(pings.setSquishSoundToggle)
@@ -117,7 +117,7 @@ t.soundPage = action_wheel:newAction()
 function events.TICK()
 	
 	if action_wheel:isEnabled() then
-		t.soundPage
+		t.soundAct
 			:title(toJson
 				{"",
 				{text = "Toggle Jumping/Falling Sound\n\n", bold = true, color = color.primary},

@@ -87,7 +87,7 @@ end
 local t = {}
 
 -- Action
-t.embedPage = action_wheel:newAction()
+t.embedAct = action_wheel:newAction()
 	:texture(textures:fromVanilla("BundleFilled", "textures/item/bundle_filled.png"))
 	:toggleTexture(textures:fromVanilla("Bundle", "textures/item/bundle.png"))
 	:onToggle(pings.setItems)
@@ -97,7 +97,7 @@ t.embedPage = action_wheel:newAction()
 function events.TICK()
 	
 	if action_wheel:isEnabled() then
-		t.embedPage
+		t.embedAct
 			:title(toJson
 				{"",
 				{text = "Toggle Slime Items\n\n", bold = true, color = color.primary},

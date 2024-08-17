@@ -242,7 +242,7 @@ end
 local t = {}
 
 -- Action
-t.trailPage = action_wheel:newAction()
+t.trailAct = action_wheel:newAction()
 	:item(itemCheck("snow"))
 	:toggleItem(itemCheck("lime_carpet"))
 	:onToggle(pings.setTrailToggle)
@@ -254,7 +254,7 @@ t.trailPage = action_wheel:newAction()
 function events.TICK()
 	
 	if action_wheel:isEnabled() then
-		t.trailPage
+		t.trailAct
 			:title(toJson
 				{"",
 				{text = "Toggle Trail/Melt Speed\n\n", bold = true, color = color.primary},

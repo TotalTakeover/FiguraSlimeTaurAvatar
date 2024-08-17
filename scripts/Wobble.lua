@@ -325,7 +325,7 @@ end
 local t = {}
 
 -- Actions
-t.strengthPage = action_wheel:newAction()
+t.strengthAct = action_wheel:newAction()
 	:onScroll(setStrength)
 	:onLeftClick(setStrengthSwitch)
 	:onRightClick(function()
@@ -338,31 +338,31 @@ t.strengthPage = action_wheel:newAction()
 		end
 	end)
 
-t.damagePage = action_wheel:newAction()
+t.damageAct = action_wheel:newAction()
 	:item(itemCheck("shield"))
 	:toggleItem(itemCheck("iron_sword"))
 	:onToggle(pings.setWobbleDamage)
 	:toggled(damage)
 
-t.healthModPage = action_wheel:newAction()
+t.healthModAct = action_wheel:newAction()
 	:item(itemCheck("apple"))
 	:toggleItem(itemCheck("golden_apple"))
 	:onToggle(pings.setWobbleHealthMod)
 	:toggled(healthMod)
 
-t.biomePage = action_wheel:newAction()
+t.biomeAct = action_wheel:newAction()
 	:item(itemCheck("snow_block"))
 	:toggleItem(itemCheck("water_bucket"))
 	:onToggle(pings.setWobbleBiome)
 	:toggled(biome)
 
-t.hazardPage = action_wheel:newAction()
+t.hazardAct = action_wheel:newAction()
 	:item(itemCheck("flint"))
 	:toggleItem(itemCheck("flint_and_steel"))
 	:onToggle(pings.setWobbleHazard)
 	:toggled(hazard)
 
-t.healthSizePage = action_wheel:newAction()
+t.healthSizeAct = action_wheel:newAction()
 	:item(itemCheck("beef"))
 	:toggleItem(itemCheck("cooked_beef"))
 	:onToggle(pings.setWobbleHealthSize)
@@ -376,7 +376,7 @@ function events.TICK()
 		local potionColor = math.lerp(vectors.hexToRGB("4CFF00"), vectors.hexToRGB("FFD800"),
 		strengthSwitch and math.map(speed, speedMin, speedMax, 0, 1) or math.map(dampen, dampenMin, dampenMax, 0, 1))
 		
-		t.strengthPage
+		t.strengthAct
 			:title(toJson
 				{"",
 				{text = "Set Wobble Strength\n\n", bold = true, color = color.primary},
@@ -393,35 +393,35 @@ function events.TICK()
 			)
 			:item(itemCheck("potion{\"CustomPotionColor\":" .. tostring(vectors.rgbToInt(potionColor)) .. "}"))
 		
-		t.damagePage
+		t.damageAct
 			:title(toJson
 				{"",
 				{text = "Set Damage Wobble\n\n", bold = true, color = color.primary},
 				{text = "Sets if slime should wobble if damage is taken.", color = color.secondary}}
 			)
 		
-		t.healthModPage
+		t.healthModAct
 			:title(toJson
 				{"",
 				{text = "Set Health Modifier\n\n", bold = true, color = color.primary},
 				{text = "Sets if damage taken should affect your ability to maintain form.", color = color.secondary}}
 			)
 		
-		t.biomePage
+		t.biomeAct
 			:title(toJson
 				{"",
 				{text = "Set Temperature Modifier\n\n", bold = true, color = color.primary},
 				{text = "Sets if biome temperature should affect the slime wobble.", color = color.secondary}}
 			)
 		
-		t.hazardPage
+		t.hazardAct
 			:title(toJson
 				{"",
 				{text = "Set Hazard Modifier\n\n", bold = true, color = color.primary},
 				{text = "Sets if hazards like Fire and Powder Snow should affect the slime wobble.", color = color.secondary}}
 			)
 		
-		t.healthSizePage
+		t.healthSizeAct
 			:title(toJson
 				{"",
 				{text = "Set Health Size\n\n", bold = true, color = color.primary},
