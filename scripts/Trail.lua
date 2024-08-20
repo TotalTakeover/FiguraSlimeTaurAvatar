@@ -1,5 +1,5 @@
 -- Required scripts
-local slimeParts  = require("lib.GroupIndex")(models.SlimeTaur)
+local parts       = require("lib.PartsAPI")
 local lerp        = require("lib.LerpAPI")
 local pehkuiScale = require("lib.PehkuiScale")
 local pose        = require("scripts.Posing")
@@ -12,7 +12,7 @@ if trail == nil then trail = true end
 
 -- Variables
 local worldPart = models:newPart("world", "WORLD")
-local trailPart = slimeParts.Trail
+local trailPart = parts.group.Trail
 
 -- Scale lerp
 local scaleLerp = lerp:new(0.2, vec(1, 1, 1))
@@ -21,11 +21,11 @@ local scaleLerp = lerp:new(0.2, vec(1, 1, 1))
 trailPart:primaryRenderType("TRANSLUCENT_CULL")
 
 -- Trail table
-local parts = {}
+local trails = {}
 
 -- Deep copy
 local function deepCopy(model)
-	local copy = model:copy(model:getName()..tostring(#parts+1))
+	local copy = model:copy(model:getName()..tostring(#trails+1))
 	for _, child in pairs(copy:getChildren()) do
 		copy:removeChild(child):addChild(deepCopy(child))
 	end
@@ -50,11 +50,11 @@ local function new(pos, scale)
 	worldPart:addChild(copy)
 	
 	-- Add part to table
-	parts[#parts + 1] = {
-		pos   = pos,
-		scale = lerp:new(0.2, scale),
-		fused = true,
-		parts = copy
+	trails[#trails + 1] = {
+		pos    = pos,
+		scale  = lerp:new(0.2, scale),
+		fused  = true,
+		trails = copy
 	}
 	
 end
@@ -63,12 +63,12 @@ function events.TICK()
 	
 	-- Variables
 	local pos   = player:getPos()
-	local scale = slimeParts.Slime:getScale() * pehkuiScale()
+	local scale = parts.group.Slime:getScale() * pehkuiScale()
 	scaleLerp.target = scale
 	
 	-- Ground check
 	-- Block variables
-	local groundPos   = slimeParts.Ground:partToWorldMatrix():apply()
+	local groundPos   = parts.group.Ground:partToWorldMatrix():apply()
 	local blockPos    = groundPos:copy():floor()
 	local groundBlock = world.getBlockState(groundPos)
 	local groundBoxes = groundBlock:getCollisionShape()
@@ -88,7 +88,7 @@ function events.TICK()
 	end
 	
 	-- Spawn new trail if on ground and not currently fused
-	if trail and onGround and not (parts[#parts] and parts[#parts].fused) then
+	if trail and onGround and not (trails[#trails] and trails[#trails].fused) then
 		
 		-- Find collision
 		local _, blockPos = raycast:block(pos, pos - vec(0, 1, 0), "COLLIDER")
@@ -99,7 +99,7 @@ function events.TICK()
 	end
 	
 	-- Cycle through trail parts
-	for _, part in ipairs(parts) do
+	for _, part in ipairs(trails) do
 		
 		-- Variables
 		local dis = (pos - part.pos):length()
@@ -128,8 +128,8 @@ function events.TICK()
 		if not trail or part.scale.currPos:length() <= 0.05 or (not part.fused and dis < 0.25) then
 			
 			lerp:remove(part.scale)
-			part.parts:remove()
-			table.remove(parts, _)
+			part.trails:remove()
+			table.remove(trails, _)
 			
 		end
 		
@@ -155,13 +155,13 @@ function events.RENDER(delta, context)
 		:pos(vanilla_model.BODY:getOriginPos() / 1.5)
 	
 	-- Lerp scale
-	for _, part in ipairs(parts) do
+	for _, part in ipairs(trails) do
 		
 		-- Set light level
 		local blockLight = world.getBlockLightLevel(part.pos + 0.4)
 		local skyLight = world.getSkyLightLevel(part.pos + 0.4)
 		
-		part.parts:light(blockLight, skyLight)
+		part.trails:light(blockLight, skyLight)
 		
 		-- If part is fused to player, control it
 		if trail and part.fused then
@@ -172,11 +172,11 @@ function events.RENDER(delta, context)
 			local opacity = trailPart.Trail:getOpacity()
 			
 			-- Apply
-			part.parts
+			part.trails
 				:rot(0, rot, 0)
 				:scale(part.scale.currPos)
 			
-			for _, part in ipairs(part.parts:getChildren()) do
+			for _, part in ipairs(part.trails:getChildren()) do
 				if not part:getName():find("Overlay") then
 					part
 						:color(color)
@@ -187,7 +187,7 @@ function events.RENDER(delta, context)
 		else
 			
 			-- Apply
-			part.parts:scale(part.scale.currPos)
+			part.trails:scale(part.scale.currPos)
 			
 		end
 		

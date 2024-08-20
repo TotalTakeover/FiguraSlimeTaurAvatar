@@ -1,8 +1,8 @@
 -- Required scripts
-local slimeParts = require("lib.GroupIndex")(models.SlimeTaur)
-local itemCheck  = require("lib.ItemCheck")
-local effects    = require("scripts.SyncedVariables")
-local color      = require("scripts.ColorProperties")
+local parts     = require("lib.PartsAPI")
+local itemCheck = require("lib.ItemCheck")
+local effects   = require("scripts.SyncedVariables")
+local color     = require("scripts.ColorProperties")
 
 -- Config setup
 config:name("SlimeTaur")
@@ -29,7 +29,7 @@ function events.TICK()
 		
 		-- Ground check
 		-- Block variables
-		local groundPos   = slimeParts.Ground:partToWorldMatrix():apply()
+		local groundPos   = parts.group.Ground:partToWorldMatrix():apply()
 		local blockPos    = groundPos:copy():floor()
 		local groundBlock = world.getBlockState(groundPos)
 		local groundBoxes = groundBlock:getCollisionShape()
@@ -48,7 +48,7 @@ function events.TICK()
 			end
 		end
 		
-		local pitch = math.clamp(-slimeParts.Slime:getScale():length() / 4 + 1.5, 0.25, 1.75)
+		local pitch = math.clamp(-parts.group.Slime:getScale():length() / 4 + 1.5, 0.25, 1.75)
 		
 		-- Play sound if conditions are met
 		if cooldown == 0 and not wasInAir and not onGround then

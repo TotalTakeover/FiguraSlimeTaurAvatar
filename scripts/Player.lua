@@ -1,5 +1,5 @@
 -- Required script
-local slimeParts = require("lib.GroupIndex")(models.SlimeTaur)
+local parts = require("lib.PartsAPI")
 
 -- Config setup
 config:name("SlimeTaur")
@@ -8,33 +8,33 @@ local slim        = config:load("AvatarSlim") or false
 if vanillaSkin == nil then vanillaSkin = true end
 
 -- Set skull and portrait groups to visible (incase disabled in blockbench)
-slimeParts.Skull   :visible(true)
-slimeParts.Portrait:visible(true)
+parts.group.Skull   :visible(true)
+parts.group.Portrait:visible(true)
 
 -- Vanilla skin parts
 local skin = {
 	
-	slimeParts.Head.Head,
-	slimeParts.Head.Layer,
+	parts.group.Head.Head,
+	parts.group.Head.Layer,
 	
-	slimeParts.Body.Body,
-	slimeParts.Body.Layer,
+	parts.group.Body.Body,
+	parts.group.Body.Layer,
 	
-	slimeParts.leftArmDefault,
-	slimeParts.leftArmSlim,
-	slimeParts.leftArmDefaultFP,
-	slimeParts.leftArmSlimFP,
+	parts.group.leftArmDefault,
+	parts.group.leftArmSlim,
+	parts.group.leftArmDefaultFP,
+	parts.group.leftArmSlimFP,
 	
-	slimeParts.rightArmDefault,
-	slimeParts.rightArmSlim,
-	slimeParts.rightArmDefaultFP,
-	slimeParts.rightArmSlimFP,
+	parts.group.rightArmDefault,
+	parts.group.rightArmSlim,
+	parts.group.rightArmDefaultFP,
+	parts.group.rightArmSlimFP,
 	
-	slimeParts.Portrait.Head,
-	slimeParts.Portrait.Layer,
+	parts.group.Portrait.Head,
+	parts.group.Portrait.Layer,
 	
-	slimeParts.Skull.Head,
-	slimeParts.Skull.Layer
+	parts.group.Skull.Head,
+	parts.group.Skull.Layer
 	
 }
 
@@ -42,28 +42,28 @@ local skin = {
 local layer = {
 	
 	HAT = {
-		slimeParts.Head.Layer
+		parts.group.Head.Layer
 	},
 	JACKET = {
-		slimeParts.Body.Layer
+		parts.group.Body.Layer
 	},
 	LEFT_SLEEVE = {
-		slimeParts.leftArmDefault.Layer,
-		slimeParts.leftArmSlim.Layer,
-		slimeParts.leftArmDefaultFP.Layer,
-		slimeParts.leftArmSlimFP.Layer
+		parts.group.leftArmDefault.Layer,
+		parts.group.leftArmSlim.Layer,
+		parts.group.leftArmDefaultFP.Layer,
+		parts.group.leftArmSlimFP.Layer
 	},
 	RIGHT_SLEEVE = {
-		slimeParts.rightArmDefault.Layer,
-		slimeParts.rightArmSlim.Layer,
-		slimeParts.rightArmDefaultFP.Layer,
-		slimeParts.rightArmSlimFP.Layer
+		parts.group.rightArmDefault.Layer,
+		parts.group.rightArmSlim.Layer,
+		parts.group.rightArmDefaultFP.Layer,
+		parts.group.rightArmSlimFP.Layer
 	},
 	CAPE = {
-		slimeParts.Cape
+		parts.group.Cape
 	},
 	LOWER_BODY = {
-		slimeParts.Slime.Layer
+		parts.group.Slime.Layer
 	}
 	
 }
@@ -82,15 +82,15 @@ function events.TICK()
 	-- Model shape
 	local slimShape = (vanillaSkin and vanillaAvatarType == "SLIM") or (slim and not vanillaSkin)
 	
-	slimeParts.leftArmDefault:visible(not slimShape)
-	slimeParts.rightArmDefault:visible(not slimShape)
-	slimeParts.leftArmDefaultFP:visible(not slimShape)
-	slimeParts.rightArmDefaultFP:visible(not slimShape)
+	parts.group.leftArmDefault:visible(not slimShape)
+	parts.group.rightArmDefault:visible(not slimShape)
+	parts.group.leftArmDefaultFP:visible(not slimShape)
+	parts.group.rightArmDefaultFP:visible(not slimShape)
 	
-	slimeParts.leftArmSlim:visible(slimShape)
-	slimeParts.rightArmSlim:visible(slimShape)
-	slimeParts.leftArmSlimFP:visible(slimShape)
-	slimeParts.rightArmSlimFP:visible(slimShape)
+	parts.group.leftArmSlim:visible(slimShape)
+	parts.group.rightArmSlim:visible(slimShape)
+	parts.group.leftArmSlimFP:visible(slimShape)
+	parts.group.rightArmSlimFP:visible(slimShape)
 	
 	-- Skin textures
 	local skinType = vanillaSkin and "SKIN" or "PRIMARY"
@@ -99,7 +99,7 @@ function events.TICK()
 	end
 	
 	-- Cape textures
-	slimeParts.Cape:primaryTexture(vanillaSkin and "CAPE" or "PRIMARY")
+	parts.group.Cape:primaryTexture(vanillaSkin and "CAPE" or "PRIMARY")
 	
 	-- Layer toggling
 	for layerType, parts in pairs(layer) do
@@ -120,7 +120,7 @@ function events.RENDER(delta, context)
 	
 	-- Scales models to fit GUIs better
 	if context == "FIGURA_GUI" or context == "MINECRAFT_GUI" or context == "PAPERDOLL" then
-		slimeParts.Player:scale(0.7)
+		parts.group.Player:scale(0.7)
 	end
 	
 end
@@ -128,7 +128,7 @@ end
 function events.POST_RENDER(delta, context)
 	
 	-- After scaling models to fit GUIs, immediately scale back
-	slimeParts.Player:scale(1)
+	parts.group.Player:scale(1)
 	
 end
 

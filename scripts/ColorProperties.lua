@@ -1,7 +1,7 @@
 -- Required scripts
-local slimeParts = require("lib.GroupIndex")(models.SlimeTaur)
-local lerp       = require("lib.LerpAPI")
-local ground     = require("lib.GroundCheck")
+local parts  = require("lib.PartsAPI")
+local lerp   = require("lib.LerpAPI")
+local ground = require("lib.GroundCheck")
 
 -- Config setup
 config:name("SlimeTaur")
@@ -17,8 +17,8 @@ local groundTimer = 0
 -- All color parts
 local colorParts = {
 	
-	slimeParts.Slime.Slime,
-	slimeParts.Trail.Trail
+	parts.group.Slime.Slime,
+	parts.group.Trail.Trail
 	
 }
 
@@ -36,8 +36,8 @@ function events.TICK()
 	elseif camo then
 		
 		-- Variables
-		local pos    = slimeParts.Slime:partToWorldMatrix():apply(0, -10, 0)
-		local scale  = slimeParts.Slime:getScale()
+		local pos    = parts.group.Slime:partToWorldMatrix():apply(0, -10, 0)
+		local scale  = parts.group.Slime:getScale()
 		local blocks = world.getBlocks(pos - scale, pos + scale)
 		
 		-- Gather blocks

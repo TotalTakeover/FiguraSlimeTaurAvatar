@@ -1,10 +1,10 @@
 -- Required scripts
 require("lib.GSAnimBlend")
-local slimeParts = require("lib.GroupIndex")(models.SlimeTaur)
-local ground     = require("lib.GroundCheck")
-local itemCheck  = require("lib.ItemCheck")
-local pose       = require("scripts.Posing")
-local color      = require("scripts.ColorProperties")
+local parts     = require("lib.PartsAPI")
+local ground    = require("lib.GroundCheck")
+local itemCheck = require("lib.ItemCheck")
+local pose      = require("scripts.Posing")
+local color     = require("scripts.ColorProperties")
 
 -- Animations setup
 local anims = animations.SlimeTaur
@@ -62,7 +62,7 @@ function events.RENDER(delta, context)
 	
 	local rot = vanilla_model.HEAD:getOriginRot()
 	rot.x = math.clamp(rot.x, -90, 30)
-	slimeParts.Spyglass:rot(rot)
+	parts.group.Spyglass:rot(rot)
 		:pos(pose.crouch and vec(0, -4, 0) or nil)
 	
 end

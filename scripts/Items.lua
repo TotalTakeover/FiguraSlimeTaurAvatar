@@ -2,20 +2,20 @@
 require("scripts.Wobble")
 
 -- Required script
-local slimeParts = require("lib.GroupIndex")(models.SlimeTaur)
+local parts = require("lib.PartsAPI")
 
 -- Config setup
 config:name("SlimeTaur")
 local embed = config:load("ItemsEmbed")
 if embed == nil then embed = true end
 
-local items = {}
-local parts = {}
+local groups = {}
+local items  = {}
 
 for i = 1, 27 do
 	
-	parts[i] = slimeParts.StoredItems["StoredItem"..i]:newItem("Item"):displayMode("GROUND")
-	items[i] = "minecraft:air"
+	groups[i] = parts.group.StoredItems["StoredItem"..i]:newItem("Item"):displayMode("GROUND")
+	items[i]  = "minecraft:air"
 	
 end
 
@@ -27,7 +27,7 @@ function events.TICK()
 		local item = host:getSlot(i+8)
 		
 		-- Apply
-		parts[i]
+		groups[i]
 			:item(item)
 			:visible(embed)
 		
@@ -44,8 +44,8 @@ function events.RENDER(delta, context)
 	
 	for i = 1, 27 do
 		
-		parts[i]
-			:pos(math.sin(timer * 0.01 + (i * 2)) * slimeParts.Slime:getScale())
+		groups[i]
+			:pos(math.sin(timer * 0.01 + (i * 2)) * parts.group.Slime:getScale())
 			:rot(0, (timer * 0.1 + (i * 13.3)) % 360, 0)
 		
 	end

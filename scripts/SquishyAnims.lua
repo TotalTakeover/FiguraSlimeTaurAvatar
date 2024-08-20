@@ -1,8 +1,8 @@
 -- Required scripts
-local slimeParts = require("lib.GroupIndex")(models.SlimeTaur)
-local squapi     = require("lib.SquAPI")
-local lerp       = require("lib.LerpAPI")
-local pose       = require("scripts.Posing")
+local parts  = require("lib.PartsAPI")
+local squapi = require("lib.SquAPI")
+local lerp   = require("lib.LerpAPI")
+local pose   = require("scripts.Posing")
 
 -- Animation setup
 local anims = animations.SlimeTaur
@@ -29,7 +29,7 @@ local rightArmLerp = lerp:new(0.5, armsMove and 1 or 0)
 -- Head table
 local headParts = {
 	
-	slimeParts.UpperBody
+	parts.group.UpperBody
 	
 }
 
@@ -44,14 +44,14 @@ local head = squapi.smoothHead:new(
 
 -- Squishy vanilla arms
 local leftArm = squapi.arm:new(
-	slimeParts.LeftArm,
+	parts.group.LeftArm,
 	1,     -- Strength (1)
 	false, -- Right Arm (false)
 	true   -- Keep Position (false)
 )
 
 local rightArm = squapi.arm:new(
-	slimeParts.RightArm,
+	parts.group.RightArm,
 	1,    -- Strength (1)
 	true, -- Right Arm (true)
 	true  -- Keep Position (false)
@@ -103,37 +103,37 @@ function events.RENDER(delta, context)
 	rightArm.strength = rightArmStrength * rightArmLerp.currPos
 	
 	-- Adjust arm characteristics after applied by squapi
-	slimeParts.LeftArm
+	parts.group.LeftArm
 		:offsetRot(
-			slimeParts.LeftArm:getOffsetRot()
+			parts.group.LeftArm:getOffsetRot()
 			+ ((-idleRot + (vanilla_model.BODY:getOriginRot() * 0.75)) * math.map(leftArmLerp.currPos, 0, 1, 1, 0))
-			+ (slimeParts.LeftArm:getAnimRot() * math.map(leftArmLerp.currPos, 0, 1, 0, -2))
+			+ (parts.group.LeftArm:getAnimRot() * math.map(leftArmLerp.currPos, 0, 1, 0, -2))
 		)
-		:pos(slimeParts.LeftArm:getPos() * vec(1, 1, -1))
+		:pos(parts.group.LeftArm:getPos() * vec(1, 1, -1))
 		:visible(not firstPerson)
 	
-	slimeParts.RightArm
+	parts.group.RightArm
 		:offsetRot(
-			slimeParts.RightArm:getOffsetRot()
+			parts.group.RightArm:getOffsetRot()
 			+ ((idleRot + (vanilla_model.BODY:getOriginRot() * 0.75)) * math.map(rightArmLerp.currPos, 0, 1, 1, 0))
-			+ (slimeParts.RightArm:getAnimRot() * math.map(rightArmLerp.currPos, 0, 1, 0, -2))
+			+ (parts.group.RightArm:getAnimRot() * math.map(rightArmLerp.currPos, 0, 1, 0, -2))
 		)
-		:pos(slimeParts.RightArm:getPos() * vec(1, 1, -1))
+		:pos(parts.group.RightArm:getPos() * vec(1, 1, -1))
 		:visible(not firstPerson)
 	
 	-- Set visible if in first person
-	slimeParts.LeftArmFP:visible(firstPerson)
-	slimeParts.RightArmFP:visible(firstPerson)
+	parts.group.LeftArmFP:visible(firstPerson)
+	parts.group.RightArmFP:visible(firstPerson)
 	
 	-- Set upperbody to offset rot and crouching pivot point
-	slimeParts.UpperBody
-		:rot(-slimeParts.LowerBody:getRot())
-		:offsetPivot(anims.crouch:isPlaying() and -slimeParts.UpperBody:getAnimPos() or 0)
+	parts.group.UpperBody
+		:rot(-parts.group.LowerBody:getRot())
+		:offsetPivot(anims.crouch:isPlaying() and -parts.group.UpperBody:getAnimPos() or 0)
 	
 	-- Offset smooth torso in various parts
-	-- Note: acts strangely with `slimeParts.body`
-	for _, group in ipairs(slimeParts.UpperBody:getChildren()) do
-		if group ~= slimeParts.Body then
+	-- Note: acts strangely with `parts.group.body`
+	for _, group in ipairs(parts.group.UpperBody:getChildren()) do
+		if group ~= parts.group.Body then
 			group:rot(-calculateParentRot(group:getParent()))
 		end
 	end
