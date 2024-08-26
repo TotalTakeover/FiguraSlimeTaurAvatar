@@ -37,7 +37,7 @@ local bootsGroups = {
 	
 }
 
-function events.TICK()
+function events.RENDER(delta, context)
 	
 	-- Apply
 	for _, part in ipairs(helmetGroups) do
@@ -175,7 +175,7 @@ t.bootsAct = action_wheel:newAction()
 	:onToggle(pings.setArmorBoots)
 
 -- Update actions
-function events.TICK()
+function events.RENDER(delta, context)
 	
 	if action_wheel:isEnabled() then
 		t.allAct

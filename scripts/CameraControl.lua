@@ -204,7 +204,7 @@ t.eyeAct = action_wheel:newAction()
 	:toggled(eyePos)
 
 -- Update actions
-function events.TICK()
+function events.RENDER(delta, context)
 	
 	if action_wheel:isEnabled() then
 		t.posAct

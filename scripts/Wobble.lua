@@ -372,7 +372,7 @@ t.healthSizeAct = action_wheel:newAction()
 	:toggled(healthSize)
 
 -- Update actions
-function events.TICK()
+function events.RENDER(delta, context)
 	
 	if action_wheel:isEnabled() then
 		-- Variables

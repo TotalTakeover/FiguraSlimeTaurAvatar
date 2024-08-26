@@ -251,7 +251,7 @@ t.trailAct = action_wheel:newAction()
 	:toggled(trail)
 
 -- Update actions
-function events.TICK()
+function events.RENDER(delta, context)
 	
 	if action_wheel:isEnabled() then
 		t.trailAct

@@ -77,7 +77,7 @@ function events.ENTITY_INIT()
 end
 
 -- Misc tick required events
-function events.TICK()
+function events.RENDER(delta, context)
 	
 	-- Model shape
 	local slimShape = (vanillaSkin and vanillaAvatarType == "SLIM") or (slim and not vanillaSkin)
@@ -188,7 +188,7 @@ t.modelAct = action_wheel:newAction()
 	:toggled(slim)
 
 -- Update actions
-function events.TICK()
+function events.RENDER(delta, context)
 	
 	if action_wheel:isEnabled() then
 		t.vanillaSkinAct

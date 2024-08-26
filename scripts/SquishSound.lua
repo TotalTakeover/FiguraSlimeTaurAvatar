@@ -112,7 +112,7 @@ t.soundAct = action_wheel:newAction()
 	:toggled(squishSound)
 
 -- Update action
-function events.TICK()
+function events.RENDER(delta, context)
 	
 	if action_wheel:isEnabled() then
 		t.soundAct
