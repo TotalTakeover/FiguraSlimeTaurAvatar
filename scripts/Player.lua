@@ -7,7 +7,7 @@ local vanillaSkin = config:load("AvatarVanillaSkin")
 local slim        = config:load("AvatarSlim") or false
 if vanillaSkin == nil then vanillaSkin = true end
 
--- Set skull and portrait groups to visible (incase disabled in blockbench)
+-- Reenabled parts
 parts.group.Skull   :visible(true)
 parts.group.Portrait:visible(true)
 
