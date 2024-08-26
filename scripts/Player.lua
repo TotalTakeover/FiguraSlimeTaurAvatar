@@ -76,7 +76,6 @@ function events.ENTITY_INIT()
 	
 end
 
--- Misc tick required events
 function events.RENDER(delta, context)
 	
 	-- Model shape
