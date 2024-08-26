@@ -177,13 +177,13 @@ local t = {}
 
 -- Actions
 t.vanillaSkinAct = action_wheel:newAction()
-	:item(itemCheck("player_head{'SkullOwner':'"..avatar:getEntityName().."'}"))
+	:item(itemCheck("player_head{SkullOwner:"..avatar:getEntityName().."}"))
 	:onToggle(pings.setAvatarVanillaSkin)
 	:toggled(vanillaSkin)
 
 t.modelAct = action_wheel:newAction()
 	:item(itemCheck("player_head"))
-	:toggleItem(itemCheck("player_head{'SkullOwner':'MHF_Alex'}"))
+	:toggleItem(itemCheck("player_head{SkullOwner:MHF_Alex}"))
 	:onToggle(pings.setAvatarModelType)
 	:toggled(slim)
 
