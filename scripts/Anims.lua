@@ -1,10 +1,8 @@
 -- Required scripts
 require("lib.GSAnimBlend")
-local parts     = require("lib.PartsAPI")
-local ground    = require("lib.GroundCheck")
-local itemCheck = require("lib.ItemCheck")
-local pose      = require("scripts.Posing")
-local color     = require("scripts.ColorProperties")
+local parts  = require("lib.PartsAPI")
+local ground = require("lib.GroundCheck")
+local pose   = require("scripts.Posing")
 
 -- Animations setup
 local anims = animations.SlimeTaur
