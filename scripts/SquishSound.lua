@@ -1,8 +1,6 @@
 -- Required scripts
-local parts     = require("lib.PartsAPI")
-local itemCheck = require("lib.ItemCheck")
-local effects   = require("scripts.SyncedVariables")
-local color     = require("scripts.ColorProperties")
+local parts   = require("lib.PartsAPI")
+local effects = require("scripts.SyncedVariables")
 
 -- Config setup
 config:name("SlimeTaur")
