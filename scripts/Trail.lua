@@ -14,9 +14,6 @@ if trail == nil then trail = true end
 local worldPart = models:newPart("world", "WORLD")
 local trailPart = parts.group.Trail
 
--- Scale lerp
-local scaleLerp = lerp:new(0.2, vec(1, 1, 1))
-
 -- Prevents visible culling
 trailPart:primaryRenderType("TRANSLUCENT_CULL")
 
@@ -44,6 +41,7 @@ local function new(pos, scale)
 	-- Establish trail part
 	local copy = deepCopy(trailPart)
 		:pos(pos * 16)
+		:rot(0, -player:getBodyYaw() - 180, 0)
 		:visible(true)
 	
 	-- Set trail to world
@@ -64,7 +62,6 @@ function events.TICK()
 	-- Variables
 	local pos   = player:getPos()
 	local scale = parts.group.Slime:getScale() * pehkuiScale()
-	scaleLerp.target = scale
 	
 	-- Ground check
 	-- Block variables
@@ -94,7 +91,24 @@ function events.TICK()
 		local _, blockPos = raycast:block(pos, pos - vec(0, 1, 0), "COLLIDER")
 		
 		-- Create trail
-		new(blockPos, scaleLerp.currPos)
+		new(blockPos, scale)
+		
+		-- If a trail is too close to the newly formed trail, remove it
+		for _, part in ipairs(trails) do
+			
+			if part.fused then return end
+			
+			local dis = (blockPos - part.pos):length()
+			
+			if dis < 0.25 then
+				
+				lerp:remove(part.scale)
+				part.trails:remove()
+				table.remove(trails, _)
+				
+			end
+			
+		end
 		
 	end
 	
@@ -104,8 +118,8 @@ function events.TICK()
 		-- Variables
 		local dis = (pos - part.pos):length()
 		
-		-- Check if trails are too far away to be fused
-		if dis >= 0.25 or not onGround then
+		-- Check if trails should not be fused anymore
+		if not trail or dis >= 0.25 or not onGround then
 			
 			part.fused = false
 			
@@ -114,7 +128,7 @@ function events.TICK()
 		-- Tick lerp
 		if part.fused then
 			
-			part.scale.target = scaleLerp.target
+			part.scale.target = scale
 			part.scale.speed  = 0.2
 			
 		else
@@ -122,14 +136,14 @@ function events.TICK()
 			part.scale.target = 0
 			part.scale.speed  = melt
 			
-		end
-		
-		-- If trail is too small, or too close when not fused, delete
-		if not trail or part.scale.currPos:length() <= 0.05 or (not part.fused and dis < 0.25) then
-			
-			lerp:remove(part.scale)
-			part.trails:remove()
-			table.remove(trails, _)
+			-- If trail is too small, remove it
+			if part.scale.currPos:length() <= 0.05 then
+				
+				lerp:remove(part.scale)
+				part.trails:remove()
+				table.remove(trails, _)
+				
+			end
 			
 		end
 		
@@ -138,21 +152,6 @@ function events.TICK()
 end
 
 function events.RENDER(delta, context)
-	
-	-- Variable
-	local vel = player:getVelocity()
-	
-	if not trail and vel:length() ~= 0 then
-		scaleLerp.target   = 0
-		scaleLerp.prevTick = 0
-		scaleLerp.currTick = 0
-		scaleLerp.currPos  = 0
-	end
-	
-	trailPart
-		:visible(not trail)
-		:scale(scaleLerp.currPos * 1.05)
-		:pos(vanilla_model.BODY:getOriginPos() / 1.5)
 	
 	-- Lerp scale
 	for _, part in ipairs(trails) do
@@ -164,7 +163,7 @@ function events.RENDER(delta, context)
 		part.trails:light(blockLight, skyLight)
 		
 		-- If part is fused to player, control it
-		if trail and part.fused then
+		if part.fused then
 			
 			-- Variables
 			local rot     = -player:getBodyYaw(delta) - 180
