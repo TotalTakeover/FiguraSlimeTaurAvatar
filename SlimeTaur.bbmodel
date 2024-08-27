@@ -4302,6 +4302,19 @@
 									"visibility": true,
 									"autouv": 0,
 									"children": []
+								},
+								{
+									"name": "Seat1_Wobble",
+									"origin": [0, 6, 0],
+									"color": 0,
+									"uuid": "88b3a31f-9be0-96e0-a839-44f11213d545",
+									"export": true,
+									"mirror_uv": false,
+									"isOpen": true,
+									"locked": false,
+									"visibility": true,
+									"autouv": 0,
+									"children": []
 								}
 							]
 						}
