@@ -71,8 +71,9 @@ end
 -- Host only instructions
 if not host:isHost() then return end
 
--- Required scripts
-local color = require("scripts.ColorProperties")
+-- Required script
+local s, color = pcall(require, "scripts.ColorProperties")
+if not s then color = {} end
 
 -- Sync on tick
 function events.TICK()
