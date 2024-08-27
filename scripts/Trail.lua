@@ -64,7 +64,7 @@ function events.TICK()
 	
 	-- Variables
 	local pos   = player:getPos()
-	local scale = parts.group.Slime:getScale() * pehkuiScale()
+	local scale = parts.group.Slime_Wobble:getScale() * pehkuiScale()
 	
 	-- Ground check
 	-- Block variables
@@ -169,21 +169,33 @@ function events.RENDER(delta, context)
 		if part.fused then
 			
 			-- Variables
-			local rot     = -player:getBodyYaw(delta) - 180
-			local color   = trailPart.Trail:getColor()
-			local opacity = trailPart.Trail:getOpacity()
+			local rot = -player:getBodyYaw(delta) - 180
 			
 			-- Apply
 			part.trails
 				:rot(0, rot, 0)
 				:scale(part.scale.currPos)
 			
-			for _, part in ipairs(part.trails:getChildren()) do
-				if not part:getName():find("Overlay") then
-					part
+			for _, child in ipairs(part.trails:getChildren()) do
+				
+				-- Needed for all trail parts
+				local opacity = parts.group.Slime_Wobble.Slime_Color:getOpacity()
+				
+				if child:getName():find("_Color") then
+					
+					-- Needed only for color trail parts
+					local color = parts.group.Slime_Wobble.Slime_Color:getColor()
+					
+					child
 						:color(color)
 						:opacity(opacity)
-				end
+					
+				else
+					
+					child:opacity(opacity)
+					
+				end	
+				
 			end
 			
 		else

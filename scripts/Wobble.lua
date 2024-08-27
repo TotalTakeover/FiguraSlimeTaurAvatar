@@ -30,16 +30,7 @@ local dampenMin, dampenMax = 0, 0.1
 local strengthSwitch = true
 
 -- Choose objects to stay consistent in the slime
-local slimePivots = {
-	
-	parts.group.UpperBody,
-	parts.group.Slime,
-	parts.group.LeftLeggingPivot,
-	parts.group.RightLeggingPivot,
-	parts.group.LeftBootPivot,
-	parts.group.RightBootPivot
-
-}
+local slimePivots = parts:createTable(function(part) return part:getName():find("_Wobble") end)
 
 -- Establish embedded items
 for i = 1, 27 do
@@ -167,13 +158,13 @@ function events.RENDER(delta, context)
 	for _, part in ipairs(slimePivots) do
 		
 		local pivot     = part:getPivot()
-		local offsetPos = (pivot * parts.group.Slime:getScale()) - pivot
+		local offsetPos = (pivot * parts.group.Slime_Wobble:getScale()) - pivot
 		part:pos(offsetPos)
 		
 	end
 	
 	-- Applies offset to lowerBody itself
-	local offsetPivot = parts.group.Slime:getPivot() * parts.group.Slime:getScale()
+	local offsetPivot = parts.group.Slime_Wobble:getPivot() * parts.group.Slime_Wobble:getScale()
 	parts.group.LowerBody:pivot(offsetPivot)
 	
 end
@@ -193,7 +184,7 @@ function events.WORLD_RENDER(delta, context)
 		-- Calculates the Wobble and applies it
 		slimeWobble:update(scaleApply, true)
 		local calcWobble = slimeWobble.wobble * scaleLerp.currPos
-		parts.group.Slime:scale(
+		parts.group.Slime_Wobble:scale(
 			vec(scaleLerp.currPos - calcWobble,
 				scaleLerp.currPos + calcWobble,
 				scaleLerp.currPos - calcWobble)

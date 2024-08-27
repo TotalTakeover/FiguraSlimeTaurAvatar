@@ -46,7 +46,7 @@ function events.TICK()
 			end
 		end
 		
-		local pitch = math.clamp(-parts.group.Slime:getScale():length() / 4 + 1.5, 0.25, 1.75)
+		local pitch = math.clamp(-parts.group.Slime_Wobble:getScale():length() / 4 + 1.5, 0.25, 1.75)
 		
 		-- Play sound if conditions are met
 		if cooldown == 0 and not wasInAir and not onGround then

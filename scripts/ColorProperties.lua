@@ -14,13 +14,9 @@ local rainbow     = config:load("ColorRainbow") or false
 local selectedRGB = 0
 local groundTimer = 0
 
--- All color parts
-local colorParts = {
-	
-	parts.group.Slime.Slime,
-	parts.group.Trail.Trail
-	
-}
+-- All parts
+local colorParts   = parts:createTable(function(part) return part:getName():find("_Color")   end)
+local overlayParts = parts:createTable(function(part) return part:getName():find("_Overlay") end)
 
 -- Lerps
 local colorLerp   = lerp:new(0.2, vec(1, 1, 1))
@@ -36,8 +32,8 @@ function events.TICK()
 	elseif camo then
 		
 		-- Variables
-		local pos    = parts.group.Slime:partToWorldMatrix():apply(0, -10, 0)
-		local scale  = parts.group.Slime:getScale()
+		local pos    = parts.group.Slime_Wobble:partToWorldMatrix():apply(0, -10, 0)
+		local scale  = parts.group.Slime_Wobble:getScale()
 		local blocks = world.getBlocks(pos - scale, pos + scale)
 		
 		-- Gather blocks
@@ -109,7 +105,11 @@ function events.RENDER(delta, context)
 	
 	-- Slime textures
 	for _, part in ipairs(colorParts) do
-		part:color(colorLerp.currPos)
+		part
+			:color(colorLerp.currPos)
+			:opacity(opacityLerp.currPos)
+	end
+	for _, part in ipairs(overlayParts) do
 		part:opacity(opacityLerp.currPos)
 	end
 	
