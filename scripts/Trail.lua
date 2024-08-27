@@ -52,7 +52,7 @@ local function new(pos, scale)
 	-- Add part to table
 	trails[#trails + 1] = {
 		pos    = pos,
-		scale  = lerp:new(0.2, scale),
+		scale  = lerp:new(0.2, scale * 0.75),
 		fused  = true,
 		trails = copy
 	}
