@@ -2,7 +2,18 @@
 	"name": "Slime Taur",
 	"description": "\"Squishy.\"",
 	"authors": [
-		
+		"Total",
+		"§f§nCredits§r",
+		"Invalid",
+		"Psycho Breadstick",
+		"Jimmy",
+		"PoolloverNathan",
+		"§f§nLibraries§r",
+		"Deni (WobbleAPI)",
+		"Grandpa Scout (GSAnimBlend, GSCarrier)",
+		"Squishy (SquAPI)",
+		"Katt (OriginsAPI, DynamicCrosshair)",
+		"4P5 (GroundCheck)"
 	],
 	"version": "0.1.4"
 }
