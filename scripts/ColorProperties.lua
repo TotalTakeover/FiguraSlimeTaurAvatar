@@ -185,7 +185,7 @@ c.active    = vectors.vec3()
 c.primary   = "#"..vectors.rgbToHex(vectors.vec3())
 c.secondary = "#"..vectors.rgbToHex(vectors.vec3())
 
-function events.TICK()
+function events.RENDER(delta, context)
 	
 	-- Set colors
 	c.hover     = colorLerp.currPos
@@ -214,7 +214,7 @@ t.rainbowAct = action_wheel:newAction()
 	:onToggle(function(apply) pings.setColorType(apply and 3) end)
 
 -- Update actions
-function events.TICK()
+function events.RENDER(delta, context)
 	
 	if action_wheel:isEnabled() then
 		t.pickAct
