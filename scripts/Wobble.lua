@@ -70,7 +70,7 @@ function events.TICK()
 	if powerActive then
 		
 		local moisture = origins.getPowerData(player, "slime_taur:moisture_bar") or 50
-		scaleLerp.target = ((player:getHealth() / player:getMaxHealth()) * 1.5) * (moisture / 100 + 0.5)
+		scaleLerp.target = ((player:getHealth() / player:getMaxHealth()) * 1.5) * (moisture / 100) + 0.5
 		
 	elseif healthSize then
 		
