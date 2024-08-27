@@ -11,62 +11,19 @@ if vanillaSkin == nil then vanillaSkin = true end
 parts.group.Skull   :visible(true)
 parts.group.Portrait:visible(true)
 
+-- Arm parts
+local defaultParts = parts:createTable(function(part) return part:getName():find("ArmDefault") end)
+local slimParts    = parts:createTable(function(part) return part:getName():find("ArmSlim")    end)
+
 -- Vanilla skin parts
-local skin = {
-	
-	parts.group.Head.Head,
-	parts.group.Head.Layer,
-	
-	parts.group.Body.Body,
-	parts.group.Body.Layer,
-	
-	parts.group.leftArmDefault,
-	parts.group.leftArmSlim,
-	parts.group.leftArmDefaultFP,
-	parts.group.leftArmSlimFP,
-	
-	parts.group.rightArmDefault,
-	parts.group.rightArmSlim,
-	parts.group.rightArmDefaultFP,
-	parts.group.rightArmSlimFP,
-	
-	parts.group.Portrait.Head,
-	parts.group.Portrait.Layer,
-	
-	parts.group.Skull.Head,
-	parts.group.Skull.Layer
-	
-}
+local skinParts = parts:createTable(function(part) return part:getName():find("_Skin") end)
 
 -- Layer parts
-local layer = {
-	
-	HAT = {
-		parts.group.Head.Layer
-	},
-	JACKET = {
-		parts.group.Body.Layer
-	},
-	LEFT_SLEEVE = {
-		parts.group.leftArmDefault.Layer,
-		parts.group.leftArmSlim.Layer,
-		parts.group.leftArmDefaultFP.Layer,
-		parts.group.leftArmSlimFP.Layer
-	},
-	RIGHT_SLEEVE = {
-		parts.group.rightArmDefault.Layer,
-		parts.group.rightArmSlim.Layer,
-		parts.group.rightArmDefaultFP.Layer,
-		parts.group.rightArmSlimFP.Layer
-	},
-	CAPE = {
-		parts.group.Cape
-	},
-	LOWER_BODY = {
-		parts.group.Slime.Layer
-	}
-	
-}
+local layerTypes = {"HAT", "JACKET", "LEFT_SLEEVE", "RIGHT_SLEEVE", "CAPE", "LOWER_BODY"}
+local layerParts = {}
+for _, type in pairs(layerTypes) do
+	layerParts[type] = parts:createTable(function(part) return part:getName():find(type) end)
+end
 
 -- Determine vanilla player type on init
 local vanillaAvatarType
@@ -80,20 +37,16 @@ function events.RENDER(delta, context)
 	
 	-- Model shape
 	local slimShape = (vanillaSkin and vanillaAvatarType == "SLIM") or (slim and not vanillaSkin)
-	
-	parts.group.leftArmDefault:visible(not slimShape)
-	parts.group.rightArmDefault:visible(not slimShape)
-	parts.group.leftArmDefaultFP:visible(not slimShape)
-	parts.group.rightArmDefaultFP:visible(not slimShape)
-	
-	parts.group.leftArmSlim:visible(slimShape)
-	parts.group.rightArmSlim:visible(slimShape)
-	parts.group.leftArmSlimFP:visible(slimShape)
-	parts.group.rightArmSlimFP:visible(slimShape)
+	for _, part in ipairs(defaultParts) do
+		part:visible(not slimShape)
+	end
+	for _, part in ipairs(slimParts) do
+		part:visible(slimShape)
+	end
 	
 	-- Skin textures
 	local skinType = vanillaSkin and "SKIN" or "PRIMARY"
-	for _, part in ipairs(skin) do
+	for _, part in ipairs(skinParts) do
 		part:primaryTexture(skinType)
 	end
 	
