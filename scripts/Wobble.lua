@@ -13,14 +13,10 @@ config:name("SlimeTaur")
 local speed      = config:load("WobbleSpeed") or 0.0075
 local dampen     = config:load("WobbleDampening") or 0.0075
 local damage     = config:load("WobbleDamage")
-local healthMod  = config:load("WobbleHealthMod")
 local biome      = config:load("WobbleBiome")
-local hazard     = config:load("WobbleHazard")
 local healthSize = config:load("WobbleHealthSize") or false
 if damage    == nil then damage    = true end
-if healthMod == nil then healthMod = true end
 if biome     == nil then biome     = true end
-if hazard    == nil then hazard    = true end
 
 -- Variables
 local scaleApply   = 0
@@ -95,16 +91,6 @@ function events.RENDER(delta, context)
 	slimeWobble.s = speed
 	slimeWobble.d = dampen
 	
-	-- Modify based on health
-	if healthMod then
-		
-		local apply = player:getHealth() / player:getMaxHealth()
-		
-		slimeWobble.s = slimeWobble.s * math.map(apply, 0, 1, 2, 1)
-		slimeWobble.d = slimeWobble.d * apply
-		
-	end
-	
 	-- Modify based on biome
 	if biome then
 		
@@ -113,19 +99,6 @@ function events.RENDER(delta, context)
 		
 		slimeWobble.s = slimeWobble.s * apply
 		slimeWobble.d = slimeWobble.d * (math.map(apply, 0, 1, 1, 0) + 1)
-		
-	end
-	
-	-- Modify based on hazards
-	if hazard then
-		
-		local frozen = math.map(player:getFrozenTicks(), 0, 140, 0, 1)
-		local fire   = player:isOnFire() and 1 or 0
-		
-		slimeWobble.s = math.lerp(slimeWobble.s, 0,   frozen)
-		slimeWobble.d = math.lerp(slimeWobble.d, 0.1, frozen)
-		
-		slimeWobble.d = math.lerp(slimeWobble.d, 0, fire)
 		
 	end
 	
@@ -263,27 +236,11 @@ function pings.setWobbleDamage(boolean)
 	
 end
 
--- Health wobble toggle
-function pings.setWobbleHealthMod(boolean)
-	
-	healthMod = boolean
-	config:save("WobbleHealthMod", healthMod)
-	
-end
-
 -- Biome wobble toggle
 function pings.setWobbleBiome(boolean)
 	
 	biome = boolean
 	config:save("WobbleBiome", biome)
-	
-end
-
--- Hazard wobble toggle
-function pings.setWobbleHazard(boolean)
-	
-	hazard = boolean
-	config:save("WobbleHazard", hazard)
 	
 end
 
@@ -296,15 +253,13 @@ function pings.setWobbleHealthSize(boolean)
 end
 
 -- Sync variables
-function pings.syncWobble(a, b, c, d, e, f, g)
+function pings.syncWobble(a, b, c, d, e)
 	
 	speed      = a
 	dampen     = b
 	damage     = c
-	healthMod  = d
-	biome      = e
-	hazard     = f
-	healthSize = g
+	biome      = d
+	healthSize = e
 	
 end
 
@@ -320,7 +275,7 @@ if not s then color = {} end
 function events.TICK()
 	
 	if world.getTime() % 200 == 0 then
-		pings.syncWobble(speed, dampen, damage, healthMod, biome, hazard, healthSize)
+		pings.syncWobble(speed, dampen, damage, biome, healthSize)
 	end
 	
 end
@@ -348,23 +303,11 @@ t.damageAct = action_wheel:newAction()
 	:onToggle(pings.setWobbleDamage)
 	:toggled(damage)
 
-t.healthModAct = action_wheel:newAction()
-	:item(itemCheck("apple"))
-	:toggleItem(itemCheck("golden_apple"))
-	:onToggle(pings.setWobbleHealthMod)
-	:toggled(healthMod)
-
 t.biomeAct = action_wheel:newAction()
 	:item(itemCheck("snow_block"))
 	:toggleItem(itemCheck("water_bucket"))
 	:onToggle(pings.setWobbleBiome)
 	:toggled(biome)
-
-t.hazardAct = action_wheel:newAction()
-	:item(itemCheck("flint"))
-	:toggleItem(itemCheck("flint_and_steel"))
-	:onToggle(pings.setWobbleHazard)
-	:toggled(hazard)
 
 t.healthSizeAct = action_wheel:newAction()
 	:item(itemCheck("beef"))
@@ -404,25 +347,11 @@ function events.RENDER(delta, context)
 				{text = "Sets if slime should wobble if damage is taken.", color = color.secondary}}
 			)
 		
-		t.healthModAct
-			:title(toJson
-				{"",
-				{text = "Set Health Modifier\n\n", bold = true, color = color.primary},
-				{text = "Sets if damage taken should affect your ability to maintain form.", color = color.secondary}}
-			)
-		
 		t.biomeAct
 			:title(toJson
 				{"",
 				{text = "Set Temperature Modifier\n\n", bold = true, color = color.primary},
 				{text = "Sets if biome temperature should affect the slime wobble.", color = color.secondary}}
-			)
-		
-		t.hazardAct
-			:title(toJson
-				{"",
-				{text = "Set Hazard Modifier\n\n", bold = true, color = color.primary},
-				{text = "Sets if hazards like Fire and Powder Snow should affect the slime wobble.", color = color.secondary}}
 			)
 		
 		t.healthSizeAct

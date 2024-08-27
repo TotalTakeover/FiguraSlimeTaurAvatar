@@ -201,9 +201,7 @@ pages.slime
 pages.wobble
 	:action( -1, wobble.strengthAct)
 	:action( -1, wobble.damageAct)
-	:action( -1, wobble.healthModAct)
 	:action( -1, wobble.biomeAct)
-	:action( -1, wobble.hazardAct)
 	:action( -1, backAct)
 
 -- Color actions
