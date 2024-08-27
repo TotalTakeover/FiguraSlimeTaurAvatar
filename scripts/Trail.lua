@@ -14,6 +14,9 @@ if trail == nil then trail = true end
 local worldPart = models:newPart("world", "WORLD")
 local trailPart = parts.group.Trail
 
+-- Kills script if it cannot find the trailpart
+if not trailPart then return {} end
+
 -- Prevents visible culling
 trailPart:primaryRenderType("TRANSLUCENT_CULL")
 
