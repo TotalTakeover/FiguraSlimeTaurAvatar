@@ -32,18 +32,22 @@ local strengthSwitch = true
 -- Choose objects to stay consistent in the slime
 local slimePivots = parts:createTable(function(part) return part:getName():find("_Wobble") end)
 
--- Establish embedded items
-for i = 1, 27 do
-	
-	local newPart = parts.group.StoredItems:newPart("StoredItem"..i)
-	table.insert(slimePivots, newPart)
-	newPart
-		:pivot(parts.group.StoredItems:getPivot() + vec((i-1)%3-1, math.ceil(i/9-2), math.floor((i-1)/3%3-1)) * 5)
-	
-end
+if parts.group.StoredItems then
 
--- After creating item groups, update parts API
-parts:update()
+	-- Establish embedded items
+	for i = 1, 27 do
+		
+		local newPart = parts.group.StoredItems:newPart("StoredItem"..i)
+		table.insert(slimePivots, newPart)
+		newPart
+			:pivot(parts.group.StoredItems:getPivot() + vec((i-1)%3-1, math.ceil(i/9-2), math.floor((i-1)/3%3-1)) * 5)
+		
+	end
+
+	-- After creating item groups, update parts API
+	parts:update()
+
+end
 
 -- Scale lerp
 local scaleLerp = lerp:new(0.2, 1)

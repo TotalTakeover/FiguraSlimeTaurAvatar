@@ -4,6 +4,9 @@ require("scripts.Wobble")
 -- Required script
 local parts = require("lib.PartsAPI")
 
+-- Kills script if it cannot find the stored items group
+if not parts.group.StoredItems then return {} end
+
 -- Config setup
 config:name("SlimeTaur")
 local embed = config:load("ItemsEmbed")
