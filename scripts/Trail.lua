@@ -178,19 +178,17 @@ function events.RENDER(delta, context)
 			
 			for _, child in ipairs(part.trails:getChildren()) do
 				
-				-- Needed for all trail parts
-				local opacity = parts.group.Slime_Wobble.Slime_Color:getOpacity()
-				
 				if child:getName():find("_Color") then
 					
-					-- Needed only for color trail parts
-					local color = parts.group.Slime_Wobble.Slime_Color:getColor()
+					local color = trailPart.Trail_Color_Trans:getColor()
 					
-					child
-						:color(color)
-						:opacity(opacity)
+					child:color(color)
 					
-				else
+				end
+				
+				if child:getName():find("_Trans") then
+					
+					local opacity = trailPart.Trail_Trans:getOpacity()
 					
 					child:opacity(opacity)
 					

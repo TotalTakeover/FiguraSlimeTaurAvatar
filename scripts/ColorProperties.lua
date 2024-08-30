@@ -15,8 +15,8 @@ local selectedRGB = 0
 local groundTimer = 0
 
 -- All parts
-local colorParts   = parts:createTable(function(part) return part:getName():find("_Color")   end)
-local overlayParts = parts:createTable(function(part) return part:getName():find("_Overlay") end)
+local colorParts = parts:createTable(function(part) return part:getName():find("_Color") end)
+local transParts = parts:createTable(function(part) return part:getName():find("_Trans") end)
 
 -- Lerps
 local colorLerp   = lerp:new(0.2, vec(1, 1, 1))
@@ -105,11 +105,9 @@ function events.RENDER(delta, context)
 	
 	-- Slime textures
 	for _, part in ipairs(colorParts) do
-		part
-			:color(colorLerp.currPos)
-			:opacity(opacityLerp.currPos)
+		part:color(colorLerp.currPos)
 	end
-	for _, part in ipairs(overlayParts) do
+	for _, part in ipairs(transParts) do
 		part:opacity(opacityLerp.currPos)
 	end
 	

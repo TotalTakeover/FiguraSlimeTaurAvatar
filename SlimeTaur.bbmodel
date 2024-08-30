@@ -1085,7 +1085,7 @@
 			"uuid": "00fd7795-f50f-565e-d77f-eb96e216edb8"
 		},
 		{
-			"name": "Trail_Color",
+			"name": "Trail_Color_Trans",
 			"color": 0,
 			"origin": [0, 0, 0],
 			"rotation": [0, 0, 0],
@@ -1478,7 +1478,7 @@
 			"uuid": "71c5b0d2-63ba-847f-ca3e-0b1d652338c9"
 		},
 		{
-			"name": "Trail_Overlay",
+			"name": "Trail_Trans",
 			"color": 0,
 			"origin": [0, 0, 0],
 			"rotation": [0, 0, 0],
@@ -1871,7 +1871,7 @@
 			"uuid": "bc49fa84-7ba8-181d-36fd-77b1f1ed468b"
 		},
 		{
-			"name": "Slime_Color",
+			"name": "Slime_Color_Trans",
 			"color": 0,
 			"origin": [0, 0, 0],
 			"rotation": [0, 0, 0],
@@ -2640,7 +2640,7 @@
 			"uuid": "6eaead1b-ee2f-0d40-9cef-5d2750e8d593"
 		},
 		{
-			"name": "Slime_Overlay",
+			"name": "Slime_Trans",
 			"color": 0,
 			"origin": [0, 0, 0],
 			"rotation": [0, 0, 0],
