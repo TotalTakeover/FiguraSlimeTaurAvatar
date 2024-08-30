@@ -160,8 +160,8 @@ function events.RENDER(delta, context)
 	for _, part in ipairs(trails) do
 		
 		-- Set light level
-		local blockLight = world.getBlockLightLevel(part.pos + 0.4)
-		local skyLight = world.getSkyLightLevel(part.pos + 0.4)
+		local blockLight = world.getBlockLightLevel(part.pos + vec(0, 0.5, 0))
+		local skyLight = world.getSkyLightLevel(part.pos + vec(0, 0.5, 0))
 		
 		part.trails:light(blockLight, skyLight)
 		
