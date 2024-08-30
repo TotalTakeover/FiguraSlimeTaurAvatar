@@ -4374,6 +4374,19 @@
 					"children": ["3fa5e3a1-6208-988d-2b66-4388d0adc4cf", "77f7865e-4f68-e254-db76-758350c3cb64"]
 				},
 				{
+					"name": "LeftShoulderPivotFP",
+					"origin": [-6, 24, 0],
+					"color": 0,
+					"uuid": "47c5fed3-01ef-eaac-127e-f21d6509c3fe",
+					"export": true,
+					"mirror_uv": false,
+					"isOpen": false,
+					"locked": false,
+					"visibility": false,
+					"autouv": 0,
+					"children": []
+				},
+				{
 					"name": "LeftItemPivotFP",
 					"origin": [-6, 12, -2],
 					"color": 0,
@@ -4425,6 +4438,19 @@
 					"visibility": false,
 					"autouv": 0,
 					"children": ["5bd1c9e8-7b3b-4d2f-2797-dd43c8f20df8", "00fd7795-f50f-565e-d77f-eb96e216edb8"]
+				},
+				{
+					"name": "RightShoulderPivotFP",
+					"origin": [6, 24, 0],
+					"color": 0,
+					"uuid": "5f17bd29-b43b-938e-5f25-659e20b0b3b6",
+					"export": true,
+					"mirror_uv": false,
+					"isOpen": false,
+					"locked": false,
+					"visibility": false,
+					"autouv": 0,
+					"children": []
 				},
 				{
 					"name": "RightItemPivotFP",
