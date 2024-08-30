@@ -3409,7 +3409,7 @@
 			"uuid": "16ba65fa-a0fb-5fc1-0b7c-58b8d17146a8"
 		},
 		{
-			"name": "Layer",
+			"name": "LOWER_BODY",
 			"color": 0,
 			"origin": [0, 0, 0],
 			"rotation": [0, 0, 0],
