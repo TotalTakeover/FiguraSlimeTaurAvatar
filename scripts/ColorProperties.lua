@@ -6,7 +6,7 @@ local ground = require("lib.GroundCheck")
 -- Config setup
 config:name("SlimeTaur")
 local pick        = config:load("ColorPick") or false
-local pickedColor = config:load("ColorPicked") or vectors.hexToRGB("E56216")
+local pickedColor = config:load("ColorPicked") or vectors.hexToRGB("51A03E")
 local camo        = config:load("ColorCamo") or false
 local rainbow     = config:load("ColorRainbow") or false
 
