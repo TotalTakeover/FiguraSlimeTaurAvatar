@@ -228,7 +228,7 @@ function events.RENDER(delta, context)
 				{text = vectors.rgbToHex(pickedColor).."\n\n", color = "#"..vectors.rgbToHex(pickedColor)},
 				{text = "Scroll to adjust an RGB Value.\nRight click to change selection.", color = c.secondary}}
 			)
-			:toggleItem(itemCheck("potion{\"CustomPotionColor\":" .. tostring(vectors.rgbToInt(colorLerp.currentPos)) .. "}"))
+			:toggleItem(itemCheck("potion{CustomPotionColor:" .. tostring(vectors.rgbToInt(colorLerp.currPos)) .. "}"))
 			:toggled(pick)
 		
 		t.camoAct
@@ -237,7 +237,7 @@ function events.RENDER(delta, context)
 				{text = "Toggle Camo Mode\n\n", bold = true, color = c.primary},
 				{text = "Toggles changing your slime color to match your surroundings.", color = c.secondary}}
 			)
-			:toggleItem(itemCheck("splash_potion{\"CustomPotionColor\":" .. tostring(vectors.rgbToInt(colorLerp.currentPos)) .. "}"))
+			:toggleItem(itemCheck("splash_potion{CustomPotionColor:" .. tostring(vectors.rgbToInt(colorLerp.currPos)) .. "}"))
 			:toggled(camo)
 		
 		t.rainbowAct
@@ -246,7 +246,7 @@ function events.RENDER(delta, context)
 				{text = "Toggle Rainbow Mode\n\n", bold = true, color = c.primary},
 				{text = "Toggles on hue-shifting creating a rainbow effect.", color = c.secondary}}
 			)
-			:toggleItem(itemCheck("lingering_potion{\"CustomPotionColor\":" .. tostring(vectors.rgbToInt(colorLerp.currentPos)) .. "}"))
+			:toggleItem(itemCheck("lingering_potion{CustomPotionColor:" .. tostring(vectors.rgbToInt(colorLerp.currPos)) .. "}"))
 			:toggled(rainbow)
 		
 		for _, page in pairs(t) do
