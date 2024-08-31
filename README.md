@@ -20,3 +20,5 @@ This Figura avatar is a template designed around turning the user into a Slime T
 
 ## Features
 Section under construction
+
+[<img src="https://img.youtube.com/vi/CCLwSGpQWsY/maxresdefault.jpg" alt="image" width="300" height="auto">](https://youtu.be/CCLwSGpQWsY)
