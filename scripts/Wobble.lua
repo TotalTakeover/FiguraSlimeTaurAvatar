@@ -33,7 +33,7 @@ local strengthSwitch = true
 local slimePivots = parts:createTable(function(part) return part:getName():find("_Wobble") end)
 
 if parts.group.StoredItems then
-
+	
 	-- Establish embedded items
 	for i = 1, 27 do
 		
@@ -43,10 +43,10 @@ if parts.group.StoredItems then
 			:pivot(parts.group.StoredItems:getPivot() + vec((i-1)%3-1, math.ceil(i/9-2), math.floor((i-1)/3%3-1)) * 5)
 		
 	end
-
+	
 	-- After creating item groups, update parts API
 	parts:update()
-
+	
 end
 
 -- Scale lerp
