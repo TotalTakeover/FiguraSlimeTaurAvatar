@@ -12,9 +12,11 @@ local slimeWobble = wobble:newWobbleSetup()
 config:name("SlimeTaur")
 local speed      = config:load("WobbleSpeed") or 0.0075
 local dampen     = config:load("WobbleDampening") or 0.0075
+local wobbleRot  = config:load("WobbleRot")
 local damage     = config:load("WobbleDamage")
 local biome      = config:load("WobbleBiome")
 local healthSize = config:load("WobbleHealthSize") or false
+if wobbleRot == nil then wobbleRot = true end
 if damage    == nil then damage    = true end
 if biome     == nil then biome     = true end
 
@@ -22,6 +24,8 @@ if biome     == nil then biome     = true end
 local scaleApply   = 0
 local crouchWobble = 0.02
 local damageWobble = 0.025
+local currRot  = 0
+local prevRot  = 0
 local isCrouching  = false
 local powerActive  = false
 local swimTimer    = 0
@@ -52,7 +56,19 @@ end
 -- Scale lerp
 local scaleLerp = lerp:new(0.2, 1)
 
+function events.ENTITY_INIT()
+	
+	-- Init rots
+	currRot = player:getRot()
+	prevRot = currRot
+	
+end
+
 function events.TICK()
+	
+	-- Update rots
+	prevRot = currRot
+	currRot = player:getRot()
 	
 	-- Check if origin power is active
 	powerActive = origins.getPowerData(player, "slime_taur:varied_sizing_toggle") == 1
@@ -185,8 +201,20 @@ function events.WORLD_RENDER(delta, context)
 			
 		end
 		
+		local calcRot 
+		if wobbleRot and (pose.stand or pose.crouch) then
+			
+			-- Calc rot application
+			local rotDif = currRot - prevRot
+			calcRot = (-rotDif.x + math.abs(rotDif.y)) / 450
+			
+		else
+			
+			calcRot = 0
+			
+		end
 		-- Calculates the Wobble and applies it
-		slimeWobble:update(scaleApply, true)
+		slimeWobble:update(scaleApply + calcRot, true)
 		local calcWobble = slimeWobble.wobble * scaleLerp.currPos
 		parts.group.Slime_Wobble:scale(
 			vec(scaleLerp.currPos - calcWobble,
@@ -223,6 +251,14 @@ local function setStrengthSwitch()
 	
 end
 
+-- Rotation wobble toggle
+function pings.setWobbleRot(boolean)
+	
+	wobbleRot = boolean
+	config:save("WobbleRot", wobbleRot)
+	
+end
+
 -- Damage wobble toggle
 function pings.setWobbleDamage(boolean)
 	
@@ -248,13 +284,14 @@ function pings.setWobbleHealthSize(boolean)
 end
 
 -- Sync variables
-function pings.syncWobble(a, b, c, d, e)
+function pings.syncWobble(a, b, c, d, e, f)
 	
 	speed      = a
 	dampen     = b
-	damage     = c
-	biome      = d
-	healthSize = e
+	wobbleRot  = c
+	damage     = d
+	biome      = e
+	healthSize = f
 	
 end
 
@@ -270,7 +307,7 @@ if not s then color = {} end
 function events.TICK()
 	
 	if world.getTime() % 200 == 0 then
-		pings.syncWobble(speed, dampen, damage, biome, healthSize)
+		pings.syncWobble(speed, dampen, wobbleRot, damage, biome, healthSize)
 	end
 	
 end
@@ -291,6 +328,12 @@ t.strengthAct = action_wheel:newAction()
 			config:save("WobbleDampening", dampen)
 		end
 	end)
+
+t.rotAct = action_wheel:newAction()
+	:item(itemCheck("music_disc_chirp"))
+	:toggleItem(itemCheck("music_disc_far"))
+	:onToggle(pings.setWobbleRot)
+	:toggled(wobbleRot)
 
 t.damageAct = action_wheel:newAction()
 	:item(itemCheck("shield"))
@@ -334,6 +377,13 @@ function events.RENDER(delta, context)
 				{text = "Scroll to adjust a value.\nLeft click selects which value is being adjusted.\nRight click resets the value back to 7.5%.", color = color.secondary}}
 			)
 			:item(itemCheck("potion{\"CustomPotionColor\":" .. tostring(vectors.rgbToInt(potionColor)) .. "}"))
+		
+		t.rotAct
+			:title(toJson
+				{"",
+				{text = "Set Rotational Wobble\n\n", bold = true, color = color.primary},
+				{text = "Sets if slime should wobble while you look around.", color = color.secondary}}
+			)
 		
 		t.damageAct
 			:title(toJson
