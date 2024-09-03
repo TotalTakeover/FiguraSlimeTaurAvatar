@@ -24,8 +24,8 @@ if biome     == nil then biome     = true end
 local scaleApply   = 0
 local crouchWobble = 0.02
 local damageWobble = 0.025
-local currRot  = 0
-local prevRot  = 0
+local currRot      = 0
+local prevRot      = 0
 local isCrouching  = false
 local powerActive  = false
 local swimTimer    = 0
