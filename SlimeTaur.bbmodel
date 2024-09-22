@@ -4526,7 +4526,7 @@
 			"folder": "",
 			"namespace": "",
 			"id": "2",
-			"group": "",
+			"group": "030d8d27-f6aa-18b2-815e-1108035f7567",
 			"width": 64,
 			"height": 64,
 			"uv_width": 64,
@@ -4554,7 +4554,7 @@
 			"folder": "block",
 			"namespace": "",
 			"id": "3",
-			"group": "",
+			"group": "030d8d27-f6aa-18b2-815e-1108035f7567",
 			"width": 128,
 			"height": 128,
 			"uv_width": 128,
@@ -4582,7 +4582,7 @@
 			"folder": "block",
 			"namespace": "",
 			"id": "4",
-			"group": "",
+			"group": "030d8d27-f6aa-18b2-815e-1108035f7567",
 			"width": 128,
 			"height": 128,
 			"uv_width": 128,
@@ -4610,7 +4610,7 @@
 			"folder": "",
 			"namespace": "",
 			"id": "1",
-			"group": "",
+			"group": "030d8d27-f6aa-18b2-815e-1108035f7567",
 			"width": 64,
 			"height": 32,
 			"uv_width": 64,
@@ -4631,6 +4631,12 @@
 			"uuid": "c7453f55-2c69-c63b-c107-b233da47d7cc",
 			"relative_path": "textures/misc/cape.png",
 			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAAAXNSR0IArs4c6QAAAFBJREFUaEPt1QERADAMArHi33SFfOagHBm7+Fv8/hOABsQTQCBeAJ8gAgjEE0AgXgArgAAC8QQQiBfACiCAQDwBBOIFsAIIIBBPAIF4AazAAzJOACHu+VYgAAAAAElFTkSuQmCC"
+		}
+	],
+	"texture_groups": [
+		{
+			"uuid": "030d8d27-f6aa-18b2-815e-1108035f7567",
+			"name": "Main"
 		}
 	],
 	"animations": [
