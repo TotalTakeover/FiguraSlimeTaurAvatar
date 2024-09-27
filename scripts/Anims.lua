@@ -7,6 +7,25 @@ local pose   = require("scripts.Posing")
 -- Animations setup
 local anims = animations.SlimeTaur
 
+-- Parrot pivots
+local parrots = {
+	
+	parts.group.LeftParrotPivot,
+	parts.group.RightParrotPivot
+	
+}
+
+-- Calculate parent's rotations
+local function calculateParentRot(m)
+	
+	local parent = m:getParent()
+	if not parent then
+		return m:getTrueRot()
+	end
+	return calculateParentRot(parent) + m:getTrueRot()
+	
+end
+
 function events.TICK()
 	
 	-- Player variables
@@ -42,6 +61,11 @@ function events.RENDER(delta, context)
 	-- Animation blends
 	local moveBlend = pose.crouch and 0.5 or 1
 	anims.walk:blend(moveBlend)
+	
+	-- Parrot rot offset
+	for _, parrot in pairs(parrots) do
+		parrot:rot(-calculateParentRot(parrot:getParent()) - vanilla_model.BODY:getOriginRot())
+	end
 	
 end
 

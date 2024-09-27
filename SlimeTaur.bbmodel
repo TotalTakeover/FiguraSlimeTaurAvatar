@@ -4037,6 +4037,32 @@
 									"visibility": true,
 									"autouv": 0,
 									"children": ["734acd81-5f97-d66a-69c7-2551cbdd6f89"]
+								},
+								{
+									"name": "LeftParrotPivot",
+									"origin": [-6, 32, 0],
+									"color": 0,
+									"uuid": "dadc2dfa-1635-8b69-f3a6-f3d108ea92c4",
+									"export": true,
+									"mirror_uv": false,
+									"isOpen": false,
+									"locked": false,
+									"visibility": true,
+									"autouv": 0,
+									"children": []
+								},
+								{
+									"name": "RightParrotPivot",
+									"origin": [6, 32, 0],
+									"color": 0,
+									"uuid": "4cb17f47-db6d-c88e-60ec-537035a076a5",
+									"export": true,
+									"mirror_uv": false,
+									"isOpen": false,
+									"locked": false,
+									"visibility": true,
+									"autouv": 0,
+									"children": []
 								}
 							]
 						},
