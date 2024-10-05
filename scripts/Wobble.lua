@@ -34,7 +34,7 @@ local dampenMin, dampenMax = 0, 0.1
 local strengthSwitch = true
 
 -- Choose objects to stay consistent in the slime
-local slimePivots = parts:createTable(function(part) return part:getName():find("_Wobble") end)
+local slimePivots = parts:createTable(function(part) return part:getName():find("_[wW]obble") end)
 
 if parts.group.StoredItems then
 	

@@ -15,8 +15,8 @@ local selectedRGB = 0
 local groundTimer = 0
 
 -- All parts
-local colorParts = parts:createTable(function(part) return part:getName():find("_Color") end)
-local transParts = parts:createTable(function(part) return part:getName():find("_Trans") end)
+local colorParts = parts:createTable(function(part) return part:getName():find("_[cC]olou?r") end)
+local transParts = parts:createTable(function(part) return part:getName():find("_[tT]rans") end)
 
 -- Lerps
 local colorLerp   = lerp:new(0.2, vec(1, 1, 1))

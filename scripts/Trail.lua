@@ -178,21 +178,23 @@ function events.RENDER(delta, context)
 			
 			for _, child in ipairs(part.trails:getChildren()) do
 				
-				if child:getName():find("_Color") then
-					
-					local color = trailPart.Trail_Color_Trans:getColor()
-					
-					child:color(color)
-					
+				-- Find child's original
+				local origin
+				for _, o in ipairs(trailPart:getChildren()) do
+					if child:getName():find(o:getName()) then
+						origin = o
+						break
+					end
 				end
 				
-				if child:getName():find("_Trans") then
+				-- Apply
+				if origin then
 					
-					local opacity = trailPart.Trail_Trans:getOpacity()
+					child
+						:color(origin:getColor())
+						:opacity(origin:getOpacity())
 					
-					child:opacity(opacity)
-					
-				end	
+				end
 				
 			end
 			
