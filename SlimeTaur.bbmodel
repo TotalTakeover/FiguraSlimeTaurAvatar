@@ -3987,7 +3987,7 @@
 								},
 								{
 									"name": "Elytra",
-									"origin": [0, 32, 2],
+									"origin": [0, 0, 0],
 									"color": 0,
 									"uuid": "dafce064-3e38-d2bc-c4b9-a1c322a89bd8",
 									"export": true,
