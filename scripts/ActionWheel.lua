@@ -28,9 +28,6 @@ if not s then squish = {} end
 local s, items = pcall(require, "scripts.Items")
 if not s then items = {} end
 
-local s, _, anims = pcall(require, "scripts.Anims")
-if not s then anims = {} end
-
 local s, squapi = pcall(require, "scripts.SquishyAnims")
 if not s then squapi = {} end
 
