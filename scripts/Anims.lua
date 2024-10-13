@@ -1,5 +1,6 @@
 -- Required scripts
 require("lib.GSAnimBlend")
+require("lib.Molang")
 local parts  = require("lib.PartsAPI")
 local ground = require("lib.GroundCheck")
 local pose   = require("scripts.Posing")
