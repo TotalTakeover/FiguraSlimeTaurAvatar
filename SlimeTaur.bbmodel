@@ -4678,7 +4678,7 @@
 			"name": "walk",
 			"loop": "loop",
 			"override": false,
-			"length": 0.5,
+			"length": 0,
 			"snapping": 24,
 			"selected": false,
 			"anim_time_update": "",
