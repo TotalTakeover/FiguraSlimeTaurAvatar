@@ -5,7 +5,7 @@
 		"box_uv": false
 	},
 	"visible_box": [8, 7, -0.5],
-	"variable_placeholders": "\n",
+	"variable_placeholders": "",
 	"variable_placeholder_buttons": [],
 	"timeline_setups": [],
 	"unhandled_root_fields": {},
@@ -4803,6 +4803,5 @@
 				}
 			}
 		}
-	],
-	"animation_variable_placeholders": "\n"
+	]
 }
