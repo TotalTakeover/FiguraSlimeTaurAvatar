@@ -4694,9 +4694,9 @@
 							"channel": "position",
 							"data_points": [
 								{
-									"x": "0",
+									"x": 0,
 									"y": "q(...) +\nMath.sin(q.anim_time*720-90)*10+7.5",
-									"z": "0"
+									"z": 0
 								}
 							],
 							"uuid": "e15ae47d-774e-6140-a005-046691ed5633",
@@ -4715,8 +4715,8 @@
 							"data_points": [
 								{
 									"x": "q(...) +\nMath.sin(q.anim_time*720)*20",
-									"y": "0",
-									"z": "0"
+									"y": 0,
+									"z": 0
 								}
 							],
 							"uuid": "b262dc19-c5c3-8b48-3d66-4c71141b5761",
@@ -4749,9 +4749,9 @@
 							"channel": "position",
 							"data_points": [
 								{
-									"x": "0",
-									"y": "0",
-									"z": "-5"
+									"x": 0,
+									"y": 0,
+									"z": -5
 								}
 							],
 							"uuid": "9bdece3f-4fb8-ced6-568a-c9ee9096c8a2",
@@ -4769,9 +4769,9 @@
 							"channel": "position",
 							"data_points": [
 								{
-									"x": "0",
+									"x": 0,
 									"y": 2,
-									"z": "0"
+									"z": 0
 								}
 							],
 							"uuid": "d8a5d0d3-67dc-509f-0af0-b1bed41a2896",
@@ -4789,9 +4789,9 @@
 							"channel": "position",
 							"data_points": [
 								{
-									"x": "0",
+									"x": 0,
 									"y": -3,
-									"z": "0"
+									"z": 0
 								}
 							],
 							"uuid": "c16fba0c-9fcc-4667-a3c3-3337192e0407",
