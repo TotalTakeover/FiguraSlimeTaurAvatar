@@ -1,8 +1,11 @@
+-- Kills script if squAPI cannot be found
+local s, squapi = pcall(require, "lib.SquAPI")
+if not s then return {} end
+
 -- Required scripts
-local parts  = require("lib.PartsAPI")
-local squapi = require("lib.SquAPI")
-local lerp   = require("lib.LerpAPI")
-local pose   = require("scripts.Posing")
+local parts = require("lib.PartsAPI")
+local lerp  = require("lib.LerpAPI")
+local pose  = require("scripts.Posing")
 
 -- Animation setup
 local anims = animations.SlimeTaur
