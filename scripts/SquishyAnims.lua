@@ -32,7 +32,7 @@ local rightArmLerp = lerp:new(0.5, armsMove and 1 or 0)
 -- Head table
 local headParts = {
 	
-	parts.group.UpperBody_Wobble
+	parts.group.UpperBody
 	
 }
 
@@ -126,11 +126,11 @@ function events.RENDER(delta, context)
 	parts.group.RightArmFP:visible(firstPerson)
 	
 	-- Set upperbody to offset rot and crouching pivot point
-	parts.group.UpperBody_Wobble:rot(-parts.group.LowerBody:getRot())
+	parts.group.UpperBody:rot(-parts.group.LowerBody:getRot())
 	
 	-- Offset smooth torso in various parts
 	-- Note: acts strangely with `parts.group.body`
-	for _, group in ipairs(parts.group.UpperBody_Wobble:getChildren()) do
+	for _, group in ipairs(parts.group.UpperBody:getChildren()) do
 		if group ~= parts.group.Body then
 			group:rot(-calculateParentRot(group:getParent()))
 		end

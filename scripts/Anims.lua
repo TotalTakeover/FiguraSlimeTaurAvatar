@@ -72,7 +72,7 @@ function events.RENDER(delta, context)
 	local bodyRot = vanilla_model.BODY:getOriginRot(delta)
 	local crouchPos = vec(0, -math.sin(math.rad(bodyRot.x)) * 2, -math.sin(math.rad(bodyRot.x)) * 12)
 	parts.group.Player:pos(-crouchPos)
-	parts.group.UpperBody_Wobble:offsetPivot(crouchPos):pos(parts.group.UpperBody_Wobble:getPos() + crouchPos.xy_ * 2)
+	parts.group.UpperBody:offsetPivot(crouchPos):pos(parts.group.UpperBody:getPos() + crouchPos.xy_ * 2)
 	parts.group.LowerBody:pos(crouchPos)
 	
 end

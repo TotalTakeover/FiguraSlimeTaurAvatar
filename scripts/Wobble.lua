@@ -16,9 +16,13 @@ local wobbleRot  = config:load("WobbleRot")
 local damage     = config:load("WobbleDamage")
 local biome      = config:load("WobbleBiome")
 local healthSize = config:load("WobbleHealthSize") or false
+local upWobble   = config:load("WobbleUpperBody") or false
+local armorClip  = config:load("WobbleArmorClip") or false
 if wobbleRot == nil then wobbleRot = true end
 if damage    == nil then damage    = true end
 if biome     == nil then biome     = true end
+
+armorClip = true
 
 -- Variables
 local scaleApply   = 0
@@ -34,7 +38,27 @@ local dampenMin, dampenMax = 0, 0.1
 local strengthSwitch = true
 
 -- Choose objects to stay consistent in the slime
-local slimePivots = parts:createTable(function(part) return part:getName():find("_[wW]obble") end)
+local slimePivots = {
+	
+	parts.group.UpperBody,
+	parts.group.Slime,
+	table.unpack(parts.group.Embeded:getChildren())
+	
+}
+
+-- Choose objects to stay consistent with the slime
+local slimeBodyPivots = {
+	
+	--table.unpack(parts.group.HeadEmbeded:getChildren())
+	
+}
+
+-- Choose objects to stay consistent with the upper body
+local slimeHeadPivots = {
+	
+	table.unpack(parts.group.HeadEmbeded:getChildren())
+	
+}
 
 if parts.group.StoredItems then
 	
@@ -53,8 +77,10 @@ if parts.group.StoredItems then
 	
 end
 
--- Scale lerp
+-- Lerp variables
 local scaleLerp = lerp:new(0.2, 1)
+local upperLerp = lerp:new(0.2, upWobble and 1 or 0)
+local helmet    = lerp:new(0.2, 1)
 
 function events.ENTITY_INIT()
 	
@@ -88,6 +114,9 @@ function events.TICK()
 		scaleLerp.target = 1
 		
 	end
+	
+	-- Upper body wobble strength
+	upperLerp.target = upWobble and 1 or 0
 	
 end
 
@@ -178,13 +207,27 @@ function events.RENDER(delta, context)
 	for _, part in ipairs(slimePivots) do
 		
 		local pivot     = part:getPivot()
-		local offsetPos = (pivot * parts.group.Slime_Wobble:getScale()) - pivot
+		local offsetPos = (pivot * parts.group.Slime:getScale()) - pivot
+		part:pos(offsetPos)
+		
+	end
+	for _, part in ipairs(slimeHeadPivots) do
+		
+		local pivot     = part:getPivot()
+		local offsetPos = (pivot * parts.group.Body:getScale()) - pivot
+		part:pos(offsetPos)
+		
+	end
+	for _, part in ipairs(slimeBodyPivots) do
+		
+		local pivot     = part:getPivot()
+		local offsetPos = (pivot * parts.group.Slime:getScale()) - pivot
 		part:pos(offsetPos)
 		
 	end
 	
 	-- Applies offset to lowerBody itself
-	local offsetPivot = parts.group.Slime_Wobble:getPivot() * parts.group.Slime_Wobble:getScale()
+	local offsetPivot = parts.group.Slime:getPivot() * parts.group.Slime:getScale()
 	parts.group.LowerBody:pivot(offsetPivot)
 	
 end
@@ -216,12 +259,15 @@ function events.WORLD_RENDER(delta, context)
 		-- Calculates the Wobble and applies it
 		slimeWobble:update(scaleApply + calcRot, true)
 		local calcWobble = slimeWobble.wobble * scaleLerp.currPos
-		parts.group.Slime_Wobble:scale(
+		parts.group.Slime:scale(
 			vec(scaleLerp.currPos - calcWobble,
 				scaleLerp.currPos + calcWobble,
 				scaleLerp.currPos - calcWobble)
 				+ increase
 			)
+		
+		local isHelmet = not armorClip and player:getItem(6).id ~= "minecraft:air"
+		parts.group.Head:scale((vec(-slimeWobble.wobble, slimeWobble.wobble, -slimeWobble.wobble) * upperLerp.currPos + 1):applyFunc(function(v) return isHelmet and math.min(v, 1) or v end))
 		
 		-- Scale shadow to size
 		renderer:shadowRadius(scaleLerp.currPos - 0.25 * scaleLerp.currPos)
@@ -283,8 +329,16 @@ function pings.setWobbleHealthSize(boolean)
 	
 end
 
+-- Upper body wobble toggle
+function pings.setWobbleUpperBody(boolean)
+	
+	upWobble = boolean
+	config:save("WobbleUpperBody", upWobble)
+	
+end
+
 -- Sync variables
-function pings.syncWobble(a, b, c, d, e, f)
+function pings.syncWobble(a, b, c, d, e, f, g)
 	
 	speed      = a
 	dampen     = b
@@ -292,6 +346,7 @@ function pings.syncWobble(a, b, c, d, e, f)
 	damage     = d
 	biome      = e
 	healthSize = f
+	upWobble   = g
 	
 end
 
@@ -307,7 +362,7 @@ if not s then color = {} end
 function events.TICK()
 	
 	if world.getTime() % 200 == 0 then
-		pings.syncWobble(speed, dampen, wobbleRot, damage, biome, healthSize)
+		pings.syncWobble(speed, dampen, wobbleRot, damage, biome, healthSize, upWobble)
 	end
 	
 end
@@ -352,6 +407,10 @@ t.healthSizeAct = action_wheel:newAction()
 	:toggleItem(itemCheck("cooked_beef"))
 	:onToggle(pings.setWobbleHealthSize)
 	:toggled(healthSize)
+
+t.upperBodyAct = action_wheel:newAction()
+	:onToggle(pings.setWobbleUpperBody)
+	:toggled(upWobble)
 
 -- Update actions
 function events.RENDER(delta, context)
@@ -406,6 +465,13 @@ function events.RENDER(delta, context)
 				{text = "Sets if your slime size is determinded by your health."..(powerActive and "\n\n" or ""), color = color.secondary},
 				{text = powerActive and "Notice:\n" or "", bold = true, color = "gold"},
 				{text = powerActive and "Origins is currently overriding this toggle." or "", color = "yellow"}}
+			)
+		
+		t.upperBodyAct
+			:title(toJson
+				{"",
+				{text = "Set Upper Body Wobble\n\n", bold = true, color = color.primary},
+				{text = "Sets if your upper body should wobble just like your lower body.", color = color.secondary}}
 			)
 		
 		for _, act in pairs(t) do

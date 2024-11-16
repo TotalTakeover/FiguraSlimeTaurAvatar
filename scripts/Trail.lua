@@ -64,7 +64,7 @@ function events.TICK()
 	
 	-- Variables
 	local pos   = player:getPos()
-	local scale = parts.group.Slime_Wobble:getScale() * pehkuiScale()
+	local scale = parts.group.Slime:getScale() * pehkuiScale()
 	
 	-- Ground check
 	-- Block variables

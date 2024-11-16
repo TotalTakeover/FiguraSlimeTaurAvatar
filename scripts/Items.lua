@@ -48,7 +48,7 @@ function events.RENDER(delta, context)
 	for i = 1, 27 do
 		
 		groups[i]
-			:pos(math.sin(timer * 0.01 + (i * 2)) * parts.group.Slime_Wobble:getScale())
+			:pos(math.sin(timer * 0.01 + (i * 2)) * parts.group.Slime:getScale())
 			:rot(0, (timer * 0.1 + (i * 13.3)) % 360, 0)
 		
 	end

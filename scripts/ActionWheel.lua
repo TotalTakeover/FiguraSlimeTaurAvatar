@@ -200,6 +200,7 @@ pages.wobble
 	:action( -1, wobble.rotAct)
 	:action( -1, wobble.damageAct)
 	:action( -1, wobble.biomeAct)
+	:action( -1, wobble.upperBodyAct)
 	:action( -1, backAct)
 
 -- Color actions

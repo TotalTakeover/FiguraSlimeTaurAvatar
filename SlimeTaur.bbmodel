@@ -3893,7 +3893,7 @@
 			"selected": false,
 			"children": [
 				{
-					"name": "UpperBody_Wobble",
+					"name": "UpperBody",
 					"origin": [0, 20, 0],
 					"color": 0,
 					"uuid": "97612d57-7fca-d547-008c-c5f64e760e8c",
@@ -3917,9 +3917,21 @@
 							"visibility": true,
 							"autouv": 0,
 							"selected": false,
+							"children": ["83c8d854-2363-4f5c-2124-a965aa4ed329", "9272ecb0-a271-5ef9-8797-894785d4701f"]
+						},
+						{
+							"name": "HeadEmbeded",
+							"origin": [0, 32, 0],
+							"color": 0,
+							"uuid": "63a785b6-a9b2-eefe-b331-6fafb479e108",
+							"export": true,
+							"mirror_uv": false,
+							"isOpen": false,
+							"locked": false,
+							"visibility": true,
+							"autouv": 0,
+							"selected": false,
 							"children": [
-								"83c8d854-2363-4f5c-2124-a965aa4ed329",
-								"9272ecb0-a271-5ef9-8797-894785d4701f",
 								{
 									"name": "HelmetPivot",
 									"origin": [0, 32, 0],
@@ -4281,7 +4293,7 @@
 					"selected": false,
 					"children": [
 						{
-							"name": "Slime_Wobble",
+							"name": "Slime",
 							"origin": [0, 21, 0],
 							"color": 0,
 							"uuid": "455992be-3af5-4247-c811-90be13573297",
@@ -4340,7 +4352,7 @@
 									"children": []
 								},
 								{
-									"name": "LeftLeggingPivot_Wobble",
+									"name": "LeftLeggingPivot",
 									"origin": [-2, 20, 0],
 									"color": 0,
 									"uuid": "13d08f18-1fb2-837b-1857-fba75932e380",
@@ -4354,7 +4366,7 @@
 									"children": []
 								},
 								{
-									"name": "RightLeggingPivot_Wobble",
+									"name": "RightLeggingPivot",
 									"origin": [2, 20, 0],
 									"color": 0,
 									"uuid": "14556d35-77c7-2ef6-4306-20c66c02151a",
@@ -4368,7 +4380,7 @@
 									"children": []
 								},
 								{
-									"name": "LeftBootPivot_Wobble",
+									"name": "LeftBootPivot",
 									"origin": [-5, 3, 0],
 									"rotation": [0, 15, -15],
 									"color": 0,
@@ -4383,7 +4395,7 @@
 									"children": []
 								},
 								{
-									"name": "RightBootPivot_Wobble",
+									"name": "RightBootPivot",
 									"origin": [5, 3, 0],
 									"rotation": [0, -15, 15],
 									"color": 0,
@@ -4398,7 +4410,7 @@
 									"children": []
 								},
 								{
-									"name": "Seat1_Wobble",
+									"name": "Seat1",
 									"origin": [0, 6, 0],
 									"color": 0,
 									"uuid": "88b3a31f-9be0-96e0-a839-44f11213d545",

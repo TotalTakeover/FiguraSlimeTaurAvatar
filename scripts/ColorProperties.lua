@@ -32,8 +32,8 @@ function events.TICK()
 	elseif camo then
 		
 		-- Variables
-		local pos    = parts.group.Slime_Wobble:partToWorldMatrix():apply(0, -10, 0)
-		local scale  = parts.group.Slime_Wobble:getScale()
+		local pos    = parts.group.Slime:partToWorldMatrix():apply(0, -10, 0)
+		local scale  = parts.group.Slime:getScale()
 		local blocks = world.getBlocks(pos - scale, pos + scale)
 		local solid  = false
 		
