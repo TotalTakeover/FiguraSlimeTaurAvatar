@@ -35,13 +35,24 @@ function events.TICK()
 		local pos    = parts.group.Slime_Wobble:partToWorldMatrix():apply(0, -10, 0)
 		local scale  = parts.group.Slime_Wobble:getScale()
 		local blocks = world.getBlocks(pos - scale, pos + scale)
+		local solid  = false
+		
+		-- Check for solid blocks
+		for _, block in ipairs(blocks) do
+			
+			if block:hasCollision() then
+				solid = true
+				break
+			end
+			
+		end
 		
 		-- Gather blocks
 		for i = #blocks, 1, -1 do
 			
 			local block = blocks[i]
 			
-			if block:isAir() then
+			if block:isAir() or solid and block.id == "minecraft:water" then
 				table.remove(blocks, i)
 			end
 			
