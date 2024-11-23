@@ -43,7 +43,7 @@ function events.TICK()
 			
 			if block:isAir() then
 				table.remove(blocks, i)
-			end	
+			end
 			
 		end
 		
