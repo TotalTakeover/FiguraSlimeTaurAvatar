@@ -3890,6 +3890,7 @@
 			"locked": false,
 			"visibility": true,
 			"autouv": 0,
+			"selected": false,
 			"children": [
 				{
 					"name": "UpperBody_Wobble",
@@ -3902,6 +3903,7 @@
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
+					"selected": false,
 					"children": [
 						{
 							"name": "Head",
@@ -3914,6 +3916,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
+							"selected": false,
 							"children": [
 								"83c8d854-2363-4f5c-2124-a965aa4ed329",
 								"9272ecb0-a271-5ef9-8797-894785d4701f",
@@ -3928,6 +3931,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": []
 								},
 								{
@@ -3941,6 +3945,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": []
 								}
 							]
@@ -3956,6 +3961,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
+							"selected": false,
 							"children": [
 								"65043c9e-ea90-be2a-7b51-d0effbab68f9",
 								"65ef144e-88c8-3a67-61a2-cc904ba002c5",
@@ -3970,6 +3976,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": []
 								},
 								{
@@ -3983,6 +3990,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": []
 								},
 								{
@@ -3996,6 +4004,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": [
 										{
 											"name": "LeftElytraPivot",
@@ -4008,6 +4017,7 @@
 											"locked": false,
 											"visibility": true,
 											"autouv": 0,
+											"selected": false,
 											"children": []
 										},
 										{
@@ -4021,6 +4031,7 @@
 											"locked": false,
 											"visibility": true,
 											"autouv": 0,
+											"selected": false,
 											"children": []
 										}
 									]
@@ -4036,6 +4047,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": ["734acd81-5f97-d66a-69c7-2551cbdd6f89"]
 								},
 								{
@@ -4049,6 +4061,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": []
 								},
 								{
@@ -4062,6 +4075,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": []
 								}
 							]
@@ -4077,6 +4091,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
+							"selected": false,
 							"children": [
 								{
 									"name": "leftArmDefault",
@@ -4089,6 +4104,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": ["1bcaec24-2738-3bbc-1eee-216c88c763c5", "fdea57c6-5202-c47a-579e-db7b9f131bf7"]
 								},
 								{
@@ -4102,6 +4118,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": ["afa0100f-91b0-af45-e6a6-6f697eaefeb5", "799baba7-0977-0189-1c01-e4bd1224cadd"]
 								},
 								{
@@ -4115,6 +4132,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": []
 								},
 								{
@@ -4128,6 +4146,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": []
 								}
 							]
@@ -4143,6 +4162,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
+							"selected": false,
 							"children": [
 								{
 									"name": "rightArmDefault",
@@ -4155,6 +4175,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": ["d50849a6-fae3-b9b1-8d67-62c4a1289a48", "1434bb00-c026-7fb8-806f-561004c2844f"]
 								},
 								{
@@ -4168,6 +4189,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": ["f92f502d-24a3-2f2d-a811-dc88ee32a833", "e55eabd0-3df3-d390-a380-694ed5c463b3"]
 								},
 								{
@@ -4181,6 +4203,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": []
 								},
 								{
@@ -4194,6 +4217,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": []
 								}
 							]
@@ -4209,6 +4233,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
+							"selected": false,
 							"children": [
 								{
 									"name": "LeftSpyglassPivot",
@@ -4221,6 +4246,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": []
 								},
 								{
@@ -4234,6 +4260,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": []
 								}
 							]
@@ -4251,6 +4278,7 @@
 					"locked": false,
 					"visibility": true,
 					"autouv": 0,
+					"selected": false,
 					"children": [
 						{
 							"name": "Slime_Wobble",
@@ -4263,6 +4291,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
+							"selected": false,
 							"children": [
 								"6eaead1b-ee2f-0d40-9cef-5d2750e8d593",
 								"16ba65fa-a0fb-5fc1-0b7c-58b8d17146a8",
@@ -4278,6 +4307,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": []
 								}
 							]
@@ -4293,6 +4323,7 @@
 							"locked": false,
 							"visibility": true,
 							"autouv": 0,
+							"selected": false,
 							"children": [
 								{
 									"name": "StoredItems",
@@ -4305,6 +4336,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": []
 								},
 								{
@@ -4318,6 +4350,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": []
 								},
 								{
@@ -4331,6 +4364,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": []
 								},
 								{
@@ -4345,6 +4379,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": []
 								},
 								{
@@ -4359,6 +4394,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": []
 								},
 								{
@@ -4372,6 +4408,7 @@
 									"locked": false,
 									"visibility": true,
 									"autouv": 0,
+									"selected": false,
 									"children": []
 								}
 							]
@@ -4391,6 +4428,7 @@
 			"locked": false,
 			"visibility": false,
 			"autouv": 0,
+			"selected": false,
 			"children": ["71c5b0d2-63ba-847f-ca3e-0b1d652338c9", "bc49fa84-7ba8-181d-36fd-77b1f1ed468b"]
 		},
 		{
@@ -4404,6 +4442,7 @@
 			"locked": false,
 			"visibility": false,
 			"autouv": 0,
+			"selected": false,
 			"children": [
 				{
 					"name": "leftArmDefaultFP",
@@ -4416,6 +4455,7 @@
 					"locked": false,
 					"visibility": false,
 					"autouv": 0,
+					"selected": false,
 					"children": ["b1bfcffe-e7d8-fa93-512f-f2d27cfc6b44", "dabada59-9e2a-3d84-a5aa-cadf1dd9798e"]
 				},
 				{
@@ -4429,6 +4469,7 @@
 					"locked": false,
 					"visibility": false,
 					"autouv": 0,
+					"selected": false,
 					"children": ["3fa5e3a1-6208-988d-2b66-4388d0adc4cf", "77f7865e-4f68-e254-db76-758350c3cb64"]
 				},
 				{
@@ -4442,6 +4483,7 @@
 					"locked": false,
 					"visibility": false,
 					"autouv": 0,
+					"selected": false,
 					"children": []
 				},
 				{
@@ -4455,6 +4497,7 @@
 					"locked": false,
 					"visibility": false,
 					"autouv": 0,
+					"selected": false,
 					"children": []
 				}
 			]
@@ -4470,6 +4513,7 @@
 			"locked": false,
 			"visibility": false,
 			"autouv": 0,
+			"selected": false,
 			"children": [
 				{
 					"name": "rightArmDefaultFP",
@@ -4482,6 +4526,7 @@
 					"locked": false,
 					"visibility": false,
 					"autouv": 0,
+					"selected": false,
 					"children": ["2df0491f-66ff-ba04-a1f6-6187e86c71ef", "42313e38-f810-d13a-561e-b456de341f9b"]
 				},
 				{
@@ -4495,6 +4540,7 @@
 					"locked": false,
 					"visibility": false,
 					"autouv": 0,
+					"selected": false,
 					"children": ["5bd1c9e8-7b3b-4d2f-2797-dd43c8f20df8", "00fd7795-f50f-565e-d77f-eb96e216edb8"]
 				},
 				{
@@ -4508,6 +4554,7 @@
 					"locked": false,
 					"visibility": false,
 					"autouv": 0,
+					"selected": false,
 					"children": []
 				},
 				{
@@ -4521,6 +4568,7 @@
 					"locked": false,
 					"visibility": false,
 					"autouv": 0,
+					"selected": false,
 					"children": []
 				}
 			]
@@ -4536,6 +4584,7 @@
 			"locked": false,
 			"visibility": false,
 			"autouv": 0,
+			"selected": false,
 			"children": ["c2abdd92-7fdb-9ad2-0c1f-95217a834ef0", "66643ef6-31c5-cb59-4724-66273e7297a3"]
 		},
 		{
@@ -4549,6 +4598,7 @@
 			"locked": false,
 			"visibility": false,
 			"autouv": 0,
+			"selected": false,
 			"children": ["2c3b1488-025e-9a1e-eaa6-d4ce3b9e7b6e", "9b391795-d61d-ce98-c30f-678939b64660"]
 		}
 	],
