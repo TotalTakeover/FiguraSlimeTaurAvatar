@@ -1,5 +1,5 @@
 # [Slime Taur](https://github.com/TotalTakeover/FiguraSlimeTaurAvatar)
-### Version: v1.1.0
+### Version: v1.1.1
 This Figura avatar is a template designed around turning the user into a Slime Taur.
 
 ### Authors:
