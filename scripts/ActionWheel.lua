@@ -135,8 +135,8 @@ function events.RENDER(delta, context)
 			)
 			:item(itemCheck("potion{\"CustomPotionColor\":" .. tostring(vectors.rgbToInt(color.hover)) .. "}"))
 		
-		for _, page in pairs(pageActs) do
-			page:hoverColor(color.hover)
+		for _, act in pairs(pageActs) do
+			act:hoverColor(color.hover)
 		end
 		
 	end

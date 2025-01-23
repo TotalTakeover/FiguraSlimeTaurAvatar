@@ -196,8 +196,8 @@ function events.RENDER(delta, context)
 				{text = "Toggles the movement swing movement of the arms.\nActions are not effected.", color = color.secondary}}
 			)
 		
-		for _, page in pairs(t) do
-			page:hoverColor(color.hover):toggleColor(color.active)
+		for _, act in pairs(t) do
+			act:hoverColor(color.hover):toggleColor(color.active)
 		end
 		
 	end

@@ -260,8 +260,8 @@ function events.RENDER(delta, context)
 			:toggleItem(itemCheck("lingering_potion{CustomPotionColor:" .. tostring(vectors.rgbToInt(colorLerp.currPos)) .. "}"))
 			:toggled(rainbow)
 		
-		for _, page in pairs(t) do
-			page:hoverColor(c.hover):toggleColor(c.active)
+		for _, act in pairs(t) do
+			act:hoverColor(c.hover):toggleColor(c.active)
 		end
 		
 	end

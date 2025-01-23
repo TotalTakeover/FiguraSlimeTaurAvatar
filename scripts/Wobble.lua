@@ -408,8 +408,8 @@ function events.RENDER(delta, context)
 				{text = powerActive and "Origins is currently overriding this toggle." or "", color = "yellow"}}
 			)
 		
-		for _, page in pairs(t) do
-			page:hoverColor(color.hover):toggleColor(color.active)
+		for _, act in pairs(t) do
+			act:hoverColor(color.hover):toggleColor(color.active)
 		end
 		
 	end
