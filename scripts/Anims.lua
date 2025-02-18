@@ -68,6 +68,13 @@ function events.RENDER(delta, context)
 		parrot:rot(-calculateParentRot(parrot:getParent()) - vanilla_model.BODY:getOriginRot())
 	end
 	
+	-- Crouch offset
+	local bodyRot = vanilla_model.BODY:getOriginRot(delta)
+	local crouchPos = vec(0, -math.sin(math.rad(bodyRot.x)) * 2, -math.sin(math.rad(bodyRot.x)) * 12)
+	parts.group.Player:pos(-crouchPos)
+	parts.group.UpperBody_Wobble:offsetPivot(crouchPos):pos(parts.group.UpperBody_Wobble:getPos() + crouchPos.xy_ * 2)
+	parts.group.LowerBody:pos(crouchPos)
+	
 end
 
 -- GS Blending Setup
