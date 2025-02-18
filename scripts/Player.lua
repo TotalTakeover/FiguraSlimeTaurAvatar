@@ -68,22 +68,6 @@ function events.RENDER(delta, context)
 	
 end
 
-function events.RENDER(delta, context)
-	
-	-- Scales models to fit GUIs better
-	if context == "FIGURA_GUI" or context == "MINECRAFT_GUI" or context == "PAPERDOLL" then
-		parts.group.Player:scale(0.7)
-	end
-	
-end
-
-function events.POST_RENDER(delta, context)
-	
-	-- After scaling models to fit GUIs, immediately scale back
-	parts.group.Player:scale(1)
-	
-end
-
 -- Vanilla skin toggle
 function pings.setAvatarVanillaSkin(boolean)
 	
