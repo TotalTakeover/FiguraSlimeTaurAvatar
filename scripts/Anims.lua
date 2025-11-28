@@ -46,14 +46,15 @@ end
 
 function events.RENDER(delta, context)
 	
-	-- Player variables
+	-- Variables
 	local vel = player:getVelocity()
-	local dir = player:getLookDir()
+	local yaw = player:getBodyYaw()
+	local dir = vec(math.sin(math.rad(-yaw)), 0, math.cos(math.rad(-yaw)))
 	
 	-- Directional velocity
-	local fbVel = player:getVelocity():dot((dir.x_z):normalize())
-	local lrVel = player:getVelocity():cross(dir.x_z:normalize()).y
-	local udVel = player:getVelocity().y
+	local fbVel = vel:dot((dir.x_z):normalized())
+	local lrVel = vel:crossed(dir.x_z:normalized()).y
+	local udVel = vel.y
 	
 	-- Animation speeds
 	local moveSpeed = fbVel < -0.05 and -1 or 1
