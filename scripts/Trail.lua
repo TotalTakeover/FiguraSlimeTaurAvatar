@@ -229,10 +229,9 @@ local function setMeltSpeed(x)
 end
 
 -- Sync variables
-function pings.syncTrail(a, x)
+function pings.syncTrail(...)
 	
-	trail = a
-	melt  = x
+	trail, melt = ...
 	
 end
 

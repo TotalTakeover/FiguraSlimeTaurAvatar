@@ -284,14 +284,9 @@ function pings.setWobbleHealthSize(boolean)
 end
 
 -- Sync variables
-function pings.syncWobble(a, b, c, d, e, f)
+function pings.syncWobble(...)
 	
-	speed      = a
-	dampen     = b
-	wobbleRot  = c
-	damage     = d
-	biome      = e
-	healthSize = f
+	speed, dampen, wobbleRot, damage, biome, healthSize = ...
 	
 end
 

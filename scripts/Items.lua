@@ -64,10 +64,9 @@ function pings.setItems(boolean)
 end
 
 -- Sync variables
-function pings.syncItems(a, b)
+function pings.syncItems(...)
 	
-	embed = a
-	items = b
+	embed, items = ...
 	
 end
 

@@ -120,12 +120,9 @@ function pings.setArmorBoots(boolean)
 end
 
 -- Sync variables
-function pings.syncArmor(a, b, c, d)
+function pings.syncArmor(...)
 	
-	helmet     = a
-	chestplate = b
-	leggings   = c
-	boots      = d
+	helmet, chestplate, leggings, boots = ...
 	
 end
 

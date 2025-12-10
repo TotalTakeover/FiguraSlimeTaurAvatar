@@ -79,9 +79,9 @@ function pings.setSquishSoundToggle(boolean)
 end
 
 -- Sync variables
-function pings.syncSquishSound(a)
+function pings.syncSquishSound(...)
 	
-	squishSound = a
+	squishSound = ...
 	
 end
 

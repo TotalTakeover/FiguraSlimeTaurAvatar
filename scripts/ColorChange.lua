@@ -181,10 +181,9 @@ function pings.setPickedColor(v)
 end
 
 -- Sync variables
-function pings.syncColor(a, b)
+function pings.syncColor(...)
 	
-	color = a
-	colorTypes.Pick = b
+	color, colorTypes.Pick = ...
 	
 end
 
