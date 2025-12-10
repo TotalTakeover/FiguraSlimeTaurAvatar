@@ -54,7 +54,7 @@ if parts.group.StoredItems then
 end
 
 -- Scale lerp
-local scaleLerp = lerp:new(0.2, 1)
+local scaleLerp = lerp:new(1)
 
 function events.ENTITY_INIT()
 	

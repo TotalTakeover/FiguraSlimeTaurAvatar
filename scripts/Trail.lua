@@ -53,7 +53,7 @@ local function new(pos, scale)
 	-- Add part to table
 	trails[#trails + 1] = {
 		pos    = pos,
-		scale  = lerp:new(0.2, scale * 0.75),
+		scale  = lerp:new(scale * 0.75),
 		fused  = true,
 		trails = copy
 	}
@@ -132,12 +132,12 @@ function events.TICK()
 		if part.fused then
 			
 			part.scale.target = scale
-			part.scale.speed  = 0.2
+			part.scale.stiff  = 0.2
 			
 		else
 			
 			part.scale.target = 0
-			part.scale.speed  = melt
+			part.scale.stiff  = melt
 			
 			-- If trail is too small, remove it
 			if part.scale.currPos:length() <= 0.05 then

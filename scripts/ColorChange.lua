@@ -37,8 +37,8 @@ local colorParts = parts:createTable(function(part) return part:getName():find("
 local transParts = parts:createTable(function(part) return part:getName():find("_[tT]rans") end)
 
 -- Lerps
-local colorLerp   = lerp:new(0.2, vec(1, 1, 1))
-local opacityLerp = lerp:new(0.2, 1)
+local colorLerp   = lerp:new(vec(1, 1, 1))
+local opacityLerp = lerp:new(1)
 
 function events.TICK()
 	

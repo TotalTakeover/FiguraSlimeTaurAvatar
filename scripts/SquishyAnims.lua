@@ -26,8 +26,8 @@ local function calculateParentRot(m)
 end
 
 -- Lerp tables
-local leftArmLerp  = lerp:new(0.5, armsMove and 1 or 0)
-local rightArmLerp = lerp:new(0.5, armsMove and 1 or 0)
+local leftArmLerp  = lerp:new(armsMove and 1 or 0, 0.5)
+local rightArmLerp = lerp:new(armsMove and 1 or 0, 0.5)
 
 -- Head table
 local headParts = {
