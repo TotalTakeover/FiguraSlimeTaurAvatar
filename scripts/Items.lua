@@ -83,7 +83,7 @@ function events.TICK()
 end
 
 -- Required scripts
-local s, wheel, itemCheck, c = pcall(require, "scripts.ActionWheel")
+local s, wheel, c = pcall(require, "scripts.ActionWheel")
 if not s then return end -- Kills script early if ActionWheel.lua isnt found
 pcall(require, "scripts.ColorChange") -- Tries to find script, not required
 
@@ -100,7 +100,7 @@ local a = {}
 -- Actions
 if not pageExists then
 	a.pageAct = parentPage:newAction()
-		:item(itemCheck("slime_block"))
+		:item("slime_block")
 		:onLeftClick(function() wheel:descend(slimePage) end)
 end
 

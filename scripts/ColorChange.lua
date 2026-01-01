@@ -200,7 +200,7 @@ function events.TICK()
 end
 
 -- Required scripts
-local s, wheel, itemCheck, c = pcall(require, "scripts.ActionWheel")
+local s, wheel, c = pcall(require, "scripts.ActionWheel")
 if not s then return end -- Kills script early if ActionWheel.lua isnt found
 
 -- Dont preform if color properties is empty
@@ -341,7 +341,7 @@ local a = {}
 -- Actions
 if not pageExists then
 	a.pageAct = parentPage:newAction()
-		:item(itemCheck("slime_block"))
+		:item("slime_block")
 		:onLeftClick(function() wheel:descend(slimePage) end)
 end
 
@@ -369,7 +369,7 @@ function events.RENDER(delta, context)
 					{text = ("Your slime\'s color will %s\n\nLeft or Right click to change color modes."):format(actState.info), color = c.secondary}
 				}
 			))
-			:item(itemCheck(actState.item.."{CustomPotionColor:" .. tostring(vectors.rgbToInt(colorLerp.currPos)) .. "}"))
+			:item(actState.item.."{CustomPotionColor:" .. tostring(vectors.rgbToInt(colorLerp.currPos)) .. "}")
 			:onLeftClick(function() pickFunction(actState.id, 1) end)
 			:onRightClick(function() pickFunction(actState.id, -1) end)
 			:onScroll(actState.scrAct)

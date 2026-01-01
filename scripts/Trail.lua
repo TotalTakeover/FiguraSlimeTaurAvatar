@@ -248,7 +248,7 @@ function events.TICK()
 end
 
 -- Required scripts
-local s, wheel, itemCheck, c = pcall(require, "scripts.ActionWheel")
+local s, wheel, c = pcall(require, "scripts.ActionWheel")
 if not s then return end -- Kills script early if ActionWheel.lua isnt found
 
 -- Check for if page already exists
@@ -264,13 +264,13 @@ local a = {}
 -- Actions
 if not pageExists then
 	a.pageAct = parentPage:newAction()
-		:item(itemCheck("slime_block"))
+		:item("slime_block")
 		:onLeftClick(function() wheel:descend(slimePage) end)
 end
 
 a.trailAct = slimePage:newAction()
-	:item(itemCheck("snow"))
-	:toggleItem(itemCheck("lime_carpet"))
+	:item("snow")
+	:toggleItem("lime_carpet")
 	:onToggle(pings.setTrailToggle)
 	:onScroll(setMeltSpeed)
 	:onRightClick(function() melt = 0.02 config:save("TrailMeltSpeed", melt) end)

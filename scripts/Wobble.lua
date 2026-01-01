@@ -303,7 +303,7 @@ function events.TICK()
 end
 
 -- Required scripts
-local s, wheel, itemCheck, c = pcall(require, "scripts.ActionWheel")
+local s, wheel, c = pcall(require, "scripts.ActionWheel")
 if not s then return end -- Kills script early if ActionWheel.lua isnt found
 
 -- Check for if page already exists
@@ -320,12 +320,12 @@ local a = {}
 -- Actions
 if not pageExists then
 	a.slimePageAct = parentPage:newAction()
-		:item(itemCheck("slime_block"))
+		:item("slime_block")
 		:onLeftClick(function() wheel:descend(slimePage) end)
 end
 
 a.wobblePageAct = slimePage:newAction()
-	:item(itemCheck("brewing_stand"))
+	:item("brewing_stand")
 	:onLeftClick(function() wheel:descend(wobblePage) end)
 
 a.strengthAct = wobblePage:newAction()
@@ -342,26 +342,26 @@ a.strengthAct = wobblePage:newAction()
 	end)
 
 a.rotAct = wobblePage:newAction()
-	:item(itemCheck("music_disc_chirp"))
-	:toggleItem(itemCheck("music_disc_far"))
+	:item("music_disc_chirp")
+	:toggleItem("music_disc_far")
 	:onToggle(pings.setWobbleRot)
 	:toggled(wobbleRot)
 
 a.damageAct = wobblePage:newAction()
-	:item(itemCheck("shield"))
-	:toggleItem(itemCheck("iron_sword"))
+	:item("shield")
+	:toggleItem("iron_sword")
 	:onToggle(pings.setWobbleDamage)
 	:toggled(damage)
 
 a.biomeAct = wobblePage:newAction()
-	:item(itemCheck("snow_block"))
-	:toggleItem(itemCheck("water_bucket"))
+	:item("snow_block")
+	:toggleItem("water_bucket")
 	:onToggle(pings.setWobbleBiome)
 	:toggled(biome)
 
 a.healthSizeAct = wobblePage:newAction()
-	:item(itemCheck("beef"))
-	:toggleItem(itemCheck("cooked_beef"))
+	:item("beef")
+	:toggleItem("cooked_beef")
 	:onToggle(pings.setWobbleHealthSize)
 	:toggled(healthSize)
 
@@ -402,7 +402,7 @@ function events.RENDER(delta, context)
 					{text = "Scroll to adjust a value.\nLeft click selects which value is being adjusted.\nRight click resets the value back to 7.5%.", color = c.secondary}
 				}
 			))
-			:item(itemCheck("potion{\"CustomPotionColor\":" .. tostring(vectors.rgbToInt(potionColor)) .. "}"))
+			:item("potion{\"CustomPotionColor\":" .. tostring(vectors.rgbToInt(potionColor)) .. "}")
 		
 		a.rotAct
 			:title(toJson(
