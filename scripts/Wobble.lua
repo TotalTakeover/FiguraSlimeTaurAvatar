@@ -10,12 +10,13 @@ local slimeWobble = wobble:newWobbleSetup()
 
 -- Config setup
 config:name("SlimeTaur")
-local speed      = config:load("WobbleSpeed") or 0.0075
-local dampen     = config:load("WobbleDampening") or 0.0075
-local wobbleRot  = config:load("WobbleRot")
-local damage     = config:load("WobbleDamage")
-local biome      = config:load("WobbleBiome")
-local healthSize = config:load("WobbleHealthSize") or false
+local speed       = config:load("WobbleSpeed") or 0.0075
+local dampen      = config:load("WobbleDampening") or 0.0075
+local wobbleRot   = config:load("WobbleRot")
+local damage      = config:load("WobbleDamage")
+local upperWobble = config:load("WobbleUpper") or false
+local biome       = config:load("WobbleBiome")
+local healthSize  = config:load("WobbleHealthSize") or false
 if wobbleRot == nil then wobbleRot = true end
 if damage    == nil then damage    = true end
 if biome     == nil then biome     = true end
@@ -53,8 +54,9 @@ if parts.group.StoredItems then
 	
 end
 
--- Scale lerp
+-- Lerps
 local scaleLerp = lerp:new(1)
+local upperLerp = lerp:new(upperWobble and 1 or 0)
 
 function events.ENTITY_INIT()
 	
@@ -88,6 +90,8 @@ function events.TICK()
 		scaleLerp.target = 1
 		
 	end
+	
+	upperLerp.target = upperWobble and 1 or 0
 	
 end
 
@@ -213,6 +217,7 @@ function events.WORLD_RENDER(delta, context)
 			calcRot = 0
 			
 		end
+		
 		-- Calculates the Wobble and applies it
 		slimeWobble:update(scaleApply + calcRot, true)
 		local calcWobble = slimeWobble.wobble * scaleLerp.currPos
@@ -222,6 +227,9 @@ function events.WORLD_RENDER(delta, context)
 				scaleLerp.currPos - calcWobble)
 				+ increase
 			)
+		
+		-- Calculates the Wobble and applies it, but for the upper body
+		parts.group.UpperBody_Wobble:scale(1 + (upperLerp.currPos * vec(-calcWobble, calcWobble, -calcWobble)))
 		
 		-- Scale shadow to size
 		renderer:shadowRadius(scaleLerp.currPos - 0.25 * scaleLerp.currPos)
@@ -267,6 +275,14 @@ function pings.setWobbleDamage(boolean)
 	
 end
 
+-- Upper body wobble toggle
+function pings.setWobbleUpper(boolean)
+	
+	upperWobble = boolean
+	config:save("WobbleUpper", upperWobble)
+	
+end
+
 -- Biome wobble toggle
 function pings.setWobbleBiome(boolean)
 	
@@ -286,7 +302,7 @@ end
 -- Sync variables
 function pings.syncWobble(...)
 	
-	speed, dampen, wobbleRot, damage, biome, healthSize = ...
+	speed, dampen, wobbleRot, damage, upperWobble, biome, healthSize = ...
 	
 end
 
@@ -297,7 +313,7 @@ if not host:isHost() then return end
 function events.TICK()
 	
 	if world.getTime() % 200 == 0 then
-		pings.syncWobble(speed, dampen, wobbleRot, damage, biome, healthSize)
+		pings.syncWobble(speed, dampen, wobbleRot, damage, upperWobble, biome, healthSize)
 	end
 	
 end
@@ -352,6 +368,12 @@ a.damageAct = wobblePage:newAction()
 	:toggleItem("iron_sword")
 	:onToggle(pings.setWobbleDamage)
 	:toggled(damage)
+
+a.upperAct = wobblePage:newAction()
+	:item("armor_stand")
+	:toggleItem("slime_ball")
+	:onToggle(pings.setWobbleUpper)
+	:toggled(upperWobble)
 
 a.biomeAct = wobblePage:newAction()
 	:item("snow_block")
@@ -419,6 +441,15 @@ function events.RENDER(delta, context)
 					"",
 					{text = "Set Damage Wobble\n\n", bold = true, color = c.primary},
 					{text = "Sets if slime should wobble if damage is taken.", color = c.secondary}
+				}
+			))
+		
+		a.upperAct
+			:title(toJson(
+				{
+					"",
+					{text = "Set Upper Body Wobble\n\n", bold = true, color = c.primary},
+					{text = "Sets if the upper body should wobble as well.", color = c.secondary}
 				}
 			))
 		
