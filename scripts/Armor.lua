@@ -1,13 +1,11 @@
--- Config setup
-config:name("SlimeTaur")
-local helmet     = config:load("ArmorHelmet")
-local chestplate = config:load("ArmorChestplate")
-local leggings   = config:load("ArmorLeggings")
-local boots      = config:load("ArmorBoots")
-if helmet     == nil then helmet     = true end
-if chestplate == nil then chestplate = true end
-if leggings   == nil then leggings   = true end
-if boots      == nil then boots      = true end
+-- Required script
+local sync = require("lib.LetThatSyncFig")
+
+-- Synced variables setup
+local helmet     = sync.add(config:load("ArmorHelmet"), true)
+local chestplate = sync.add(config:load("ArmorChestplate"), true)
+local leggings   = sync.add(config:load("ArmorLeggings"), true)
+local boots      = sync.add(config:load("ArmorBoots"), true)
 
 -- Helmet parts
 local helmetGroups = {
@@ -41,19 +39,19 @@ function events.RENDER(delta, context)
 	
 	-- Apply
 	for _, part in ipairs(helmetGroups) do
-		part:visible(helmet)
+		part:visible(sync[helmet])
 	end
 	
 	for _, part in ipairs(chestplateGroups) do
-		part:visible(chestplate)
+		part:visible(sync[chestplate])
 	end
 	
 	for _, part in ipairs(leggingsGroups) do
-		part:visible(leggings)
+		part:visible(sync[leggings])
 	end
 	
 	for _, part in ipairs(bootsGroups) do
-		part:visible(boots)
+		part:visible(sync[boots])
 	end
 	
 end
@@ -61,14 +59,14 @@ end
 -- All toggle
 function pings.setArmorAll(boolean)
 	
-	helmet     = boolean
-	chestplate = boolean
-	leggings   = boolean
-	boots      = boolean
-	config:save("ArmorHelmet", helmet)
-	config:save("ArmorChestplate", chestplate)
-	config:save("ArmorLeggings", leggings)
-	config:save("ArmorBoots", boots)
+	sync[helmet]     = boolean
+	sync[chestplate] = boolean
+	sync[leggings]   = boolean
+	sync[boots]      = boolean
+	config:save("ArmorHelmet", sync[helmet])
+	config:save("ArmorChestplate", sync[chestplate])
+	config:save("ArmorLeggings", sync[leggings])
+	config:save("ArmorBoots", sync[boots])
 	if player:isLoaded() then
 		sounds:playSound("item.armor.equip_generic", player:getPos(), 0.5)
 	end
@@ -78,8 +76,8 @@ end
 -- Helmet toggle
 function pings.setArmorHelmet(boolean)
 	
-	helmet = boolean
-	config:save("ArmorHelmet", helmet)
+	sync[helmet] = boolean
+	config:save("ArmorHelmet", sync[helmet])
 	if player:isLoaded() then
 		sounds:playSound("item.armor.equip_generic", player:getPos(), 0.5)
 	end
@@ -89,8 +87,8 @@ end
 -- Chestplate toggle
 function pings.setArmorChestplate(boolean)
 	
-	chestplate = boolean
-	config:save("ArmorChestplate", chestplate)
+	sync[chestplate] = boolean
+	config:save("ArmorChestplate", sync[chestplate])
 	if player:isLoaded() then
 		sounds:playSound("item.armor.equip_generic", player:getPos(), 0.5)
 	end
@@ -100,8 +98,8 @@ end
 -- Leggings toggle
 function pings.setArmorLeggings(boolean)
 	
-	leggings = boolean
-	config:save("ArmorLeggings", leggings)
+	sync[leggings] = boolean
+	config:save("ArmorLeggings", sync[leggings])
 	if player:isLoaded() then
 		sounds:playSound("item.armor.equip_generic", player:getPos(), 0.5)
 	end
@@ -111,32 +109,16 @@ end
 -- Boots toggle
 function pings.setArmorBoots(boolean)
 	
-	boots = boolean
-	config:save("ArmorBoots", boots)
+	sync[boots] = boolean
+	config:save("ArmorBoots", sync[boots])
 	if player:isLoaded() then
 		sounds:playSound("item.armor.equip_generic", player:getPos(), 0.5)
 	end
 	
 end
 
--- Sync variables
-function pings.syncArmor(...)
-	
-	helmet, chestplate, leggings, boots = ...
-	
-end
-
 -- Host only instructions
 if not host:isHost() then return end
-
--- Sync on tick
-function events.TICK()
-	
-	if world.getTime() % 200 == 0 then
-		pings.syncArmor(helmet, chestplate, leggings, boots)
-	end
-	
-end
 
 -- Required scripts
 local s, wheel, c = pcall(require, "scripts.ActionWheel")
@@ -197,7 +179,7 @@ function events.RENDER(delta, context)
 					{text = "Toggles visibility of all armor parts.", color = c.secondary}
 				}
 			))
-			:toggled(helmet and chestplate and leggings and boots)
+			:toggled(sync[helmet] and sync[chestplate] and sync[leggings] and sync[boots])
 		
 		a.helmetAct
 			:title(toJson(
@@ -207,7 +189,7 @@ function events.RENDER(delta, context)
 					{text = "Toggles visibility of helmet parts.", color = c.secondary}
 				}
 			))
-			:toggled(helmet)
+			:toggled(sync[helmet])
 		
 		a.chestplateAct
 			:title(toJson(
@@ -217,7 +199,7 @@ function events.RENDER(delta, context)
 					{text = "Toggles visibility of chestplate parts.", color = c.secondary}
 				}
 			))
-			:toggled(chestplate)
+			:toggled(sync[chestplate])
 		
 		a.leggingsAct
 			:title(toJson(
@@ -227,7 +209,7 @@ function events.RENDER(delta, context)
 					{text = "Toggles visibility of leggings parts.", color = c.secondary}
 				}
 			))
-			:toggled(leggings)
+			:toggled(sync[leggings])
 		
 		a.bootsAct
 			:title(toJson(
@@ -237,7 +219,7 @@ function events.RENDER(delta, context)
 					{text = "Toggles visibility of boots.", color = c.secondary}
 				}
 			))
-			:toggled(boots)
+			:toggled(sync[boots])
 		
 		for _, act in pairs(a) do
 			act:hoverColor(c.hover):toggleColor(c.active)

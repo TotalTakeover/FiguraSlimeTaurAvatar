@@ -1,24 +1,24 @@
 -- Force load after
 require("scripts.Wobble")
 
--- Required script
+-- Required scripts
 local parts = require("lib.PartsAPI")
+local sync  = require("lib.LetThatSyncFig")
 
 -- Kills script if it cannot find the stored items group
 if not parts.group.StoredItems then return {} end
 
--- Config setup
-config:name("SlimeTaur")
-local embed = config:load("ItemsEmbed")
-if embed == nil then embed = true end
+-- Synced variables setup
+local embed = sync.add(config:load("ItemsEmbed"), true)
+local items = sync.add({})
 
+-- Variable
 local groups = {}
-local items  = {}
 
 for i = 1, 27 do
 	
 	groups[i] = parts.group.StoredItems["StoredItem"..i]:newItem("Item"):displayMode("GROUND")
-	items[i]  = "minecraft:air"
+	sync[items][i]  = "minecraft:air"
 	
 end
 
@@ -32,10 +32,10 @@ function events.TICK()
 		-- Apply
 		groups[i]
 			:item(item)
-			:visible(embed)
+			:visible(sync[embed])
 		
 		-- Store
-		items[i] = item
+		sync[items][i] = item
 		
 	end
 	
@@ -58,29 +58,13 @@ end
 -- Items toggle
 function pings.setItems(boolean)
 	
-	embed = boolean
-	config:save("ItemsEmbed", embed)
-	
-end
-
--- Sync variables
-function pings.syncItems(...)
-	
-	embed, items = ...
+	sync[embed] = boolean
+	config:save("ItemsEmbed", sync[embed])
 	
 end
 
 -- Host only instructions
 if not host:isHost() then return end
-
--- Sync on tick
-function events.TICK()
-	
-	if world.getTime() % 200 == 0 then
-		pings.syncItems(embed, items)
-	end
-	
-end
 
 -- Required scripts
 local s, wheel, c = pcall(require, "scripts.ActionWheel")
@@ -108,7 +92,7 @@ a.embedAct = slimePage:newAction()
 	:texture(textures:fromVanilla("BundleFilled", "textures/item/bundle_filled.png"))
 	:toggleTexture(textures:fromVanilla("Bundle", "textures/item/bundle.png"))
 	:onToggle(pings.setItems)
-	:toggled(embed)
+	:toggled(sync[embed])
 
 -- Update actions
 function events.RENDER(delta, context)

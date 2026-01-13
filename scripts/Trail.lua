@@ -1,14 +1,13 @@
 -- Required scripts
 local parts       = require("lib.PartsAPI")
+local sync        = require("lib.LetThatSyncFig")
 local lerp        = require("lib.LerpAPI")
 local pehkuiScale = require("lib.PehkuiScale")
 local pose        = require("scripts.Posing")
 
--- Config setup
-config:name("SlimeTaur")
-local trail = config:load("TrailToggle")
-local melt  = config:load("TrailMeltSpeed") or 0.02
-if trail == nil then trail = true end
+-- Synced variables setup
+local trail = sync.add(config:load("TrailToggle"), true)
+local melt = sync.add(config:load("TrailMeltSpeed"), 0.02)
 
 -- Variables
 local worldPart = models:newPart("world", "WORLD")
@@ -88,7 +87,7 @@ function events.TICK()
 	end
 	
 	-- Spawn new trail if on ground and not currently fused
-	if trail and onGround and not (trails[#trails] and trails[#trails].fused) then
+	if sync[trail] and onGround and not (trails[#trails] and trails[#trails].fused) then
 		
 		-- Find collision
 		local _, blockPos = raycast:block(pos, pos - vec(0, 1, 0), "COLLIDER")
@@ -122,7 +121,7 @@ function events.TICK()
 		local dis = (pos - part.pos):length()
 		
 		-- Check if trails should not be fused anymore
-		if not trail or dis >= 0.25 or not onGround then
+		if not sync[trail] or dis >= 0.25 or not onGround then
 			
 			part.fused = false
 			
@@ -137,7 +136,7 @@ function events.TICK()
 		else
 			
 			part.scale.target = 0
-			part.scale.stiff  = melt
+			part.scale.stiff  = sync[melt]
 			
 			-- If trail is too small, remove it
 			if part.scale.currPos:length() <= 0.05 then
@@ -212,9 +211,9 @@ end
 -- Trail toggle
 function pings.setTrailToggle(boolean)
 
-	trail = boolean
-	config:save("TrailToggle", trail)
-	if host:isHost() and player:isLoaded() and trail then
+	sync[trail] = boolean
+	config:save("TrailToggle", sync[trail])
+	if host:isHost() and player:isLoaded() and sync[trail] then
 		sounds:playSound("entity.slime.squish", player:getPos(), 0.35)
 	end
 	
@@ -223,29 +222,13 @@ end
 -- Melt speed
 local function setMeltSpeed(x)
 	
-	melt = math.clamp(melt + (x * 0.001), 0.01, 0.1)
-	config:save("TrailMeltSpeed", melt)
-	
-end
-
--- Sync variables
-function pings.syncTrail(...)
-	
-	trail, melt = ...
+	sync[melt] = math.clamp(sync[melt] + (x * 0.001), 0.01, 0.1)
+	config:save("TrailMeltSpeed", sync[melt])
 	
 end
 
 -- Host only instructions
 if not host:isHost() then return end
-
--- Sync on tick
-function events.TICK()
-	
-	if world.getTime() % 200 == 0 then
-		pings.syncTrail(trail, melt)
-	end
-	
-end
 
 -- Required scripts
 local s, wheel, c = pcall(require, "scripts.ActionWheel")
@@ -273,8 +256,8 @@ a.trailAct = slimePage:newAction()
 	:toggleItem("lime_carpet")
 	:onToggle(pings.setTrailToggle)
 	:onScroll(setMeltSpeed)
-	:onRightClick(function() melt = 0.02 config:save("TrailMeltSpeed", melt) end)
-	:toggled(trail)
+	:onRightClick(function() sync[melt] = 0.02 config:save("TrailMeltSpeed", sync[melt]) end)
+	:toggled(sync[trail])
 
 -- Update actions
 function events.RENDER(delta, context)
@@ -294,7 +277,7 @@ function events.RENDER(delta, context)
 					{text = "Toggle Trail/Melt Speed\n\n", bold = true, color = c.primary},
 					{text = "Toggles the formation of slime trails as you move, and how long they take to melt.\n\n", color = c.secondary},
 					{text = "Current melt speed: ", bold = true, color = c.secondary},
-					{text = (melt * 100).."% Each Tick\n\n"},
+					{text = (sync[melt] * 100).."% Each Tick\n\n"},
 					{text = "Scroll to adjust the speed.\nRight click resets speed to 2%.", color = c.secondary}
 				}
 			))

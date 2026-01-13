@@ -1,11 +1,11 @@
 -- Required scripts
 local parts  = require("lib.PartsAPI")
+local sync   = require("lib.LetThatSyncFig")
 local lerp   = require("lib.LerpAPI")
 local ground = require("lib.GroundCheck")
 
--- Config setup
-config:name("SlimeTaur")
-local color = config:load("ColorType") or "UUID"
+-- Synced variables setup
+local color = sync.add(config:load("ColorType"), "UUID")
 
 -- Color types
 local colorTypes = {
@@ -25,8 +25,8 @@ local colorTypes = {
 }
 
 -- Reset if color is out of bounds
-if type(color) == "number" and color > #colorTypes then
-	color = 1
+if type(sync[color]) == "number" and sync[color] > #colorTypes then
+	sync[color] = 1
 end
 
 -- Variable
@@ -43,7 +43,7 @@ local opacityLerp = lerp:new(1)
 function events.TICK()
 	
 	-- Calc camo
-	if color == "Camo" then
+	if sync[color] == "Camo" then
 		
 		-- Variables
 		local pos    = parts.group.Slime_Wobble:partToWorldMatrix():apply(0, -10, 0)
@@ -110,7 +110,7 @@ function events.TICK()
 		groundTimer = ground() and 0 or groundTimer + 1
 		
 	-- Calc rainbow
-	elseif color == "RGB" then
+	elseif sync[color] == "RGB" then
 		
 		local calcColor = world.getTime() % 360 / 360
 		colorTypes.RGB  = vectors.hsvToRGB(calcColor, 1, 1)
@@ -124,7 +124,7 @@ function events.TICK()
 	end
 	
 	-- Set target
-	colorLerp.target = colorTypes[color]
+	colorLerp.target = colorTypes[sync[color]]
 	
 end
 
@@ -150,23 +150,23 @@ end
 function pings.setPreset(i)
 	
 	-- Sets to preset if its in another mode
-	if type(color) ~= "number" then
-		color = 1
-		config:save("ColorType", color)
+	if type(sync[color]) ~= "number" then
+		sync[color] = 1
+		config:save("ColorType", sync[color])
 		return
 	end
 	
 	-- Sets preset
-	color = ((color + i - 1) % #colorTypes) + 1
-	config:save("ColorType", color)
+	sync[color] = ((sync[color] + i - 1) % #colorTypes) + 1
+	config:save("ColorType", sync[color])
 	
 end
 
 -- Color type
 function pings.setColorType(type)
 	
-	color = type
-	config:save("ColorType", color)
+	sync[color] = type
+	config:save("ColorType", sync[color])
 	
 end
 
@@ -174,30 +174,14 @@ end
 function pings.setPickedColor(v)
 	
 	colorTypes.Pick = v
-	color = "Pick"
-	config:save("ColorType", color)
+	sync[color] = "Pick"
+	config:save("ColorType", sync[color])
 	config:save("ColorPicked", colorTypes.Pick)
-	
-end
-
--- Sync variables
-function pings.syncColor(...)
-	
-	color, colorTypes.Pick = ...
 	
 end
 
 -- Host only instructions
 if not host:isHost() then return end
-
--- Sync on tick
-function events.TICK()
-	
-	if world.getTime() % 200 == 0 then
-		pings.syncColor(color, colorTypes.Pick)
-	end
-	
-end
 
 -- Required scripts
 local s, wheel, c = pcall(require, "scripts.ActionWheel")
@@ -359,7 +343,7 @@ function events.RENDER(delta, context)
 		end
 		
 		-- Gets info
-		local actState = actStuff[type(color) == "string" and color or "Preset"]
+		local actState = actStuff[type(sync[color]) == "string" and sync[color] or "Preset"]
 		
 		a.colorAct
 			:title(toJson(

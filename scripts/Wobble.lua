@@ -1,5 +1,6 @@
 -- Required scripts
 local parts   = require("lib.PartsAPI")
+local sync    = require("lib.LetThatSyncFig")
 local lerp    = require("lib.LerpAPI")
 local wobble  = require("lib.CMWobble")
 local origins = require("lib.OriginsAPI")
@@ -8,18 +9,14 @@ local pose    = require("scripts.Posing")
 -- Wobble Setup
 local slimeWobble = wobble:newWobbleSetup()
 
--- Config setup
-config:name("SlimeTaur")
-local speed       = config:load("WobbleSpeed") or 0.0075
-local dampen      = config:load("WobbleDampening") or 0.0075
-local wobbleRot   = config:load("WobbleRot")
-local damage      = config:load("WobbleDamage")
-local upperWobble = config:load("WobbleUpper") or false
-local biome       = config:load("WobbleBiome")
-local healthSize  = config:load("WobbleHealthSize") or false
-if wobbleRot == nil then wobbleRot = true end
-if damage    == nil then damage    = true end
-if biome     == nil then biome     = true end
+-- Synced variables setup
+local speed       = sync.add(config:load("WobbleSpeed"), 0.0075)
+local dampen      = sync.add(config:load("WobbleDampening"), 0.0075)
+local wobbleRot   = sync.add(config:load("WobbleRot"), true)
+local damage      = sync.add(config:load("WobbleDamage"), true)
+local upperWobble = sync.add(config:load("WobbleUpper"), false)
+local biome       = sync.add(config:load("WobbleBiome"), true)
+local healthSize  = sync.add(config:load("WobbleHealthSize"), false)
 
 -- Variables
 local scaleApply   = 0
@@ -56,7 +53,7 @@ end
 
 -- Lerps
 local scaleLerp = lerp:new(1)
-local upperLerp = lerp:new(upperWobble and 1 or 0)
+local upperLerp = lerp:new(sync[upperWobble] and 1 or 0)
 
 function events.ENTITY_INIT()
 	
@@ -81,7 +78,7 @@ function events.TICK()
 		local moisture = origins.getPowerData(player, "slime_taur:moisture_bar") or 50
 		scaleLerp.target = ((player:getHealth() / player:getMaxHealth()) * 1.5) * (moisture / 100) + 0.5
 		
-	elseif healthSize then
+	elseif sync[healthSize] then
 		
 		scaleLerp.target = (player:getHealth() / player:getMaxHealth()) * 1.5 + 0.5
 		
@@ -91,7 +88,7 @@ function events.TICK()
 		
 	end
 	
-	upperLerp.target = upperWobble and 1 or 0
+	upperLerp.target = sync[upperWobble] and 1 or 0
 	
 end
 
@@ -103,11 +100,11 @@ function events.RENDER(delta, context)
 	local water   = player:isInWater()
 	
 	-- Apply speed and dampen values
-	slimeWobble.s = speed
-	slimeWobble.d = dampen
+	slimeWobble.s = sync[speed]
+	slimeWobble.d = sync[dampen]
 	
 	-- Modify based on biome
-	if biome then
+	if sync[biome] then
 		
 		local biomePos = world.getBiome(player:getPos())
 		local apply = math.map(biomePos:getTemperature(), -0.7, 2, 0.1, 1.9)
@@ -164,7 +161,7 @@ function events.RENDER(delta, context)
 	end
 	
 	-- Cause wobble if damage taken and enabled
-	if damage and player:getNbt()["HurtTime"] == 10 and slimeWobble.d ~= 0.1 then
+	if sync[wobbleRot] and player:getNbt()["HurtTime"] == 10 and slimeWobble.d ~= 0.1 then
 		
 		slimeWobble:setWobble(-damageWobble, -damageWobble, -damageWobble)
 		
@@ -206,7 +203,7 @@ function events.WORLD_RENDER(delta, context)
 		end
 		
 		local calcRot 
-		if wobbleRot and (pose.stand or pose.crouch) then
+		if sync[wobbleRot] and (pose.stand or pose.crouch) then
 			
 			-- Calc rot application
 			local rotDif = currRot - prevRot
@@ -243,11 +240,11 @@ local function setStrength(x)
 	local apply = x * 0.0005
 	
 	if strengthSwitch then 
-		speed = math.clamp(speed + apply, speedMin, speedMax)
-		config:save("WobbleSpeed", speed)
+		sync[speed] = math.clamp(sync[speed] + apply, speedMin, speedMax)
+		config:save("WobbleSpeed", sync[speed])
 	else
-		dampen = math.clamp(dampen + apply, dampenMin, dampenMax)
-		config:save("WobbleDampening", dampen)
+		sync[dampen] = math.clamp(sync[dampen] + apply, dampenMin, dampenMax)
+		config:save("WobbleDampening", sync[dampen])
 	end
 	
 end
@@ -262,61 +259,45 @@ end
 -- Rotation wobble toggle
 function pings.setWobbleRot(boolean)
 	
-	wobbleRot = boolean
-	config:save("WobbleRot", wobbleRot)
+	sync[wobbleRot] = boolean
+	config:save("WobbleRot", sync[wobbleRot])
 	
 end
 
 -- Damage wobble toggle
 function pings.setWobbleDamage(boolean)
 	
-	damage = boolean
-	config:save("WobbleDamage", damage)
+	sync[wobbleRot] = boolean
+	config:save("WobbleDamage", sync[wobbleRot])
 	
 end
 
 -- Upper body wobble toggle
 function pings.setWobbleUpper(boolean)
 	
-	upperWobble = boolean
-	config:save("WobbleUpper", upperWobble)
+	sync[upperWobble] = boolean
+	config:save("WobbleUpper", sync[upperWobble])
 	
 end
 
 -- Biome wobble toggle
 function pings.setWobbleBiome(boolean)
 	
-	biome = boolean
-	config:save("WobbleBiome", biome)
+	sync[biome] = boolean
+	config:save("WobbleBiome", sync[biome])
 	
 end
 
 -- Health size toggle
 function pings.setWobbleHealthSize(boolean)
 	
-	healthSize = boolean
-	config:save("WobbleHealthSize", healthSize)
-	
-end
-
--- Sync variables
-function pings.syncWobble(...)
-	
-	speed, dampen, wobbleRot, damage, upperWobble, biome, healthSize = ...
+	sync[healthSize] = boolean
+	config:save("WobbleHealthSize", sync[healthSize])
 	
 end
 
 -- Host only instructions
 if not host:isHost() then return end
-
--- Sync on tick
-function events.TICK()
-	
-	if world.getTime() % 200 == 0 then
-		pings.syncWobble(speed, dampen, wobbleRot, damage, upperWobble, biome, healthSize)
-	end
-	
-end
 
 -- Required scripts
 local s, wheel, c = pcall(require, "scripts.ActionWheel")
@@ -349,11 +330,11 @@ a.strengthAct = wobblePage:newAction()
 	:onLeftClick(setStrengthSwitch)
 	:onRightClick(function()
 		if strengthSwitch then
-			speed = 0.0075
-			config:save("WobbleSpeed", speed)
+			sync[speed] = 0.0075
+			config:save("WobbleSpeed", sync[speed])
 		else
-			dampen = 0.0075
-			config:save("WobbleDampening", dampen)
+			sync[dampen] = 0.0075
+			config:save("WobbleDampening", sync[dampen])
 		end
 	end)
 
@@ -361,31 +342,31 @@ a.rotAct = wobblePage:newAction()
 	:item("music_disc_chirp")
 	:toggleItem("music_disc_far")
 	:onToggle(pings.setWobbleRot)
-	:toggled(wobbleRot)
+	:toggled(sync[wobbleRot])
 
 a.damageAct = wobblePage:newAction()
 	:item("shield")
 	:toggleItem("iron_sword")
 	:onToggle(pings.setWobbleDamage)
-	:toggled(damage)
+	:toggled(sync[wobbleRot])
 
 a.upperAct = wobblePage:newAction()
 	:item("armor_stand")
 	:toggleItem("slime_ball")
 	:onToggle(pings.setWobbleUpper)
-	:toggled(upperWobble)
+	:toggled(sync[upperWobble])
 
 a.biomeAct = wobblePage:newAction()
 	:item("snow_block")
 	:toggleItem("water_bucket")
 	:onToggle(pings.setWobbleBiome)
-	:toggled(biome)
+	:toggled(sync[biome])
 
 a.healthSizeAct = wobblePage:newAction()
 	:item("beef")
 	:toggleItem("cooked_beef")
 	:onToggle(pings.setWobbleHealthSize)
-	:toggled(healthSize)
+	:toggled(sync[healthSize])
 
 -- Update actions
 function events.RENDER(delta, context)
@@ -405,7 +386,7 @@ function events.RENDER(delta, context)
 		
 		-- Variables
 		local potionColor = math.lerp(vectors.hexToRGB("4CFF00"), vectors.hexToRGB("FFD800"),
-		strengthSwitch and math.map(speed, speedMin, speedMax, 0, 1) or math.map(dampen, dampenMin, dampenMax, 0, 1))
+		strengthSwitch and math.map(sync[speed], speedMin, speedMax, 0, 1) or math.map(sync[dampen], dampenMin, dampenMax, 0, 1))
 		
 		a.strengthAct
 			:title(toJson(
@@ -414,11 +395,11 @@ function events.RENDER(delta, context)
 					{text = "Set Wobble Strength\n\n", bold = true, color = c.primary},
 					{text = "Sets the Speed/Dampening of the slime.\n\n", color = c.secondary},
 					{text = "Set Speed: ", bold = true, color = c.secondary},
-					{text = (strengthSwitch and "[%s]\n" or "%s\n"):format(math.map(speed, speedMin, speedMax, 0, 100).."%")},
+					{text = (strengthSwitch and "[%s]\n" or "%s\n"):format(math.map(sync[speed], speedMin, speedMax, 0, 100).."%")},
 					{text = "Modified Speed: ", bold = true, color = c.secondary},
 					{text = math.map(slimeWobble.s, speedMin, speedMax, 0, 100).."%\n\n"},
 					{text = "Set Dampening: ", bold = true, color = c.secondary},
-					{text = (not strengthSwitch and "[%s]\n" or "%s\n"):format(math.map(dampen, dampenMin, dampenMax, 0, 100).."%")},
+					{text = (not strengthSwitch and "[%s]\n" or "%s\n"):format(math.map(sync[dampen], dampenMin, dampenMax, 0, 100).."%")},
 					{text = "Modified Dampening: ", bold = true, color = c.secondary},
 					{text = math.map(slimeWobble.d, dampenMin, dampenMax, 0, 100).."%\n\n"},
 					{text = "Scroll to adjust a value.\nLeft click selects which value is being adjusted.\nRight click resets the value back to 7.5%.", color = c.secondary}
