@@ -96,7 +96,7 @@ function events.TICK()
 		new(blockPos, scale)
 		
 		-- If a trail is too close to the newly formed trail, remove it
-		for _, part in ipairs(trails) do
+		for i, part in ipairs(trails) do
 			
 			if part.fused then return end
 			
@@ -106,7 +106,7 @@ function events.TICK()
 				
 				part.scale:remove()
 				part.trails:remove()
-				table.remove(trails, _)
+				table.remove(trails, i)
 				
 			end
 			
@@ -115,7 +115,7 @@ function events.TICK()
 	end
 	
 	-- Cycle through trail parts
-	for _, part in ipairs(trails) do
+	for i, part in ipairs(trails) do
 		
 		-- Variables
 		local dis = (pos - part.pos):length()
@@ -143,7 +143,7 @@ function events.TICK()
 				
 				part.scale:remove()
 				part.trails:remove()
-				table.remove(trails, _)
+				table.remove(trails, i)
 				
 			end
 			
