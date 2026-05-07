@@ -15,7 +15,7 @@ This Figura avatar is a template designed around turning the user into a Slime T
 - Deni (WobbleAPI)
 - Grandpa Scout (GSAnimBlend, GSCarrier)
 - Squishy (SquAPI)
-- Katt (OriginsAPI, DynamicCrosshair)
+- Katt (OriginsAPI)
 - 4P5 (GroundCheck)
 - Manuel (Molang Conversions)
 - Auria (Molang Conversions)
