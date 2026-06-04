@@ -5,7 +5,8 @@ local lerp   = require("lib.LerpAPI")
 local ground = require("lib.GroundCheck")
 
 -- Synced variables setup
-local color = sync.add(config:load("ColorType"), "UUID")
+local color = sync.new("ColorType", "UUID"):config()
+local pick  = sync.new("ColorPick", "FFFFFF"):config()
 
 -- Color types
 local colorTypes = {
@@ -19,14 +20,14 @@ local colorTypes = {
 	UUID = vec(client.uuidToIntArray(avatar:getUUID())).xyz % 256 / 255,
 	Camo = vectors.vec3(),
 	RGB  = vectors.vec3(),
-	Pick = config:load("ColorPicked") or vec(1, 1, 1),
+	Pick = vectors.hexToRGB(pick.curr),
 	None = vec(1, 1, 1)
 	
 }
 
 -- Reset if color is out of bounds
-if type(sync[color]) == "number" and sync[color] > #colorTypes then
-	sync[color] = 1
+if type(color.curr) == "number" and color.curr > #colorTypes then
+	color.curr = 1
 end
 
 -- Variable
@@ -37,13 +38,13 @@ local colorParts = parts:createTable(function(part) return part:getName():find("
 local transParts = parts:createTable(function(part) return part:getName():find("_[tT]rans") end)
 
 -- Lerps
-local colorLerp   = lerp:new(vec(1, 1, 1))
-local opacityLerp = lerp:new(1)
+local colorLerp   = lerp.new(vec(1, 1, 1))
+local opacityLerp = lerp.new(1)
 
 function events.TICK()
 	
 	-- Calc camo
-	if sync[color] == "Camo" then
+	if color.curr == "Camo" then
 		
 		-- Variables
 		local pos    = parts.group.Slime_Wobble:partToWorldMatrix():apply(0, -10, 0)
@@ -110,7 +111,7 @@ function events.TICK()
 		groundTimer = ground() and 0 or groundTimer + 1
 		
 	-- Calc rainbow
-	elseif sync[color] == "RGB" then
+	elseif color.curr == "RGB" then
 		
 		local calcColor = world.getTime() % 360 / 360
 		colorTypes.RGB  = vectors.hsvToRGB(calcColor, 1, 1)
@@ -124,7 +125,7 @@ function events.TICK()
 	end
 	
 	-- Set target
-	colorLerp.target = colorTypes[sync[color]]
+	colorLerp.target = colorTypes[color.curr]
 	
 end
 
@@ -146,39 +147,10 @@ function events.RENDER(delta, context)
 	
 end
 
--- Select preset colors
-function pings.setPreset(i)
-	
-	-- Sets to preset if its in another mode
-	if type(sync[color]) ~= "number" then
-		sync[color] = 1
-		config:save("ColorType", sync[color])
-		return
-	end
-	
-	-- Sets preset
-	sync[color] = ((sync[color] + i - 1) % #colorTypes) + 1
-	config:save("ColorType", sync[color])
-	
-end
-
--- Color type
-function pings.setColorType(type)
-	
-	sync[color] = type
-	config:save("ColorType", sync[color])
-	
-end
-
--- Pick color
-function pings.setPickedColor(v)
-	
-	colorTypes.Pick = v
-	sync[color] = "Pick"
-	config:save("ColorType", sync[color])
-	config:save("ColorPicked", colorTypes.Pick)
-	
-end
+-- Apply color function
+pick:applyFunc(function()
+	colorTypes.Pick = vectors.hexToRGB(pick.curr)
+end)
 
 -- Host only instructions
 if not host:isHost() then return end
@@ -232,8 +204,7 @@ function events.CHAT_SEND_MESSAGE(msg)
 		if msg:match("^#?[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]$") then
 			
 			-- Apply
-			msg = vectors.hexToRGB(msg)
-			pings.setPickedColor(msg)
+			pick:update(msg)
 			
 			-- Notify
 			host:setActionbar("Color Applied!")
@@ -257,18 +228,15 @@ end
 
 -- Cycles color functions
 local setFunctions = {
-	function() pings.setPreset() end,
-	function() pings.setColorType("UUID") end,
-	function() pings.setColorType("Camo") end,
-	function() pings.setColorType("RGB")  end,
-	function() pings.setColorType("Pick") end,
-	function() pings.setColorType("None") end
+	function() color:update(1) end,
+	function() color:update("UUID") end,
+	function() color:update("Camo") end,
+	function() color:update("RGB")  end,
+	function() color:update("Pick") end,
+	function() color:update("None") end
 }
 local function pickFunction(i, x)
-	
-	i = ((i + x - 1) % #setFunctions) + 1
-	return setFunctions[i]()
-	
+	return setFunctions[((i + x - 1) % #setFunctions) + 1]()
 end
 
 -- Action wheel info
@@ -277,7 +245,7 @@ local actStuff = {
 		title = "Preset",
 		info = "be selected from the list of \npre-existing colors in the ColorChange.lua script.\n\nScroll to pick which color is selected.",
 		item = "slime_ball",
-		scrAct = function(x) pings.setPreset(x) end,
+		scrAct = function(x) color:update(((color.curr + x - 1) % #colorTypes) + 1) end,
 		id = 1
 	},
 	UUID = {
@@ -343,13 +311,12 @@ function events.RENDER(delta, context)
 		end
 		
 		-- Gets info
-		local actState = actStuff[type(sync[color]) == "string" and sync[color] or "Preset"]
-		
+		local actState = actStuff[type(color.curr) == "string" and color.curr or "Preset"]
 		a.colorAct
 			:title(toJson(
 				{
 					"",
-					{text = ("%s\n\n"):format(actState.title), bold = true, color = c.primary},
+					{text = ("Color Type: %s\n\n"):format(actState.title), bold = true, color = c.primary},
 					{text = ("Your slime\'s color will %s\n\nLeft or Right click to change color modes."):format(actState.info), color = c.secondary}
 				}
 			))

@@ -4,7 +4,7 @@ local sync    = require("lib.LetThatSyncFig")
 local effects = require("scripts.SyncedVariables")
 
 -- Synced variables setup
-local squishSound = sync.add(config:load("SquishSoundToggle"), true)
+local squishSound = sync.new("SquishSoundToggle", true):config()
 
 -- Variables setup
 local wasInAir = false
@@ -22,7 +22,7 @@ function events.TICK()
 	-- Prevents overlap
 	cooldown = math.clamp(cooldown - 1, 0, 10)
 	
-	if sync[squishSound] and not player:getVehicle() and not player:isInWater() and not effects.cF  then
+	if squishSound.curr and not player:getVehicle() and not player:isInWater() and not effects.cF  then
 		
 		-- Ground check
 		-- Block variables
@@ -66,19 +66,15 @@ function events.TICK()
 	
 end
 
--- Sound toggle
-function pings.setSquishSoundToggle(boolean)
-
-	sync[squishSound] = boolean
-	config:save("SquishSoundToggle", sync[squishSound])
-	if host:isHost() and player:isLoaded() and sync[squishSound] then
-		sounds:playSound("entity.slime.squish", player:getPos(), 0.35, 0.6)
-	end
-	
-end
-
 -- Host only instructions
 if not host:isHost() then return end
+
+-- Apply sound function
+squishSound:applyFunc(function()
+	if player:isLoaded() and squishSound.curr then
+		sounds:playSound("entity.slime.squish", player:getPos(), 0.35, 0.6)
+	end
+end)
 
 -- Required scripts
 local s, wheel, c = pcall(require, "scripts.ActionWheel")
@@ -104,8 +100,10 @@ end
 a.soundAct = slimePage:newAction()
 	:item("snow_block")
 	:toggleItem("slime_block")
-	:onToggle(pings.setSquishSoundToggle)
-	:toggled(sync[squishSound])
+	:onToggle(function(bool)
+		squishSound:update(bool)
+	end)
+	:toggled(squishSound.curr)
 
 -- Update actions
 function events.RENDER(delta, context)

@@ -9,8 +9,8 @@ local sync  = require("lib.LetThatSyncFig")
 if not parts.group.StoredItems then return {} end
 
 -- Synced variables setup
-local embed = sync.add(config:load("ItemsEmbed"), true)
-local items = sync.add({})
+local embed = sync.new("ItemsEmbed", true):config()
+local items = sync.new("ItemsTable", {})
 
 -- Variable
 local groups = {}
@@ -18,7 +18,7 @@ local groups = {}
 for i = 1, 27 do
 	
 	groups[i] = parts.group.StoredItems["StoredItem"..i]:newItem("Item"):displayMode("GROUND")
-	sync[items][i]  = "minecraft:air"
+	items.curr[i]  = "minecraft:air"
 	
 end
 
@@ -32,10 +32,10 @@ function events.TICK()
 		-- Apply
 		groups[i]
 			:item(item)
-			:visible(sync[embed])
+			:visible(embed.curr)
 		
 		-- Store
-		sync[items][i] = item
+		items.curr[i] = item
 		
 	end
 	
@@ -52,14 +52,6 @@ function events.RENDER(delta, context)
 			:rot(0, (timer * 0.1 + (i * 13.3)) % 360, 0)
 		
 	end
-	
-end
-
--- Items toggle
-function pings.setItems(boolean)
-	
-	sync[embed] = boolean
-	config:save("ItemsEmbed", sync[embed])
 	
 end
 
@@ -91,8 +83,10 @@ end
 a.embedAct = slimePage:newAction()
 	:texture(textures:fromVanilla("BundleFilled", "textures/item/bundle_filled.png"))
 	:toggleTexture(textures:fromVanilla("Bundle", "textures/item/bundle.png"))
-	:onToggle(pings.setItems)
-	:toggled(sync[embed])
+	:onToggle(function(bool)
+		embed:update(bool)
+	end)
+	:toggled(embed.curr)
 
 -- Update actions
 function events.RENDER(delta, context)

@@ -6,8 +6,8 @@ local pehkuiScale = require("lib.PehkuiScale")
 local pose        = require("scripts.Posing")
 
 -- Synced variables setup
-local trail = sync.add(config:load("TrailToggle"), true)
-local melt = sync.add(config:load("TrailMeltSpeed"), 0.02)
+local trail = sync.new("TrailToggle", true):config()
+local melt  = sync.new("TrailMeltSpeed", 0.02):config()
 
 -- Variables
 local worldPart = models:newPart("world", "WORLD")
@@ -52,7 +52,7 @@ local function new(pos, scale)
 	-- Add part to table
 	trails[#trails + 1] = {
 		pos    = pos,
-		scale  = lerp:new(scale * 0.75),
+		scale  = lerp.new(scale * 0.75),
 		fused  = true,
 		trails = copy
 	}
@@ -87,7 +87,7 @@ function events.TICK()
 	end
 	
 	-- Spawn new trail if on ground and not currently fused
-	if sync[trail] and onGround and not (trails[#trails] and trails[#trails].fused) then
+	if trail.curr and onGround and not (trails[#trails] and trails[#trails].fused) then
 		
 		-- Find collision
 		local _, blockPos = raycast:block(pos, pos - vec(0, 1, 0), "COLLIDER")
@@ -121,7 +121,7 @@ function events.TICK()
 		local dis = (pos - part.pos):length()
 		
 		-- Check if trails should not be fused anymore
-		if not sync[trail] or dis >= 0.25 or not onGround then
+		if not trail.curr or dis >= 0.25 or not onGround then
 			
 			part.fused = false
 			
@@ -136,7 +136,7 @@ function events.TICK()
 		else
 			
 			part.scale.target = 0
-			part.scale.stiff  = sync[melt]
+			part.scale.stiff  = melt.curr
 			
 			-- If trail is too small, remove it
 			if part.scale.currPos:length() <= 0.05 then
@@ -208,27 +208,15 @@ function events.RENDER(delta, context)
 	
 end
 
--- Trail toggle
-function pings.setTrailToggle(boolean)
-
-	sync[trail] = boolean
-	config:save("TrailToggle", sync[trail])
-	if host:isHost() and player:isLoaded() and sync[trail] then
-		sounds:playSound("entity.slime.squish", player:getPos(), 0.35)
-	end
-	
-end
-
--- Melt speed
-local function setMeltSpeed(x)
-	
-	sync[melt] = math.clamp(sync[melt] + (x * 0.001), 0.01, 0.1)
-	config:save("TrailMeltSpeed", sync[melt])
-	
-end
-
 -- Host only instructions
 if not host:isHost() then return end
+
+-- Apply sound function
+trail:applyFunc(function()
+	if player:isLoaded() and trail.curr then
+		sounds:playSound("entity.slime.squish", player:getPos(), 0.35)
+	end
+end)
 
 -- Required scripts
 local s, wheel, c = pcall(require, "scripts.ActionWheel")
@@ -254,10 +242,14 @@ end
 a.trailAct = slimePage:newAction()
 	:item("snow")
 	:toggleItem("lime_carpet")
-	:onToggle(pings.setTrailToggle)
-	:onScroll(setMeltSpeed)
-	:onRightClick(function() sync[melt] = 0.02 config:save("TrailMeltSpeed", sync[melt]) end)
-	:toggled(sync[trail])
+	:onToggle(function(bool)
+		trail:update(bool)
+	end)
+	:onRightClick(function() melt:update(200) end)
+	:onScroll(function(x)
+		melt:update(math.clamp(melt.curr + (x * 0.001), 0.01, 0.1), 20)
+	end)
+	:toggled(trail.curr)
 
 -- Update actions
 function events.RENDER(delta, context)
@@ -277,7 +269,7 @@ function events.RENDER(delta, context)
 					{text = "Toggle Trail/Melt Speed\n\n", bold = true, color = c.primary},
 					{text = "Toggles the formation of slime trails as you move, and how long they take to melt.\n\n", color = c.secondary},
 					{text = "Current melt speed: ", bold = true, color = c.secondary},
-					{text = (sync[melt] * 100).."% Each Tick\n\n"},
+					{text = (melt.curr * 100).."% Each Tick\n\n"},
 					{text = "Scroll to adjust the speed.\nRight click resets speed to 2%.", color = c.secondary}
 				}
 			))
