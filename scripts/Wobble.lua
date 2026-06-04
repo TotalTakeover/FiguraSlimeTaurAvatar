@@ -64,17 +64,20 @@ end
 
 function events.TICK()
 	
+	-- Origins data
+	local powerData = origins.getPowerData(player)
+	
 	-- Update rots
 	prevRot = currRot
 	currRot = player:getRot()
 	
 	-- Check if origin power is active
-	powerActive = origins.getPowerData(player, "slime_taur:varied_sizing_toggle") == 1
+	powerActive = powerData["slime_taur:varied_sizing_toggle"] == 1
 	
 	-- Change size based on health or origin power
 	if powerActive then
 		
-		local moisture = origins.getPowerData(player, "slime_taur:moisture_bar") or 50
+		local moisture = powerData["slime_taur:moisture_bar"] or 50
 		scaleLerp.target = ((player:getHealth() / player:getMaxHealth()) * 1.5) * (moisture / 100) + 0.5
 		
 	elseif healthSize.curr then
