@@ -131,6 +131,9 @@ end
 
 function events.RENDER(delta, context)
 	
+	-- Stops useless instructions
+	if client:isPaused() then return end
+	
 	-- Slime textures
 	for _, part in ipairs(colorParts) do
 		part:color(colorLerp.currPos)
