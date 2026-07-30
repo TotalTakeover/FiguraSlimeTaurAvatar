@@ -240,7 +240,7 @@ end
 if not host:isHost() then return end
 
 -- Required scripts
-local s, wheel, c = pcall(require, "scripts.ActionWheel")
+local s, pageNav, c = pcall(require, "scripts.ActionWheel")
 if not s then return end -- Kills script early if ActionWheel.lua isnt found
 
 -- Variable
@@ -261,12 +261,12 @@ local a = {}
 if not pageExists then
 	a.slimePageAct = parentPage:newAction()
 		:item("slime_block")
-		:onLeftClick(function() wheel:descend(slimePage) end)
+		:onLeftClick(function() pageNav.descend(slimePage) end)
 end
 
 a.wobblePageAct = slimePage:newAction()
 	:item("brewing_stand")
-	:onLeftClick(function() wheel:descend(wobblePage) end)
+	:onLeftClick(function() pageNav.descend(wobblePage) end)
 
 a.strengthAct = wobblePage:newAction()
 	:onLeftClick(function() strengthSwitch = not strengthSwitch end)

@@ -77,7 +77,7 @@ squishSound:applyFunc(function()
 end)
 
 -- Required scripts
-local s, wheel, c = pcall(require, "scripts.ActionWheel")
+local s, pageNav, c = pcall(require, "scripts.ActionWheel")
 if not s then return end -- Kills script early if ActionWheel.lua isnt found
 
 -- Check for if page already exists
@@ -94,7 +94,7 @@ local a = {}
 if not pageExists then
 	a.pageAct = parentPage:newAction()
 		:item("slime_block")
-		:onLeftClick(function() wheel:descend(slimePage) end)
+		:onLeftClick(function() pageNav.descend(slimePage) end)
 end
 
 a.soundAct = slimePage:newAction()

@@ -59,7 +59,7 @@ end
 if not host:isHost() then return end
 
 -- Required scripts
-local s, wheel, c = pcall(require, "scripts.ActionWheel")
+local s, pageNav, c = pcall(require, "scripts.ActionWheel")
 if not s then return end -- Kills script early if ActionWheel.lua isnt found
 pcall(require, "scripts.ColorChange") -- Tries to find script, not required
 
@@ -77,7 +77,7 @@ local a = {}
 if not pageExists then
 	a.pageAct = parentPage:newAction()
 		:item("slime_block")
-		:onLeftClick(function() wheel:descend(slimePage) end)
+		:onLeftClick(function() pageNav.descend(slimePage) end)
 end
 
 a.embedAct = slimePage:newAction()
