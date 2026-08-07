@@ -240,7 +240,7 @@ end
 if not host:isHost() then return end
 
 -- Required scripts
-local s, pageNav, c = pcall(require, "scripts.ActionWheel")
+local s, pageNav, acts, c = pcall(require, "scripts.ActionWheel")
 if not s then return end -- Kills script early if ActionWheel.lua isnt found
 
 -- Variable
@@ -254,21 +254,18 @@ local parentPage = action_wheel:getPage("Main")
 local slimePage  = pageExists or action_wheel:newPage("Slime")
 local wobblePage = action_wheel:newPage("Wobble")
 
--- Actions table setup
-local a = {}
-
 -- Actions
 if not pageExists then
-	a.slimePageAct = parentPage:newAction()
+	acts.slimePage = parentPage:newAction()
 		:item("slime_block")
 		:onLeftClick(function() pageNav.descend(slimePage) end)
 end
 
-a.wobblePageAct = slimePage:newAction()
+acts.wobblePage = slimePage:newAction()
 	:item("brewing_stand")
 	:onLeftClick(function() pageNav.descend(wobblePage) end)
 
-a.strengthAct = wobblePage:newAction()
+acts.wobbleStrength = wobblePage:newAction()
 	:onLeftClick(function() strengthSwitch = not strengthSwitch end)
 	:onRightClick(function()
 		if strengthSwitch then
@@ -286,7 +283,7 @@ a.strengthAct = wobblePage:newAction()
 		end
 	end)
 
-a.rotAct = wobblePage:newAction()
+acts.wobbleRotate = wobblePage:newAction()
 	:item("music_disc_chirp")
 	:toggleItem("music_disc_far")
 	:onToggle(function(bool)
@@ -294,7 +291,7 @@ a.rotAct = wobblePage:newAction()
 	end)
 	:toggled(wobbleRot.curr)
 
-a.damageAct = wobblePage:newAction()
+acts.wobbleDamage = wobblePage:newAction()
 	:item("shield")
 	:toggleItem("iron_sword")
 	:onToggle(function(bool)
@@ -302,7 +299,7 @@ a.damageAct = wobblePage:newAction()
 	end)
 	:toggled(damage.curr)
 
-a.upperAct = wobblePage:newAction()
+acts.wobbleUpper = wobblePage:newAction()
 	:item("armor_stand")
 	:toggleItem("slime_ball")
 	:onToggle(function(bool)
@@ -310,7 +307,7 @@ a.upperAct = wobblePage:newAction()
 	end)
 	:toggled(upperWobble.curr)
 
-a.biomeAct = wobblePage:newAction()
+acts.wobbleBiome = wobblePage:newAction()
 	:item("snow_block")
 	:toggleItem("water_bucket")
 	:onToggle(function(bool)
@@ -318,7 +315,7 @@ a.biomeAct = wobblePage:newAction()
 	end)
 	:toggled(biome.curr)
 
-a.healthSizeAct = wobblePage:newAction()
+acts.wobbleHealth = wobblePage:newAction()
 	:item("beef")
 	:toggleItem("cooked_beef")
 	:onToggle(function(bool)
@@ -330,23 +327,25 @@ a.healthSizeAct = wobblePage:newAction()
 function events.RENDER(delta, context)
 	
 	if action_wheel:isEnabled() then
-		if a.slimePageAct then
-			a.slimePageAct
+		if acts.slimePage then
+			acts.slimePage
 				:title(toJson(
 					{text = "Slime Settings", bold = true, color = c.primary}
 				))
+				:hoverColor(c.hover)
 		end
 		
-		a.wobblePageAct
+		acts.wobblePage
 			:title(toJson(
 				{text = "Wobble Settings", bold = true, color = c.primary}
 			))
+			:hoverColor(c.hover)
 		
 		-- Variables
 		local potionColor = math.lerp(vectors.hexToRGB("4CFF00"), vectors.hexToRGB("FFD800"),
 		strengthSwitch and math.map(speed.curr, speedMin, speedMax, 0, 1) or math.map(dampen.curr, dampenMin, dampenMax, 0, 1))
 		
-		a.strengthAct
+		acts.wobbleStrength
 			:title(toJson(
 				{
 					"",
@@ -364,8 +363,9 @@ function events.RENDER(delta, context)
 				}
 			))
 			:item("potion{\"CustomPotionColor\":" .. tostring(vectors.rgbToInt(potionColor)) .. "}")
+			:hoverColor(c.hover)
 		
-		a.rotAct
+		acts.wobbleRotate
 			:title(toJson(
 				{
 					"",
@@ -373,8 +373,10 @@ function events.RENDER(delta, context)
 					{text = "Sets if slime should wobble while you look around.", color = c.secondary}
 				}
 			))
+			:hoverColor(c.hover)
+			:toggleColor(c.active)
 		
-		a.damageAct
+		acts.wobbleDamage
 			:title(toJson(
 				{
 					"",
@@ -382,8 +384,10 @@ function events.RENDER(delta, context)
 					{text = "Sets if slime should wobble if damage is taken.", color = c.secondary}
 				}
 			))
+			:hoverColor(c.hover)
+			:toggleColor(c.active)
 		
-		a.upperAct
+		acts.wobbleUpper
 			:title(toJson(
 				{
 					"",
@@ -391,8 +395,10 @@ function events.RENDER(delta, context)
 					{text = "Sets if the upper body should wobble as well.", color = c.secondary}
 				}
 			))
+			:hoverColor(c.hover)
+			:toggleColor(c.active)
 		
-		a.biomeAct
+		acts.wobbleBiome
 			:title(toJson(
 				{
 					"",
@@ -400,8 +406,10 @@ function events.RENDER(delta, context)
 					{text = "Sets if biome temperature should affect the slime wobble.", color = c.secondary}
 				}
 			))
+			:hoverColor(c.hover)
+			:toggleColor(c.active)
 		
-		a.healthSizeAct
+		acts.wobbleHealth
 			:title(toJson(
 				{
 					"",
@@ -411,10 +419,8 @@ function events.RENDER(delta, context)
 					{text = powerActive and "Origins is currently overriding this toggle." or "", color = "yellow"}
 				}
 			))
-		
-		for _, act in pairs(a) do
-			act:hoverColor(c.hover):toggleColor(c.active)
-		end
+			:hoverColor(c.hover)
+			:toggleColor(c.active)
 		
 	end
 	

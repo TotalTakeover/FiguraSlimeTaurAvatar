@@ -59,7 +59,7 @@ end
 if not host:isHost() then return end
 
 -- Required scripts
-local s, pageNav, c = pcall(require, "scripts.ActionWheel")
+local s, pageNav, acts, c = pcall(require, "scripts.ActionWheel")
 if not s then return end -- Kills script early if ActionWheel.lua isnt found
 pcall(require, "scripts.ColorChange") -- Tries to find script, not required
 
@@ -70,17 +70,14 @@ local pageExists = action_wheel:getPage("Slime")
 local parentPage = action_wheel:getPage("Main")
 local slimePage  = pageExists or action_wheel:newPage("Slime")
 
--- Actions table setup
-local a = {}
-
 -- Actions
 if not pageExists then
-	a.pageAct = parentPage:newAction()
+	acts.slimePage = parentPage:newAction()
 		:item("slime_block")
 		:onLeftClick(function() pageNav.descend(slimePage) end)
 end
 
-a.embedAct = slimePage:newAction()
+acts.itemsToggle = slimePage:newAction()
 	:texture(textures:fromVanilla("BundleFilled", "textures/item/bundle_filled.png"))
 	:toggleTexture(textures:fromVanilla("Bundle", "textures/item/bundle.png"))
 	:onToggle(function(bool)
@@ -92,14 +89,15 @@ a.embedAct = slimePage:newAction()
 function events.RENDER(delta, context)
 	
 	if action_wheel:isEnabled() then
-		if a.pageAct then
-			a.pageAct
+		if acts.slimePage then
+			acts.slimePage
 				:title(toJson(
 					{text = "Slime Settings", bold = true, color = c.primary}
 				))
+				:hoverColor(c.hover)
 		end
 		
-		a.embedAct
+		acts.itemsToggle
 			:title(toJson(
 				{
 					"",
@@ -109,10 +107,8 @@ function events.RENDER(delta, context)
 					{text = "This feature currently does not function for other clients, only the host.\nThis is because I suck at coding. -Total", color = "yellow"}
 				}
 			))
-		
-		for _, act in pairs(a) do
-			act:hoverColor(c.hover):toggleColor(c.active)
-		end
+			:hoverColor(c.hover)
+			:toggleColor(c.active)
 		
 	end
 	

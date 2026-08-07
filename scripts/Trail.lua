@@ -219,7 +219,7 @@ trail:applyFunc(function()
 end)
 
 -- Required scripts
-local s, pageNav, c = pcall(require, "scripts.ActionWheel")
+local s, pageNav, acts, c = pcall(require, "scripts.ActionWheel")
 if not s then return end -- Kills script early if ActionWheel.lua isnt found
 
 -- Check for if page already exists
@@ -229,17 +229,14 @@ local pageExists = action_wheel:getPage("Slime")
 local parentPage = action_wheel:getPage("Main")
 local slimePage  = pageExists or action_wheel:newPage("Slime")
 
--- Actions table setup
-local a = {}
-
 -- Actions
 if not pageExists then
-	a.pageAct = parentPage:newAction()
+	acts.slimePage = parentPage:newAction()
 		:item("slime_block")
 		:onLeftClick(function() pageNav.descend(slimePage) end)
 end
 
-a.trailAct = slimePage:newAction()
+acts.trailToggle = slimePage:newAction()
 	:item("snow")
 	:toggleItem("lime_carpet")
 	:onToggle(function(bool)
@@ -255,14 +252,15 @@ a.trailAct = slimePage:newAction()
 function events.RENDER(delta, context)
 	
 	if action_wheel:isEnabled() then
-		if a.pageAct then
-			a.pageAct
+		if acts.slimePage then
+			acts.slimePage
 				:title(toJson(
 					{text = "Slime Settings", bold = true, color = c.primary}
 				))
+				:hoverColor(c.hover)
 		end
 		
-		a.trailAct
+		acts.trailToggle
 			:title(toJson(
 				{
 					"",
@@ -273,10 +271,8 @@ function events.RENDER(delta, context)
 					{text = "Scroll to adjust the speed.\nRight click resets speed to 2%.", color = c.secondary}
 				}
 			))
-		
-		for _, act in pairs(a) do
-			act:hoverColor(c.hover):toggleColor(c.active)
-		end
+			:hoverColor(c.hover)
+			:toggleColor(c.active)
 		
 	end
 	

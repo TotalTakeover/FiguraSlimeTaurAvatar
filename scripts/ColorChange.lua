@@ -159,7 +159,7 @@ end)
 if not host:isHost() then return end
 
 -- Required scripts
-local s, pageNav, c = pcall(require, "scripts.ActionWheel")
+local s, pageNav, acts, c = pcall(require, "scripts.ActionWheel")
 if not s then return end -- Kills script early if ActionWheel.lua isnt found
 
 -- Dont preform if color properties is empty
@@ -290,32 +290,30 @@ local pageExists = action_wheel:getPage("Slime")
 local parentPage = action_wheel:getPage("Main")
 local slimePage  = pageExists or action_wheel:newPage("Slime")
 
--- Actions table setup
-local a = {}
-
 -- Actions
 if not pageExists then
-	a.pageAct = parentPage:newAction()
+	acts.slimePage = parentPage:newAction()
 		:item("slime_block")
 		:onLeftClick(function() pageNav.descend(slimePage) end)
 end
 
-a.colorAct = slimePage:newAction()
+acts.colorStyle = slimePage:newAction()
 
 -- Update actions
 function events.RENDER(delta, context)
 	
 	if action_wheel:isEnabled() then
-		if a.pageAct then
-			a.pageAct
+		if acts.slimePage then
+			acts.slimePage
 				:title(toJson(
 					{text = "Slime Settings", bold = true, color = c.primary}
 				))
+				:hoverColor(c.hover)
 		end
 		
 		-- Gets info
 		local actState = actStuff[type(color.curr) == "string" and color.curr or "Preset"]
-		a.colorAct
+		acts.colorStyle
 			:title(toJson(
 				{
 					"",
@@ -323,14 +321,11 @@ function events.RENDER(delta, context)
 					{text = ("Your slime\'s color will %s\n\nLeft or Right click to change color modes."):format(actState.info), color = c.secondary}
 				}
 			))
-			:item(actState.item.."{CustomPotionColor:" .. tostring(vectors.rgbToInt(colorLerp.currPos)) .. "}")
 			:onLeftClick(function() pickFunction(actState.id, 1) end)
 			:onRightClick(function() pickFunction(actState.id, -1) end)
 			:onScroll(actState.scrAct)
-		
-		for _, act in pairs(a) do
-			act:hoverColor(c.hover)
-		end
+			:item(actState.item.."{CustomPotionColor:" .. tostring(vectors.rgbToInt(colorLerp.currPos)) .. "}")
+			:hoverColor(c.hover)
 		
 	end
 	
