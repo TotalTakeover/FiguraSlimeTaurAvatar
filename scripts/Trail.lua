@@ -219,7 +219,7 @@ trail:applyFunc(function()
 end)
 
 -- Required scripts
-local s, pageNav, acts, c = pcall(require, "scripts.ActionWheel")
+local s, pageNav, acts, colors = pcall(require, "scripts.ActionWheel")
 if not s then return end -- Kills script early if ActionWheel.lua isnt found
 
 -- Check for if page already exists
@@ -255,24 +255,24 @@ function events.RENDER(delta, context)
 		if acts.slimePage then
 			acts.slimePage
 				:title(toJson(
-					{text = "Slime Settings", bold = true, color = c.primary}
+					{text = "Slime Settings", bold = true, color = colors.primary}
 				))
-				:hoverColor(c.hover)
+				:hoverColor(colors.hover)
 		end
 		
 		acts.trailToggle
 			:title(toJson(
 				{
 					"",
-					{text = "Toggle Trail/Melt Speed\n\n", bold = true, color = c.primary},
-					{text = "Toggles the formation of slime trails as you move, and how long they take to melt.\n\n", color = c.secondary},
-					{text = "Current melt speed: ", bold = true, color = c.secondary},
+					{text = "Toggle Trail/Melt Speed\n\n", bold = true, color = colors.primary},
+					{text = "Toggles the formation of slime trails as you move, and how long they take to melt.\n\n", color = colors.secondary},
+					{text = "Current melt speed: ", bold = true, color = colors.secondary},
 					{text = (melt.curr * 100).."% Each Tick\n\n"},
-					{text = "Scroll to adjust the speed.\nRight click resets speed to 2%.", color = c.secondary}
+					{text = "Scroll to adjust the speed.\nRight click resets speed to 2%.", color = colors.secondary}
 				}
 			))
-			:hoverColor(c.hover)
-			:toggleColor(c.active)
+			:hoverColor(colors.hover)
+			:toggleColor(colors.active)
 		
 	end
 	

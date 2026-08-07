@@ -2,13 +2,13 @@
 if not host:isHost() then return end
 
 -- Table setup
-local c = {}
+local colors = {}
 
 -- Action variables
-c.hover     = vectors.hexToRGB("FFFFFF")
-c.active    = vectors.hexToRGB("FFFFFF")
-c.primary   = "#FFFFFF"
-c.secondary = "#FFFFFF"
+colors.hover     = vectors.hexToRGB("FFFFFF")
+colors.active    = vectors.hexToRGB("FFFFFF")
+colors.primary   = "#FFFFFF"
+colors.secondary = "#FFFFFF"
 
 -- Return variables
-return c
+return colors

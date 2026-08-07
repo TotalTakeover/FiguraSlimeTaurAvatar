@@ -59,7 +59,7 @@ end
 if not host:isHost() then return end
 
 -- Required scripts
-local s, pageNav, acts, c = pcall(require, "scripts.ActionWheel")
+local s, pageNav, acts, colors = pcall(require, "scripts.ActionWheel")
 if not s then return end -- Kills script early if ActionWheel.lua isnt found
 pcall(require, "scripts.ColorChange") -- Tries to find script, not required
 
@@ -92,23 +92,23 @@ function events.RENDER(delta, context)
 		if acts.slimePage then
 			acts.slimePage
 				:title(toJson(
-					{text = "Slime Settings", bold = true, color = c.primary}
+					{text = "Slime Settings", bold = true, color = colors.primary}
 				))
-				:hoverColor(c.hover)
+				:hoverColor(colors.hover)
 		end
 		
 		acts.itemsToggle
 			:title(toJson(
 				{
 					"",
-					{text = "Toggle Slime Items\n\n", bold = true, color = c.primary},
-					{text = "Toggles the visibility of inventory items within your slime.", color = c.secondary},
+					{text = "Toggle Slime Items\n\n", bold = true, color = colors.primary},
+					{text = "Toggles the visibility of inventory items within your slime.", color = colors.secondary},
 					{text = "\n\nNotice:\n", bold = true, color = "gold"},
 					{text = "This feature currently does not function for other clients, only the host.\nThis is because I suck at coding. -Total", color = "yellow"}
 				}
 			))
-			:hoverColor(c.hover)
-			:toggleColor(c.active)
+			:hoverColor(colors.hover)
+			:toggleColor(colors.active)
 		
 	end
 	

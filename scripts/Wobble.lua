@@ -240,7 +240,7 @@ end
 if not host:isHost() then return end
 
 -- Required scripts
-local s, pageNav, acts, c = pcall(require, "scripts.ActionWheel")
+local s, pageNav, acts, colors = pcall(require, "scripts.ActionWheel")
 if not s then return end -- Kills script early if ActionWheel.lua isnt found
 
 -- Variable
@@ -330,16 +330,16 @@ function events.RENDER(delta, context)
 		if acts.slimePage then
 			acts.slimePage
 				:title(toJson(
-					{text = "Slime Settings", bold = true, color = c.primary}
+					{text = "Slime Settings", bold = true, color = colors.primary}
 				))
-				:hoverColor(c.hover)
+				:hoverColor(colors.hover)
 		end
 		
 		acts.wobblePage
 			:title(toJson(
-				{text = "Wobble Settings", bold = true, color = c.primary}
+				{text = "Wobble Settings", bold = true, color = colors.primary}
 			))
-			:hoverColor(c.hover)
+			:hoverColor(colors.hover)
 		
 		-- Variables
 		local potionColor = math.lerp(vectors.hexToRGB("4CFF00"), vectors.hexToRGB("FFD800"),
@@ -349,78 +349,78 @@ function events.RENDER(delta, context)
 			:title(toJson(
 				{
 					"",
-					{text = "Set Wobble Strength\n\n", bold = true, color = c.primary},
-					{text = "Sets the Speed/Dampening of the slime.\n\n", color = c.secondary},
-					{text = "Set Speed: ", bold = true, color = c.secondary},
+					{text = "Set Wobble Strength\n\n", bold = true, color = colors.primary},
+					{text = "Sets the Speed/Dampening of the slime.\n\n", color = colors.secondary},
+					{text = "Set Speed: ", bold = true, color = colors.secondary},
 					{text = (strengthSwitch and "[%s]\n" or "%s\n"):format(math.map(speed.curr, speedMin, speedMax, 0, 100).."%")},
-					{text = "Modified Speed: ", bold = true, color = c.secondary},
+					{text = "Modified Speed: ", bold = true, color = colors.secondary},
 					{text = math.map(slimeWobble.s, speedMin, speedMax, 0, 100).."%\n\n"},
-					{text = "Set Dampening: ", bold = true, color = c.secondary},
+					{text = "Set Dampening: ", bold = true, color = colors.secondary},
 					{text = (not strengthSwitch and "[%s]\n" or "%s\n"):format(math.map(dampen.curr, dampenMin, dampenMax, 0, 100).."%")},
-					{text = "Modified Dampening: ", bold = true, color = c.secondary},
+					{text = "Modified Dampening: ", bold = true, color = colors.secondary},
 					{text = math.map(slimeWobble.d, dampenMin, dampenMax, 0, 100).."%\n\n"},
-					{text = "Scroll to adjust a value.\nLeft click selects which value is being adjusted.\nRight click resets the value back to 7.5%.", color = c.secondary}
+					{text = "Scroll to adjust a value.\nLeft click selects which value is being adjusted.\nRight click resets the value back to 7.5%.", color = colors.secondary}
 				}
 			))
 			:item("potion{\"CustomPotionColor\":" .. tostring(vectors.rgbToInt(potionColor)) .. "}")
-			:hoverColor(c.hover)
+			:hoverColor(colors.hover)
 		
 		acts.wobbleRotate
 			:title(toJson(
 				{
 					"",
-					{text = "Set Rotational Wobble\n\n", bold = true, color = c.primary},
-					{text = "Sets if slime should wobble while you look around.", color = c.secondary}
+					{text = "Set Rotational Wobble\n\n", bold = true, color = colors.primary},
+					{text = "Sets if slime should wobble while you look around.", color = colors.secondary}
 				}
 			))
-			:hoverColor(c.hover)
-			:toggleColor(c.active)
+			:hoverColor(colors.hover)
+			:toggleColor(colors.active)
 		
 		acts.wobbleDamage
 			:title(toJson(
 				{
 					"",
-					{text = "Set Damage Wobble\n\n", bold = true, color = c.primary},
-					{text = "Sets if slime should wobble if damage is taken.", color = c.secondary}
+					{text = "Set Damage Wobble\n\n", bold = true, color = colors.primary},
+					{text = "Sets if slime should wobble if damage is taken.", color = colors.secondary}
 				}
 			))
-			:hoverColor(c.hover)
-			:toggleColor(c.active)
+			:hoverColor(colors.hover)
+			:toggleColor(colors.active)
 		
 		acts.wobbleUpper
 			:title(toJson(
 				{
 					"",
-					{text = "Set Upper Body Wobble\n\n", bold = true, color = c.primary},
-					{text = "Sets if the upper body should wobble as well.", color = c.secondary}
+					{text = "Set Upper Body Wobble\n\n", bold = true, color = colors.primary},
+					{text = "Sets if the upper body should wobble as well.", color = colors.secondary}
 				}
 			))
-			:hoverColor(c.hover)
-			:toggleColor(c.active)
+			:hoverColor(colors.hover)
+			:toggleColor(colors.active)
 		
 		acts.wobbleBiome
 			:title(toJson(
 				{
 					"",
-					{text = "Set Temperature Modifier\n\n", bold = true, color = c.primary},
-					{text = "Sets if biome temperature should affect the slime wobble.", color = c.secondary}
+					{text = "Set Temperature Modifier\n\n", bold = true, color = colors.primary},
+					{text = "Sets if biome temperature should affect the slime wobble.", color = colors.secondary}
 				}
 			))
-			:hoverColor(c.hover)
-			:toggleColor(c.active)
+			:hoverColor(colors.hover)
+			:toggleColor(colors.active)
 		
 		acts.wobbleHealth
 			:title(toJson(
 				{
 					"",
-					{text = "Set Health Size\n\n", bold = true, color = c.primary},
-					{text = "Sets if your slime size is determinded by your health."..(powerActive and "\n\n" or ""), color = c.secondary},
+					{text = "Set Health Size\n\n", bold = true, color = colors.primary},
+					{text = "Sets if your slime size is determinded by your health."..(powerActive and "\n\n" or ""), color = colors.secondary},
 					{text = powerActive and "Notice:\n" or "", bold = true, color = "gold"},
 					{text = powerActive and "Origins is currently overriding this toggle." or "", color = "yellow"}
 				}
 			))
-			:hoverColor(c.hover)
-			:toggleColor(c.active)
+			:hoverColor(colors.hover)
+			:toggleColor(colors.active)
 		
 	end
 	

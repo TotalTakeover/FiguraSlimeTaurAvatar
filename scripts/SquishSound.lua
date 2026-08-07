@@ -77,7 +77,7 @@ squishSound:applyFunc(function()
 end)
 
 -- Required scripts
-local s, pageNav, acts, c = pcall(require, "scripts.ActionWheel")
+local s, pageNav, acts, colors = pcall(require, "scripts.ActionWheel")
 if not s then return end -- Kills script early if ActionWheel.lua isnt found
 
 -- Check for if page already exists
@@ -109,21 +109,21 @@ function events.RENDER(delta, context)
 		if acts.slimePage then
 			acts.slimePage
 				:title(toJson(
-					{text = "Slime Settings", bold = true, color = c.primary}
+					{text = "Slime Settings", bold = true, color = colors.primary}
 				))
-				:hoverColor(c.hover)
+				:hoverColor(colors.hover)
 		end
 		
 		acts.soundToggle
 			:title(toJson(
 				{
 					"",
-					{text = "Toggle Jumping/Falling Sound\n\n", bold = true, color = c.primary},
-					{text = "Toggles slime sound effects when jumping or landing.", color = c.secondary}
+					{text = "Toggle Jumping/Falling Sound\n\n", bold = true, color = colors.primary},
+					{text = "Toggles slime sound effects when jumping or landing.", color = colors.secondary}
 				}
 			))
-			:hoverColor(c.hover)
-			:toggleColor(c.active)
+			:hoverColor(colors.hover)
+			:toggleColor(colors.active)
 		
 	end
 	

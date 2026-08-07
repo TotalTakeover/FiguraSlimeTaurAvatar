@@ -159,15 +159,15 @@ end)
 if not host:isHost() then return end
 
 -- Required scripts
-local s, pageNav, acts, c = pcall(require, "scripts.ActionWheel")
+local s, pageNav, acts, colors = pcall(require, "scripts.ActionWheel")
 if not s then return end -- Kills script early if ActionWheel.lua isnt found
 
 -- Dont preform if color properties is empty
-if next(c) ~= nil then
+if next(colors) ~= nil then
 	
 	-- Store init colors
 	local initColors = {}
-	for k, v in pairs(c) do
+	for k, v in pairs(colors) do
 		initColors[k] = v
 	end
 	
@@ -183,8 +183,8 @@ if next(c) ~= nil then
 		}
 		
 		-- Update action wheel colors
-		for k in pairs(c) do
-			c[k] = appliedColors[k]
+		for k in pairs(colors) do
+			colors[k] = appliedColors[k]
 		end
 		
 	end
@@ -306,9 +306,9 @@ function events.RENDER(delta, context)
 		if acts.slimePage then
 			acts.slimePage
 				:title(toJson(
-					{text = "Slime Settings", bold = true, color = c.primary}
+					{text = "Slime Settings", bold = true, color = colors.primary}
 				))
-				:hoverColor(c.hover)
+				:hoverColor(colors.hover)
 		end
 		
 		-- Gets info
@@ -317,15 +317,15 @@ function events.RENDER(delta, context)
 			:title(toJson(
 				{
 					"",
-					{text = ("Color Type: %s\n\n"):format(actState.title), bold = true, color = c.primary},
-					{text = ("Your slime\'s color will %s\n\nLeft or Right click to change color modes."):format(actState.info), color = c.secondary}
+					{text = ("Color Type: %s\n\n"):format(actState.title), bold = true, color = colors.primary},
+					{text = ("Your slime\'s color will %s\n\nLeft or Right click to change color modes."):format(actState.info), color = colors.secondary}
 				}
 			))
 			:onLeftClick(function() pickFunction(actState.id, 1) end)
 			:onRightClick(function() pickFunction(actState.id, -1) end)
 			:onScroll(actState.scrAct)
 			:item(actState.item.."{CustomPotionColor:" .. tostring(vectors.rgbToInt(colorLerp.currPos)) .. "}")
-			:hoverColor(c.hover)
+			:hoverColor(colors.hover)
 		
 	end
 	
