@@ -70,7 +70,7 @@ end
 if not host:isHost() then return end
 
 -- Apply sound function
-squishSound:applyFunc(function()
+squishSound:addFunc(function()
 	if player:isLoaded() and squishSound.curr then
 		sounds:playSound("entity.slime.squish", player:getPos(), 0.35, 0.6)
 	end

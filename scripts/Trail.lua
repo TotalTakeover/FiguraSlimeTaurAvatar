@@ -212,7 +212,7 @@ end
 if not host:isHost() then return end
 
 -- Apply sound function
-trail:applyFunc(function()
+trail:addFunc(function()
 	if player:isLoaded() and trail.curr then
 		sounds:playSound("entity.slime.squish", player:getPos(), 0.35)
 	end

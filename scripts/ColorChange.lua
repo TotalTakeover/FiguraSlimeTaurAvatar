@@ -151,7 +151,7 @@ function events.RENDER(delta, context)
 end
 
 -- Apply color function
-pick:applyFunc(function()
+pick:addFunc(function()
 	colorTypes.Pick = vectors.hexToRGB(pick.curr)
 end)
 
